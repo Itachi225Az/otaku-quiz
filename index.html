@@ -7,6 +7,44 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#05050e">
 <style>
+/* ── SHARE ROOM BUTTONS ── */
+.room-share-btns{display:flex;gap:8px;margin:8px 0 4px;justify-content:center;}
+.room-share-btn{flex:1;max-width:160px;padding:10px 8px;border:none;border-radius:12px;font-family:'Bangers',cursive;font-size:.9rem;letter-spacing:1.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;}
+.room-share-btn.wa{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;box-shadow:0 3px 12px rgba(37,211,102,.3);}
+.room-share-btn.wa:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(37,211,102,.4);}
+.room-share-btn.cp{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);}
+.room-share-btn.cp:hover{background:rgba(255,255,255,.14);color:#fff;}
+
+/* ── QUICK JOIN MODAL (arrivée depuis lien) ── */
+#quick-join-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:800;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;backdrop-filter:blur(8px);
+}
+#quick-join-modal.open{display:flex;}
+.qj-box{
+  background:linear-gradient(145deg,#1a1a2e,#0f0f1e);
+  border:1.5px solid rgba(245,168,0,.3);border-radius:22px;
+  padding:26px 20px;max-width:340px;width:100%;text-align:center;
+  animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+.qj-title{font-family:'Bangers',cursive;font-size:1.8rem;letter-spacing:3px;color:var(--gold);margin-bottom:6px;}
+.qj-sub{font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:18px;line-height:1.5;}
+.qj-avatar-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0 16px;}
+.qj-av-btn{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 4px;font-size:1.5rem;cursor:pointer;transition:all .2s;aspect-ratio:1;display:flex;align-items:center;justify-content:center;}
+.qj-av-btn:hover{background:rgba(255,255,255,.12);transform:scale(1.08);}
+.qj-av-btn.sel{border-color:var(--gold);background:rgba(245,168,0,.15);}
+
+/* ── NOTIF PUSH ── */
+.notif-permission-bar{
+  display:none;position:fixed;bottom:70px;left:12px;right:12px;z-index:400;
+  background:linear-gradient(135deg,#1a1a2e,#0f0f1e);
+  border:1.5px solid rgba(191,90,242,.35);border-radius:16px;
+  padding:12px 16px;box-shadow:0 8px 30px rgba(0,0,0,.4);
+  animation:slideDown .4s ease;
+}
+.notif-permission-bar.show{display:flex;align-items:center;gap:12px;}
+
 /* ── OFFLINE / ONLINE indicator ── */
 #network-banner{
   position:fixed;top:0;left:0;right:0;z-index:9999;
@@ -45,10 +83,10 @@
 .mcard.online-only.offline-disabled .online-badge{display:none;}
 </style>
 <title>Quiz Otaku 5.5 🎌</title>
-<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <!-- Bootstrap 5.3 — CDN (online) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous" media="print" onload="this.media='all'">
+<script>if(navigator.onLine){var bsScript=document.createElement('script');bsScript.src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js';document.head.appendChild(bsScript);}</script>
 <style>
 /* ── Bootstrap theme bridge — override BS vars avec notre palette ── */
 :root{
@@ -91,46 +129,7 @@
 .dropdown-item:hover{background:rgba(255,255,255,.08)!important;color:#fff!important;}
 </style>
 <!-- Bootstrap Icons inlined as SVG - no CDN needed -->
-<script>
-// ── Service Worker pour cache offline ──
-if('serviceWorker' in navigator){
-  // Enregistrer SW inline (blob URL pour fichier unique)
-  var swCode = `
-const CACHE = 'otaku-quiz-v5.5';
-const OFFLINE_URLS = ['/'];
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE_URLS)));
-  self.skipWaiting();
-});
-self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys =>
-    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-  ));
-  self.clients.claim();
-});
-self.addEventListener('fetch', e => {
-  if(e.request.method !== 'GET') return;
-  // Firebase et API → réseau uniquement
-  if(e.request.url.includes('firebaseio') || e.request.url.includes('firebase') ||
-     e.request.url.includes('googleapis') || e.request.url.includes('gstatic')) {
-    e.respondWith(fetch(e.request).catch(() => new Response('', {status: 503})));
-    return;
-  }
-  // Fichiers locaux → cache first
-  e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).then(response => {
-      var clone = response.clone();
-      caches.open(CACHE).then(c => c.put(e.request, clone));
-      return response;
-    }).catch(() => caches.match('/') || new Response('Offline', {status: 503})))
-  );
-});
-  `;
-  var blob = new Blob([swCode], {type: 'application/javascript'});
-  var swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).catch(function(){});
-}
-</script>
+<!-- Service Worker désactivé - incompatible WebView Android -->
 <style>
 :root{
   --ink:#05050e;--paper:#f0eeff;
@@ -183,11 +182,12 @@ body::before{content:'';position:fixed;inset:0;
 /* ═══ SETTINGS SIDEBAR ═══ */
 .sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:none;backdrop-filter:blur(3px);}
 .sidebar-overlay.open{display:block;}
-.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:linear-gradient(180deg,#0c0c1e,rgba(5,5,14,.98));z-index:101;transform:translateX(-100%);transition:transform .38s cubic-bezier(.25,.46,.45,.94);overflow-y:auto;border-right:1px solid rgba(255,255,255,.08);backdrop-filter:blur(20px);}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:linear-gradient(180deg,#0c0c1e,rgba(5,5,14,.98));z-index:101;transform:translateX(-100%);transition:transform .38s cubic-bezier(.25,.46,.45,.94);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;border-right:1px solid rgba(255,255,255,.08);backdrop-filter:blur(20px);}
 .sidebar.open{transform:translateX(0);}
 .sidebar-header{padding:24px 18px 16px;border-bottom:1px solid rgba(255,255,255,.06);}
 .sidebar-logo{font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:3px;background:linear-gradient(135deg,var(--gold),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .sidebar-close{position:absolute;top:18px;right:16px;background:rgba(255,255,255,.06);border:none;color:rgba(255,255,255,.5);width:32px;height:32px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.sidebar>*:last-child{padding-bottom:40px;}
 .sidebar-close:hover{background:rgba(255,255,255,.12);color:#fff;}
 .sidebar-section{padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.05);}
 .sidebar-section h4{font-size:.68rem;letter-spacing:3px;color:rgba(255,255,255,.3);margin-bottom:12px;text-transform:uppercase;}
@@ -1202,9 +1202,19 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
   <button class="back-btn" onclick="leaveRoom()"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/></svg> Quitter</button>
   <div style="font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:3px;text-align:center;margin-bottom:3px">SALLE EN ATTENTE</div>
   <div class="room-box">
-    <div class="room-lbl">CODE À PARTAGER</div>
+    <div class="room-lbl">CODE DE LA SALLE</div>
     <div class="room-code" id="room-code" onclick="copyCode()">------</div>
-    <div class="room-hint">👆 Clique pour copier · Envoie à tes amis !</div>
+    <div class="room-hint">👆 Clique le code pour copier</div>
+    <div class="room-share-btns">
+      <button class="room-share-btn wa" onclick="shareRoomWhatsApp()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+        ENVOYER WA
+      </button>
+      <button class="room-share-btn cp" onclick="copyRoomLink()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/><path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/></svg>
+        COPIER LIEN
+      </button>
+    </div>
   </div>
   <div id="host-players-cfg" class="hidden">
     <div class="sec-title">👥 NOMBRE DE JOUEURS</div>
@@ -1722,23 +1732,82 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
   </div>
 </div>
 
+
+<!-- ════ QUICK JOIN MODAL (lien salle) ════ -->
+<div id="quick-join-modal">
+  <div class="qj-box">
+    <div style="font-size:2.5rem;margin-bottom:8px">🎮</div>
+    <div class="qj-title">REJOINDRE LA SALLE</div>
+    <div class="qj-sub" id="qj-sub">Tu as été invité à rejoindre une salle !</div>
+
+    <!-- Si pas de profil : demander pseudo + avatar -->
+    <div id="qj-setup" style="display:none">
+      <div style="font-size:.78rem;color:var(--gold);font-weight:700;margin-bottom:8px;letter-spacing:1px">TON PSEUDO</div>
+      <input id="qj-pseudo" class="inp" placeholder="Ton pseudo..." maxlength="14" style="margin-bottom:12px">
+      <div style="font-size:.78rem;color:var(--gold);font-weight:700;margin-bottom:8px;letter-spacing:1px">TON AVATAR</div>
+      <div class="qj-avatar-grid" id="qj-av-grid"></div>
+    </div>
+
+    <button id="qj-btn-join" onclick="quickJoinRoom()" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--red),#ff6b35);border:none;border-radius:12px;color:#fff;font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:2px;cursor:pointer;margin-bottom:8px;box-shadow:0 4px 16px rgba(230,51,41,.35)">
+      ⚔️ REJOINDRE
+    </button>
+    <button onclick="document.getElementById('quick-join-modal').classList.remove('open')" style="width:100%;padding:10px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.5);font-family:'Bangers',cursive;font-size:.95rem;letter-spacing:2px;cursor:pointer">
+      ANNULER
+    </button>
+  </div>
+</div>
+
+<!-- ════ BARRE NOTIFICATIONS ════ -->
+<div class="notif-permission-bar" id="notif-bar">
+  <div style="font-size:1.6rem;flex-shrink:0">🔔</div>
+  <div style="flex:1">
+    <div style="font-weight:800;font-size:.85rem;margin-bottom:2px">Activer les notifications</div>
+    <div style="font-size:.68rem;color:rgba(255,255,255,.45);line-height:1.4">Rappels quotidiens · Nouveaux joueurs en ligne</div>
+  </div>
+  <div style="display:flex;gap:6px;flex-shrink:0">
+    <button onclick="requestNotifPermission()" style="padding:8px 12px;background:linear-gradient(135deg,#bf5af2,#7c3aed);border:none;border-radius:10px;color:#fff;font-family:'Bangers',cursive;font-size:.8rem;letter-spacing:1px;cursor:pointer">OUI</button>
+    <button onclick="dismissNotifBar()" style="padding:8px 10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.4);font-size:.8rem;cursor:pointer">✕</button>
+  </div>
+</div>
+
 </div><!-- end app -->
 
 <!-- FIREBASE -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-const cfg={apiKey:"AIzaSyBApZA2cZH6ghHmKf0ekwi65hrKNFuHWtI",authDomain:"otaku-quiz-7e92f.firebaseapp.com",databaseURL:"https://otaku-quiz-7e92f-default-rtdb.firebaseio.com",projectId:"otaku-quiz-7e92f",storageBucket:"otaku-quiz-7e92f.appspot.com",messagingSenderId:"56064440669",appId:"1:56064440669:web:be5dc1a57b8c3f4f7e92f0"};
-try{
-  const app=initializeApp(cfg);const db=getDatabase(app);
-  window._fb={db,ref,set,get,update,onValue,ok:true};
-  document.getElementById('fb-badge').className='fb-badge ok';
-  document.getElementById('fb-txt').textContent='🔥 Firebase OK';
-}catch(e){
-  window._fb={ok:false};
-  document.getElementById('fb-badge').className='fb-badge warn';
-  document.getElementById('fb-txt').textContent='⚠️ Hors ligne';
+// Firebase — chargement conditionnel (ne bloque pas le jeu si offline)
+window._fb={ok:false};
+function _initFirebase(){
+  // Toujours initialiser le badge
+  var badge=document.getElementById('fb-badge');
+  var txt=document.getElementById('fb-txt');
+  if(!navigator.onLine){
+    if(txt)txt.textContent='📡 Hors ligne';
+    return;
+  }
+  // Charger Firebase dynamiquement seulement si online
+  Promise.all([
+    import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"),
+    import("https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js")
+  ]).then(([{initializeApp},{getDatabase,ref,set,get,update,onValue}])=>{
+    const cfg={apiKey:"AIzaSyBApZA2cZH6ghHmKf0ekwi65hrKNFuHWtI",authDomain:"otaku-quiz-7e92f.firebaseapp.com",databaseURL:"https://otaku-quiz-7e92f-default-rtdb.firebaseio.com",projectId:"otaku-quiz-7e92f",storageBucket:"otaku-quiz-7e92f.appspot.com",messagingSenderId:"56064440669",appId:"1:56064440669:web:be5dc1a57b8c3f4f7e92f0"};
+    const app=initializeApp(cfg);const db=getDatabase(app);
+    window._fb={db,ref,set,get,update,onValue,ok:true};
+    if(badge){badge.style.background='rgba(48,209,88,.1)';badge.style.borderColor='rgba(48,209,88,.3)';badge.style.color='#30d158';}
+    if(txt)txt.textContent='🔥 Firebase OK';
+    // Relancer les fonctions qui dépendent de Firebase
+    try{updateProfileUI();}catch(e){}
+    try{if(document.getElementById('s-home')&&!document.getElementById('s-home').classList.contains('hidden')){loadTop3DuJour();}}catch(e){}
+  }).catch(()=>{
+    window._fb={ok:false};
+    if(txt)txt.textContent='📡 Hors ligne';
+  });
 }
+// Lancer Firebase au boot
+_initFirebase();
+// Relancer si connexion rétablie
+window.addEventListener('online',function(){
+  if(!window._fb||!window._fb.ok)_initFirebase();
+});
 </script>
 <script>
 // ══════════════════════════════════════════════════════════
@@ -2316,9 +2385,19 @@ window.addEventListener('DOMContentLoaded',()=>{
   updateXPDisplay();
   if(navigator.onLine)loadTop3DuJour();
   parseChallengeURL();
+  parseRoomURL();
   v51Init();
+  setTimeout(initNotifications, 2000);
   // Appliquer état réseau initial
-  if(!navigator.onLine){setTimeout(function(){updateNetworkStatus(false);},300);}
+  // Ne jamais bloquer l'affichage — montrer l'accueil toujours
+  setTimeout(function(){
+    if(!navigator.onLine){
+      updateNetworkStatus(false);
+      // S'assurer que le jeu est visible même hors ligne
+      var app=document.getElementById('app');
+      if(app)app.style.display='block';
+    }
+  },200);
 });
 
 // Daily challenge
@@ -2342,6 +2421,7 @@ function startDaily(){
   questions=pickQ(['shonen','mangaka','japon','ci','bd','shojo','anime'],5,true);
   current=0;myScore=0;myCorrect=0;myWrong=0;currentStreak=0;
   go('loading');
+  markPlayedNow();
   setTimeout(async()=>{await doCountdown();go('game');renderQ();},600);
 }
 
@@ -2410,6 +2490,7 @@ function startGame(){
   questions=pickQ(selCatsSolo,selNumSolo);
   current=0;myScore=0;myCorrect=0;myWrong=0;currentStreak=0;isDuel=false;
   go('loading');
+  markPlayedNow();
   setTimeout(async()=>{await doCountdown();go('game');renderQ();},600);
 }
 
@@ -3332,6 +3413,7 @@ function acceptChallenge(){
   questions=pickQ(selCatsSolo,10);
   current=0;myScore=0;myCorrect=0;myWrong=0;currentStreak=0;comboCount=0;comboMultiplier=1;
   go('loading');
+  markPlayedNow();
   setTimeout(async function(){await doCountdown();go('game');renderQ();},600);
 }
 
@@ -3371,6 +3453,7 @@ function startSurvival(){
   questions=[...QB].sort(function(){return Math.random()-.5;});
   current=0;myScore=0;myCorrect=0;myWrong=0;currentStreak=0;comboCount=0;comboMultiplier=1;
   go('loading');
+  markPlayedNow();
   setTimeout(async function(){await doCountdown();go('game');renderQ();},600);
 }
 
@@ -4000,6 +4083,7 @@ function startStoryChapter(ch){
   current=0;myScore=0;myCorrect=0;myWrong=0;currentStreak=0;comboCount=0;comboMultiplier=1;
   window._storyChapter=ch;
   go('loading');
+  markPlayedNow();
   setTimeout(async function(){await doCountdown();go('game');renderQ();},600);
 }
 
@@ -4111,6 +4195,7 @@ function startWeeklyChallenge(){
   questions=pickQ(theme.cats,10);
   current=0;myScore=0;myCorrect=0;myWrong=0;currentStreak=0;comboCount=0;comboMultiplier=1;
   go('loading');
+  markPlayedNow();
   setTimeout(async function(){await doCountdown();go('game');renderQ();},600);
 }
 
@@ -4933,6 +5018,228 @@ window.addEventListener('DOMContentLoaded',function(){
     }catch(e){}
   }
 },false);
+
+// ─── PARTAGE DE SALLE ────────────────────────────────────────
+function getRoomLink(){
+  var base = GAME_LINK.startsWith('http') ? GAME_LINK : 'https://itachi225az.github.io/otaku-quiz';
+  return base + '?room=' + roomCode;
+}
+
+function shareRoomWhatsApp(){
+  if(!roomCode){showSF('⚠️ Crée d\'abord une salle !','var(--red)');return;}
+  var p = loadProfile()||{};
+  var link = getRoomLink();
+  var msg = '⚔️ QUIZ OTAKU — DUEL EN LIGNE ⚔️\n'
+    + (p.pseudo||myName||'Un joueur') + ' t\'invite à jouer !\n\n'
+    + '🎮 Code de la salle : *' + roomCode + '*\n'
+    + '👉 Rejoins directement : ' + link + '\n\n'
+    + '📱 Clique le lien ou entre le code dans Quiz Otaku !';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  showSF('💬 Invitation envoyée !','var(--green)');
+}
+
+function copyRoomLink(){
+  if(!roomCode){showSF('⚠️ Crée d\'abord une salle !','var(--red)');return;}
+  var link = getRoomLink();
+  try{
+    navigator.clipboard.writeText(link);
+    showSF('🔗 Lien copié !','var(--gold)');
+  }catch(e){
+    // Fallback
+    var ta = document.createElement('textarea');
+    ta.value = link; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{document.execCommand('copy');showSF('🔗 Lien copié !','var(--gold)');}catch(e2){}
+    document.body.removeChild(ta);
+  }
+}
+
+// ─── QUICK JOIN (depuis lien partagé) ────────────────────────
+var _qjRoomCode = null;
+var _qjSelectedAv = null;
+
+function parseRoomURL(){
+  try{
+    var params = new URLSearchParams(window.location.search);
+    var roomParam = params.get('room');
+    if(!roomParam) return;
+    _qjRoomCode = roomParam.toUpperCase().trim();
+    // Vérifier si l'utilisateur a déjà un profil
+    var p = loadProfile();
+    openQuickJoinModal(p);
+  }catch(e){}
+}
+
+function openQuickJoinModal(existingProfile){
+  var modal = document.getElementById('quick-join-modal');
+  var setup = document.getElementById('qj-setup');
+  var sub = document.getElementById('qj-sub');
+  if(!modal) return;
+
+  if(existingProfile && existingProfile.pseudo){
+    // Profil existant → afficher juste le bouton rejoindre
+    if(sub) sub.innerHTML = 'Bienvenue <strong style="color:var(--gold)">' + existingProfile.pseudo + '</strong> !<br>Code : <strong style="color:var(--gold)">' + _qjRoomCode + '</strong>';
+    if(setup) setup.style.display = 'none';
+  }else{
+    // Nouveau joueur → demander pseudo + avatar
+    if(sub) sub.innerHTML = 'Entre ton pseudo et choisis un avatar<br>pour rejoindre la salle <strong style="color:var(--gold)">' + _qjRoomCode + '</strong>';
+    if(setup) setup.style.display = 'block';
+    // Grille avatars
+    var grid = document.getElementById('qj-av-grid');
+    if(grid){
+      grid.innerHTML = '';
+      PRESET_AVATARS.forEach(function(av){
+        var btn = document.createElement('button');
+        btn.className = 'qj-av-btn'; btn.textContent = av;
+        btn.onclick = function(){
+          document.querySelectorAll('.qj-av-btn').forEach(function(b){b.classList.remove('sel');});
+          btn.classList.add('sel'); _qjSelectedAv = av;
+        };
+        grid.appendChild(btn);
+      });
+      // Sélectionner le premier par défaut
+      _qjSelectedAv = PRESET_AVATARS[0];
+      grid.firstChild && grid.firstChild.classList.add('sel');
+    }
+  }
+  modal.classList.add('open');
+}
+
+async function quickJoinRoom(){
+  if(!_qjRoomCode){showSF('⚠️ Code invalide','var(--red)');return;}
+  var p = loadProfile();
+
+  // Si nouveau joueur → créer profil minimal
+  if(!p || !p.pseudo){
+    var pseudoInp = document.getElementById('qj-pseudo');
+    var pseudo = pseudoInp ? pseudoInp.value.trim() : '';
+    if(!pseudo || pseudo.length < 2){showSF('⚠️ Entre un pseudo !','var(--red)');return;}
+    var av = _qjSelectedAv || PRESET_AVATARS[0];
+    // Créer profil
+    p = {
+      id: myId,
+      pseudo: pseudo,
+      avatar: av,
+      coins: 0,
+      badges: {},
+      xp: 0,
+      createdAt: Date.now()
+    };
+    localStorage.setItem('oq_profile', JSON.stringify(p));
+    myName = pseudo;
+    updateProfileUI();
+  }
+
+  // Fermer modal
+  document.getElementById('quick-join-modal').classList.remove('open');
+
+  // Remplir le champ nom et rejoindre
+  var nameInp = document.getElementById('inp-name');
+  if(nameInp) nameInp.value = p.pseudo;
+  myName = p.pseudo;
+
+  var codeInp = document.getElementById('inp-code');
+  if(codeInp) codeInp.value = _qjRoomCode;
+
+  // Aller sur le lobby duel
+  goMode('duel');
+  // Attendre que l'UI soit prête puis rejoindre
+  setTimeout(async function(){
+    try{
+      await joinRoom();
+    }catch(e){
+      showSF('❌ Salle introuvable ou pleine','var(--red)');
+    }
+  }, 600);
+}
+
+// ─── NOTIFICATIONS PUSH ──────────────────────────────────────
+var _notifDismissed = false;
+
+function initNotifications(){
+  // Ne pas afficher si déjà accordé ou refusé
+  if(!('Notification' in window)) return;
+  if(Notification.permission === 'granted'){
+    scheduleDailyReminder();
+    return;
+  }
+  if(Notification.permission === 'denied') return;
+  // Afficher la barre après 30 secondes si l'utilisateur joue
+  var shown = localStorage.getItem('oq_notif_asked');
+  if(shown) return;
+  setTimeout(function(){
+    if(!_notifDismissed){
+      var bar = document.getElementById('notif-bar');
+      if(bar) bar.classList.add('show');
+    }
+  }, 30000);
+}
+
+function requestNotifPermission(){
+  var bar = document.getElementById('notif-bar');
+  if(bar) bar.classList.remove('show');
+  localStorage.setItem('oq_notif_asked','1');
+  if(!('Notification' in window)){showSF('❌ Notifications non supportées','var(--red)');return;}
+  Notification.requestPermission().then(function(permission){
+    if(permission === 'granted'){
+      showSF('🔔 Notifications activées !','#bf5af2');
+      scheduleDailyReminder();
+      // Notification de bienvenue
+      setTimeout(function(){
+        try{
+          new Notification('Quiz Otaku 🎌', {
+            body: 'Les notifications sont activées ! Tu recevras des rappels quotidiens.',
+            icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎌</text></svg>'
+          });
+        }catch(e){}
+      }, 1000);
+    }else{
+      showSF('Notifications refusées','rgba(255,255,255,.4)');
+    }
+  });
+}
+
+function dismissNotifBar(){
+  _notifDismissed = true;
+  localStorage.setItem('oq_notif_asked','1');
+  var bar = document.getElementById('notif-bar');
+  if(bar) bar.classList.remove('show');
+}
+
+function scheduleDailyReminder(){
+  if(Notification.permission !== 'granted') return;
+  // Vérifier si l'utilisateur n'a pas joué aujourd'hui
+  var lastPlay = parseInt(localStorage.getItem('oq_last_play')||'0');
+  var now = Date.now();
+  var oneDayMs = 24*60*60*1000;
+  if(now - lastPlay > oneDayMs){
+    // Pas joué depuis 24h → rappel
+    try{
+      new Notification('Quiz Otaku 🎌 — Rappel !', {
+        body: 'Tu n\'as pas joué depuis hier ! Viens tester tes connaissances manga & anime. 🧠',
+        icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎌</text></svg>',
+        tag: 'daily-reminder',
+        requireInteraction: false
+      });
+    }catch(e){}
+  }
+}
+
+function sendNewPlayerNotif(playerName){
+  if(Notification.permission !== 'granted') return;
+  try{
+    new Notification('🎮 Nouveau joueur en ligne !', {
+      body: playerName + ' vient de se connecter sur Quiz Otaku. Viens le défier !',
+      icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>',
+      tag: 'new-player'
+    });
+  }catch(e){}
+}
+
+// Enregistrer l'heure de jeu
+function markPlayedNow(){
+  localStorage.setItem('oq_last_play', Date.now().toString());
+}
 
 </script>
 </body>
