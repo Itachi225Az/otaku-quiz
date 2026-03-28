@@ -2544,7 +2544,10 @@ function renderSlots(){
   grid.innerHTML='';
   const players=roomData.players||{};
   const pList=Object.values(players);
-  for(let i=0;i<maxPlayers;i++){
+  // Source de vérité = roomData.maxPlayers (Firebase), sinon variable locale
+  const _slots = roomData.maxPlayers || maxPlayers || 2;
+  maxPlayers = _slots; // resynchroniser la variable globale
+  for(let i=0;i<_slots;i++){
     const p=pList[i];
     const div=document.createElement('div');
     if(p){
@@ -2610,8 +2613,9 @@ async function joinRoom(){
     const d=snap.val();
     if(d.status!=='waiting'){showErr('lob','Partie déjà en cours !');return;}
     const pCount=Object.keys(d.players||{}).length;
-    if(pCount>=(d.maxPlayers||2)){showErr('lob','Salle pleine !');return;}
-    roomCode=code;myRole='guest';maxPlayers=d.maxPlayers||2;
+    const _maxP = (d.maxPlayers && d.maxPlayers > 0) ? d.maxPlayers : 2;
+    if(pCount>=_maxP){showErr('lob','Salle pleine !');return;}
+    roomCode=code;myRole='guest';if(d.maxPlayers&&d.maxPlayers>0)maxPlayers=d.maxPlayers;
     var _myProf2=loadProfile();var _myAv2=_myProf2?(_myProf2.avatar||'⚡'):'⚡';
     await dbU('rooms/'+code,{['players/'+myId]:{name:myName,avatar:_myAv2,score:0,correct:0,wrong:0,answers:{},joinedAt:Date.now()}});
     document.getElementById('room-code').textContent=code;
@@ -2627,7 +2631,8 @@ function listenRoom(){
   roomListener=dbOn('rooms/'+roomCode,snap=>{
     if(!snap.exists())return;
     const d=snap.val();roomData=d;
-    maxPlayers=d.maxPlayers||2;
+    // Utiliser maxPlayers de Firebase seulement s'il est valide (>0)
+    if(d.maxPlayers && d.maxPlayers > 0) maxPlayers = d.maxPlayers;
     const players=d.players||{};
     const pCount=Object.keys(players).length;
     // update slots
@@ -2637,7 +2642,8 @@ function listenRoom(){
       const btnL=document.getElementById('btn-launch');
       if(btnL)btnL.disabled=(pCount<2||selCats.length===0);
       const waitTxt=document.querySelector('#s-wait p');
-      if(waitTxt)waitTxt.textContent=`${pCount}/${maxPlayers} joueur${pCount>1?'s':''} connecté${pCount>1?'s':''}`;
+      const _mp=roomData.maxPlayers||maxPlayers||2;
+      if(waitTxt)waitTxt.textContent=`${pCount}/${_mp} joueur${pCount>1?'s':''} connecté${pCount>1?'s':''}`;
     }
     // game started
     if(d.status==='playing'&&questions.length===0&&myRole!=='host'&&d.questions){
