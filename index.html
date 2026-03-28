@@ -4807,17 +4807,27 @@ function showDmInviteModal(uid, playerData){
 function acceptSendDmInvite(){
   if(!_dmPartner||!fbOK()) return;
   document.getElementById('dm-invite-modal').classList.remove('open');
-  // Vérifier si conversation déjà ouverte
   _dmConvKey = buildDmKey(myId, _dmPartner.id);
-  // Envoyer invitation Firebase
   var p = loadProfile()||{};
+  var myName2 = p.pseudo||myName||'Joueur';
+  var myAv = p.avatar||'⚡';
+  // Envoyer invitation Firebase (pour que le destinataire la voit dans ses Messages)
   var invite = {
-    fromId:myId, fromName:p.pseudo||myName||'Joueur', fromAvatar:p.avatar||'⚡',
+    fromId:myId, fromName:myName2, fromAvatar:myAv,
     toId:_dmPartner.id, ts:Date.now(), status:'pending'
   };
   dbU(FB_INVITES+'/'+_dmPartner.id+'/'+myId, invite).catch(()=>{});
+  // Créer immédiatement le meta de conversation dans FB_DM
+  // → les deux joueurs voient la conversation dans leur onglet Messages
+  var metaData = {
+    participants:[myId, _dmPartner.id],
+    lastMsg:'📨 Invitation envoyée — en attente de réponse',
+    lastTs: Date.now(),
+    names:{[myId]:myName2, [_dmPartner.id]:_dmPartner.name||'Joueur'},
+    avatars:{[myId]:myAv, [_dmPartner.id]:_dmPartner.avatar||'⚡'}
+  };
+  dbU(FB_DM+'/'+_dmConvKey+'/meta', metaData).catch(()=>{});
   showSF('💬 Invitation envoyée !','#bf5af2');
-  // Ouvrir la conversation directement
   openDmScreen(_dmPartner);
 }
 
@@ -4868,12 +4878,24 @@ function acceptDmInvite(){
   if(!_pendingInvite) return;
   var inv = _pendingInvite;
   _pendingInvite = null;
-  // Supprimer l'invitation
+  // Supprimer l'invitation de Firebase
   dbS(FB_INVITES+'/'+myId+'/'+inv.fromId, null).catch(()=>{});
+  // Créer meta de conversation dans FB_DM (visible des deux côtés)
+  var p = loadProfile()||{};
+  var convKey = buildDmKey(myId, inv.fromId);
+  var metaData = {
+    participants:[myId, inv.fromId],
+    lastMsg:'💬 Conversation démarrée',
+    lastTs: Date.now(),
+    names:{[myId]:p.pseudo||myName||'Joueur',[inv.fromId]:inv.fromName||'Joueur'},
+    avatars:{[myId]:p.avatar||'⚡',[inv.fromId]:inv.fromAvatar||'⚡'}
+  };
+  dbU(FB_DM+'/'+convKey+'/meta', metaData).catch(()=>{});
   // Ouvrir DM
   _dmPartner = {id:inv.fromId, name:inv.fromName, avatar:inv.fromAvatar||'⚡'};
-  _dmConvKey = buildDmKey(myId, inv.fromId);
+  _dmConvKey = convKey;
   openDmScreen(_dmPartner);
+  showSF('✅ Invitation acceptée !','var(--green)');
 }
 
 function declineDmInvite(){
@@ -4980,59 +5002,190 @@ function onDmFileSelect(evt){
 
 function removeDmMedia(){_dmMediaData=null;document.getElementById('dm-media-preview').style.display='none';}
 
-// ── LISTE CONVERSATIONS DM ────────────────────────────────────
+// ── LISTE CONVERSATIONS DM (invitations + messages) ───────────
+// Données en mémoire pour la liste fusionnée
+var _cachedConvs = [];      // conversations FB_DM
+var _cachedInvites = {};    // invitations FB_INVITES en attente
+
 function listenDmConversations(){
-  // Écouter toutes les conversations où je suis participant
-  var fn = dbOn(FB_DM, function(snap){
-    if(!snap.exists()) return;
-    var convs = snap.val();
-    var myConvs = [];
-    Object.keys(convs).forEach(function(key){
-      var c = convs[key];
-      if(c.meta && c.meta.participants && c.meta.participants.includes(myId)){
-        myConvs.push({key:key, meta:c.meta});
-      }
-    });
-    myConvs.sort(function(a,b){return (b.meta.lastTs||0)-(a.meta.lastTs||0);});
-    renderDmList(myConvs);
+  // 1) Écouter les conversations existantes (FB_DM)
+  var fnConv = dbOn(FB_DM, function(snap){
+    _cachedConvs = [];
+    if(snap.exists()){
+      var convs = snap.val();
+      Object.keys(convs).forEach(function(key){
+        var c = convs[key];
+        if(c.meta && c.meta.participants && c.meta.participants.includes(myId)){
+          _cachedConvs.push({key:key, meta:c.meta});
+        }
+      });
+      _cachedConvs.sort(function(a,b){return (b.meta.lastTs||0)-(a.meta.lastTs||0);});
+    }
+    renderDmList();
   });
-  _commListeners.push(fn);
+  _commListeners.push(fnConv);
+
+  // 2) Écouter les invitations reçues (FB_INVITES) — les afficher DANS la liste
+  var fnInv = dbOn(FB_INVITES+'/'+myId, function(snap){
+    _cachedInvites = {};
+    if(snap.exists()){
+      var invites = snap.val();
+      Object.keys(invites).forEach(function(fromId){
+        var inv = invites[fromId];
+        if(inv.status === 'pending'){
+          _cachedInvites[fromId] = inv;
+        }
+      });
+    }
+    renderDmList();
+  });
+  _commListeners.push(fnInv);
 }
 
-function renderDmList(convs){
+function renderDmList(){
   var list = document.getElementById('dm-list');
   if(!list) return;
-  if(!convs||convs.length===0){
-    list.innerHTML='<div style="text-align:center;padding:40px 0;color:rgba(255,255,255,.2);font-size:.8rem"><div style="font-size:2.5rem;margin-bottom:10px">💬</div><div style="font-family:Bangers,cursive;font-size:1rem;letter-spacing:2px;margin-bottom:6px">AUCUN MESSAGE PRIVÉ</div><div style="font-size:.72rem;line-height:1.5">Appuie sur un joueur en ligne<br>pour lui envoyer une invitation !</div></div>';
+
+  // Fusionner invitations en attente + conversations existantes
+  var items = [];
+
+  // Ajouter les invitations reçues en premier (elles n'ont pas encore de conv)
+  Object.keys(_cachedInvites).forEach(function(fromId){
+    var inv = _cachedInvites[fromId];
+    // Vérifier que cette invitation n'a pas déjà une conversation ouverte
+    var convKey = buildDmKey(myId, fromId);
+    var hasConv = _cachedConvs.some(function(c){ return c.key === convKey; });
+    if(!hasConv){
+      items.push({type:'invite', inv:inv, ts:inv.ts||0});
+    }
+  });
+
+  // Ajouter les conversations existantes
+  _cachedConvs.forEach(function(conv){
+    items.push({type:'conv', conv:conv, ts:conv.meta.lastTs||0});
+  });
+
+  // Trier par date décroissante
+  items.sort(function(a,b){ return b.ts - a.ts; });
+
+  if(items.length === 0){
+    list.innerHTML = '<div style="text-align:center;padding:40px 0;color:rgba(255,255,255,.2);font-size:.8rem">'
+      +'<div style="font-size:2.5rem;margin-bottom:10px">💬</div>'
+      +'<div style="font-family:Bangers,cursive;font-size:1rem;letter-spacing:2px;margin-bottom:6px">AUCUN MESSAGE PRIVÉ</div>'
+      +'<div style="font-size:.72rem;line-height:1.5">Appuie sur un joueur en ligne<br>pour lui envoyer une invitation !</div></div>';
     return;
   }
-  list.innerHTML='';
-  convs.forEach(function(conv){
-    var meta=conv.meta;
-    var partnerId=meta.participants.find(function(id){return id!==myId;})||'';
-    var partnerName=(meta.names&&meta.names[partnerId])||'Joueur';
-    var partnerAv=(meta.avatars&&meta.avatars[partnerId])||'⚡';
-    var isOnline=!!_onlinePlayers[partnerId];
-    var av=partnerAv;
-    var avHtml=av.startsWith('data:')
-      ?'<img src="'+av+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover">'
-      :'<span style="font-size:1.4rem">'+av+'</span>';
-    var time=meta.lastTs?new Date(meta.lastTs).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):'';
-    var item=document.createElement('div');
-    item.className='dm-conv-item';
-    item.innerHTML='<div class="dm-conv-av">'+avHtml+'</div>'
-      +'<div class="dm-conv-info"><div class="dm-conv-name">'+escapeCommHtml(partnerName)+'</div>'
-      +'<div class="dm-conv-preview">'+(meta.lastMsg?escapeCommHtml(meta.lastMsg.substring(0,40)):'...')+'</div></div>'
-      +'<div class="dm-conv-meta">'
-      +'<div class="dm-conv-time">'+time+'</div>'
-      +(isOnline?'<div class="dm-online-dot"></div>':'')
-      +'</div>';
-    item.onclick=function(){
-      _dmPartner={id:partnerId,name:partnerName,avatar:partnerAv};
-      openDmScreen(_dmPartner);
-    };
-    list.appendChild(item);
+
+  list.innerHTML = '';
+  items.forEach(function(item){
+    if(item.type === 'invite'){
+      // ── CARTE INVITATION EN ATTENTE ──
+      var inv = item.inv;
+      var av = inv.fromAvatar||'⚡';
+      var avHtml = av.startsWith('data:')
+        ?'<img src="'+av+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid rgba(191,90,242,.5)">'
+        :'<span style="font-size:1.6rem">'+av+'</span>';
+      var timeStr = inv.ts ? _formatDmTime(inv.ts) : '';
+      var el = document.createElement('div');
+      el.className = 'dm-conv-item';
+      el.style.cssText = 'border-left:3px solid #bf5af2;background:rgba(191,90,242,.07)';
+      el.innerHTML = '<div class="dm-conv-av" style="position:relative">'+avHtml
+        +'<div style="position:absolute;bottom:-2px;right:-2px;background:#bf5af2;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:.55rem">💬</div>'
+        +'</div>'
+        +'<div class="dm-conv-info">'
+          +'<div class="dm-conv-name">'+escapeCommHtml(inv.fromName||'Joueur')+'</div>'
+          +'<div class="dm-conv-preview" style="color:#bf5af2;font-weight:600">📨 Invitation à chatter</div>'
+        +'</div>'
+        +'<div class="dm-conv-meta">'
+          +'<div class="dm-conv-time">'+timeStr+'</div>'
+          +'<div style="display:flex;gap:4px;margin-top:4px">'
+            +'<button onclick="event.stopPropagation();_acceptInviteFromList(''+inv.fromId+'','+JSON.stringify(inv)+')" '
+              +'style="padding:3px 8px;background:var(--green);border:none;border-radius:6px;color:#fff;font-size:.65rem;font-weight:700;cursor:pointer">✅</button>'
+            +'<button onclick="event.stopPropagation();_declineInviteFromList(''+inv.fromId+'')" '
+              +'style="padding:3px 8px;background:rgba(255,59,48,.7);border:none;border-radius:6px;color:#fff;font-size:.65rem;font-weight:700;cursor:pointer">❌</button>'
+          +'</div>'
+        +'</div>';
+      list.appendChild(el);
+
+    } else {
+      // ── CARTE CONVERSATION EXISTANTE ──
+      var meta = item.conv.meta;
+      var partnerId = meta.participants.find(function(id){ return id !== myId; })||'';
+      var partnerName = (meta.names&&meta.names[partnerId])||'Joueur';
+      var partnerAv = (meta.avatars&&meta.avatars[partnerId])||'⚡';
+      var isOnline = !!_onlinePlayers[partnerId];
+      var av2 = partnerAv;
+      var avHtml2 = av2.startsWith('data:')
+        ?'<img src="'+av2+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover">'
+        :'<span style="font-size:1.6rem">'+av2+'</span>';
+      var timeStr2 = meta.lastTs ? _formatDmTime(meta.lastTs) : '';
+      // Vérifier si non-lu
+      var convKey2 = item.conv.key;
+      var lastKnown2 = _globalDmUnread[convKey2]||0;
+      var hasUnread2 = meta.lastTs && meta.lastTs > lastKnown2 && partnerId !== myId;
+      var el2 = document.createElement('div');
+      el2.className = 'dm-conv-item';
+      if(hasUnread2) el2.style.background = 'rgba(191,90,242,.06)';
+      el2.innerHTML = '<div class="dm-conv-av" style="position:relative">'+avHtml2
+        +(isOnline?'<div style="position:absolute;bottom:0;right:0;width:12px;height:12px;background:var(--green);border-radius:50%;border:2px solid #05050e"></div>':'')
+        +'</div>'
+        +'<div class="dm-conv-info">'
+          +'<div class="dm-conv-name">'+escapeCommHtml(partnerName)+(hasUnread2?'<span style="display:inline-block;width:8px;height:8px;background:#bf5af2;border-radius:50%;margin-left:6px;vertical-align:middle"></span>':'')+'</div>'
+          +'<div class="dm-conv-preview">'+(meta.lastMsg?escapeCommHtml(meta.lastMsg.substring(0,40)):'Commence à chatter !')+'</div>'
+        +'</div>'
+        +'<div class="dm-conv-meta">'
+          +'<div class="dm-conv-time">'+timeStr2+'</div>'
+        +'</div>';
+      el2.onclick = function(){
+        _dmPartner = {id:partnerId, name:partnerName, avatar:partnerAv};
+        openDmScreen(_dmPartner);
+      };
+      list.appendChild(el2);
+    }
   });
+}
+
+// Formater l'heure : aujourd'hui → heure, sinon → date courte
+function _formatDmTime(ts){
+  if(!ts) return '';
+  var d = new Date(ts);
+  var now = new Date();
+  var isToday = d.toDateString() === now.toDateString();
+  if(isToday) return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  var diff = Math.floor((now - d) / 86400000);
+  if(diff === 1) return 'Hier';
+  if(diff < 7) return d.toLocaleDateString('fr-FR',{weekday:'short'});
+  return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
+}
+
+// Accepter une invitation depuis la liste Messages
+function _acceptInviteFromList(fromId, inv){
+  // Supprimer l'invitation de Firebase
+  dbS(FB_INVITES+'/'+myId+'/'+fromId, null).catch(function(){});
+  // Créer la conv dans FB_DM avec un meta initial
+  var p = loadProfile()||{};
+  var convKey = buildDmKey(myId, fromId);
+  var metaData = {
+    participants:[myId, fromId],
+    lastMsg:'💬 Conversation démarrée',
+    lastTs: Date.now(),
+    names:{[myId]:p.pseudo||myName||'Joueur',[fromId]:inv.fromName||'Joueur'},
+    avatars:{[myId]:p.avatar||'⚡',[fromId]:inv.fromAvatar||'⚡'}
+  };
+  dbU(FB_DM+'/'+convKey+'/meta', metaData).catch(function(){});
+  // Ouvrir la conversation
+  _dmPartner = {id:fromId, name:inv.fromName||'Joueur', avatar:inv.fromAvatar||'⚡'};
+  _dmConvKey = convKey;
+  openDmScreen(_dmPartner);
+  showSF('✅ Invitation acceptée !','var(--green)');
+}
+
+// Refuser une invitation depuis la liste Messages
+function _declineInviteFromList(fromId){
+  dbS(FB_INVITES+'/'+myId+'/'+fromId, null).catch(function(){});
+  delete _cachedInvites[fromId];
+  renderDmList();
+  showSF('Invitation refusée','rgba(255,255,255,.4)');
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -5205,15 +5358,16 @@ function listenDmConversationsGlobal(){
     });
     // Mettre à jour la liste DM si l'onglet est ouvert
     if(_commTab==='dm'){
-      var myConvs=[];
+      // Mettre à jour le cache et re-rendre
+      _cachedConvs=[];
       Object.keys(convs).forEach(function(key){
         var c=convs[key];
         if(c.meta&&c.meta.participants&&c.meta.participants.includes(myId)){
-          myConvs.push({key:key,meta:c.meta});
+          _cachedConvs.push({key:key,meta:c.meta});
         }
       });
-      myConvs.sort(function(a,b){return (b.meta.lastTs||0)-(a.meta.lastTs||0);});
-      renderDmList(myConvs);
+      _cachedConvs.sort(function(a,b){return (b.meta.lastTs||0)-(a.meta.lastTs||0);});
+      renderDmList();
     }
   });
 }
