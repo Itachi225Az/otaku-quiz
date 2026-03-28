@@ -1092,7 +1092,6 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 
   <!-- BOUTON COMMUNAUTÉ -->
   <div onclick="checkOnlineThenRun(openCommunity)" style="background:linear-gradient(135deg,rgba(191,90,242,.15),rgba(10,132,255,.12));border:1.5px solid rgba(191,90,242,.3);border-radius:18px;padding:14px 18px;margin:0 0 12px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-    <div id="comm-dm-home-badge" style="display:none;position:absolute;top:10px;right:10px;background:var(--red);color:#fff;border-radius:50%;width:20px;height:20px;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;z-index:5">0</div>
     <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,rgba(191,90,242,.25),rgba(10,132,255,.2));display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(191,90,242,.3);font-size:1.5rem">💬</div>
     <div style="flex:1">
       <div style="font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;background:linear-gradient(135deg,#bf5af2,#0a84ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">COMMUNAUTÉ OTAKU</div>
@@ -1505,9 +1504,7 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
   <button class="back-btn" onclick="go('home')"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/></svg> Accueil</button>
   <div style="font-family:'Bangers',cursive;font-size:1.8rem;letter-spacing:3px;text-align:center;margin-bottom:4px">📖 MODE HISTOIRE</div>
   <div style="font-size:.7rem;color:rgba(255,255,255,.3);text-align:center;letter-spacing:2px;margin-bottom:14px">COMPLÈTE TOUS LES CHAPITRES</div>
-  <div style="background:rgba(255,168,0,.08);border:1px solid rgba(255,168,0,.25);border-radius:12px;padding:10px 14px;margin:0 12px 10px;text-align:center;font-size:.75rem;color:rgba(255,168,0,.9)">
-    🎯 <strong>90% de bonnes réponses</strong> requis pour valider chaque chapitre et débloquer le suivant
-  </div>
+  <div style="background:rgba(255,168,0,.08);border:1px solid rgba(255,168,0,.25);border-radius:12px;padding:10px 14px;margin:0 12px 10px;text-align:center;font-size:.75rem;color:rgba(255,168,0,.9)">🎯 <strong>90% de bonnes réponses</strong> requis pour valider chaque chapitre et débloquer le suivant</div>
   <div id="story-chapters"></div>
   <button class="btn btn-ghost btn-full" style="margin-top:10px" onclick="go('home')">🏠 ACCUEIL</button>
 </div>
@@ -1866,16 +1863,15 @@ function updateNetworkStatus(online) {
 // Écouter les changements réseau
 window.addEventListener('online', function() {
   updateNetworkStatus(true);
-  // Ré-initialiser Firebase si nécessaire
   try {
     if (window._fb && !window._fb.ok) {
       showSF('✅ Reconnecté !', 'var(--green)');
     }
   } catch(e) {}
-  // Synchroniser les scores en attente (joués offline)
+  // Synchroniser les scores joués hors ligne
   setTimeout(function(){
-    try{ flushPendingSync(); }catch(e){}
-    try{ updatePresence(); }catch(e){}
+    try{_flushPendingSync();}catch(e){}
+    try{updatePresence();}catch(e){}
   }, 2000);
 });
 
@@ -2153,7 +2149,7 @@ QB.push(
 {q:"Quel est le nom du tissu traditionnel ivoirien tissé à la main ?",cat:"Côte d'Ivoire",ops:["Kente","Bogolan","Kita","Ndop"],ok:0,ex:"Le Kente est le tissu tissé à bandes colorées originaire du Ghana et très présent en Côte d'Ivoire. En Côte d'Ivoire, les tissus Baoulé et Sénoufo ont leurs propres motifs distinctifs."},
 {q:"Quelle ville est le principal port de Côte d'Ivoire ?",cat:"Côte d'Ivoire",ops:["San Pedro","Abidjan","Sassandra","Tabou"],ok:1,ex:"Le Port Autonome d'Abidjan est le premier port d'Afrique de l'Ouest francophone. Il traite plus de 25 millions de tonnes de marchandises par an."},
 {q:"Comment s'appelle le dieu suprême dans la religion Akan (Baoulé) de Côte d'Ivoire ?",cat:"Côte d'Ivoire",ops:["Onyame","Nyamien","Gou","Legba"],ok:1,ex:"Nyamien (ou Nyamien-Acoupé) est le dieu suprême dans la cosmologie Akan et Baoulé de Côte d'Ivoire. Il est omniscient, omnipotent et créateur de l'univers."},
-{q:"Quelle danse masquée traditionnelle du peuple Gouro est inscrite au patrimoine de l'UNESCO ?",cat:"Côte d'Ivoire",ops:["Goli","Zaouli","Gbékré","Côtin"],ok:1,ex:"Le Zaouli est une danse masquée acrobatique sacrée du peuple Gouro (et parfois Baoulé) de Côte d'Ivoire. Elle est inscrite au patrimoine culturel immatériel de l'UNESCO depuis 2017. Le masque Zaouli représente un idéal féminin de beauté. Source : UNESCO / patrimoine.culture.gouv.ci"},
+{q:"Quelle danse masquée du peuple Gouro est inscrite au patrimoine de l'UNESCO ?",cat:"Côte d'Ivoire",ops:["Goli","Zaouli","Gbékré","Côtin"],ok:1,ex:"Le Zaouli est une danse masquée acrobatique sacrée du peuple Gouro de Côte d'Ivoire, inscrite au patrimoine culturel immatériel de l'UNESCO depuis 2017. Le masque Zaouli représente un idéal féminin de beauté. Source : UNESCO."},
 {q:"Quelle est la signification des couleurs du drapeau ivoirien ?",cat:"Côte d'Ivoire",ops:["Orange = désert, Blanc = paix, Vert = forêt","Orange = soleil, Blanc = espoir, Vert = nature","Orange = lutte, Blanc = paix, Vert = croissance","Orange = terre, Blanc = pureté, Vert = forêt"],ok:0,ex:"Orange symbolise les savanes du nord, Blanc la paix et l'unité nationale, Vert les forêts du sud. Ces couleurs représentent l'intégralité géographique du pays."},
 {q:"Quel est le fleuve qui délimite la frontière entre la Côte d'Ivoire et le Ghana ?",cat:"Côte d'Ivoire",ops:["Bandama","Comoé","Sassandra","Bia"],ok:3,ex:"La rivière Bia (ou Bia) délimite une partie de la frontière entre la Côte d'Ivoire et le Ghana à l'est. Elle se jette dans la lagune Aby près de la côte."},
 {q:"Quel artiste ivoirien est surnommé 'Molare' ?",cat:"Côte d'Ivoire",ops:["Yodé et Siro","Douk Saga","Garba","Alpha Blondy"],ok:1,ex:"Douk Saga (Stéphane Doukouré Dagri, 1974-2006) est surnommé 'Molare'. Il est l'un des pionniers et fondateurs du coupé-décalé avec son tube 'Sagacité'."},
@@ -2362,36 +2358,35 @@ async function loadLeaderboard(){
     if(entries.length===0)lb.innerHTML='<div style="text-align:center;padding:30px;color:rgba(255,255,255,.3)">Aucun joueur encore 🎮</div>';
   }catch(e){lb.innerHTML=`<div style="text-align:center;padding:30px;color:#f87171;font-size:.82rem">Erreur: ${e.message}</div>`;}
 }
-// ── FILE D'ATTENTE OFFLINE — sync scores dès reconnexion ──
-function savePendingSync(){
-  const s=loadStats();
-  const p=loadProfile();
-  const name=(p&&p.pseudo)||myName||'Joueur';
-  if(!name)return;
-  try{localStorage.setItem('oq_pending_sync',JSON.stringify({name,best:s.best,played:s.played,correct:s.correct,ts:Date.now()}));}catch(e){}
+function _savePendingSync(){
+  try{
+    var s=loadStats();
+    var p=loadProfile();
+    var nm=(p&&p.pseudo)||myName||'Joueur';
+    if(!nm)return;
+    localStorage.setItem('oq_pending_sync',JSON.stringify({name:nm,best:s.best,played:s.played,correct:s.correct,ts:Date.now()}));
+  }catch(e){}
 }
-async function flushPendingSync(){
+async function _flushPendingSync(){
   if(!fbOK()||!navigator.onLine)return;
   try{
-    const raw=localStorage.getItem('oq_pending_sync');
+    var raw=localStorage.getItem('oq_pending_sync');
     if(!raw)return;
-    const d=JSON.parse(raw);
-    const p=loadProfile();
-    const name=(p&&p.pseudo)||myName||d.name||'Joueur';
-    await dbU('leaderboard/'+myId,{name,best:d.best,played:d.played,correct:d.correct,updated:Date.now()});
+    var d=JSON.parse(raw);
+    await dbU('leaderboard/'+myId,{name:d.name,best:d.best,played:d.played,correct:d.correct,updated:Date.now()});
     localStorage.removeItem('oq_pending_sync');
   }catch(e){}
 }
 async function saveLeaderboardEntry(){
-  const p=loadProfile();
-  const name=(p&&p.pseudo)||myName||'Joueur';
-  if(!name)return;
-  const s=loadStats();
-  // Toujours sauvegarder localement pour sync offline
-  savePendingSync();
-  if(!fbOK()||!navigator.onLine){return;}
+  var p=loadProfile();
+  var nm=(p&&p.pseudo)||myName||'Joueur';
+  if(!nm)return;
+  // Toujours sauvegarder localement d'abord
+  _savePendingSync();
+  if(!fbOK()||!navigator.onLine)return;
+  var s=loadStats();
   try{
-    await dbU('leaderboard/'+myId,{name,best:s.best,played:s.played,correct:s.correct,updated:Date.now()});
+    await dbU('leaderboard/'+myId,{name:nm,best:s.best,played:s.played,correct:s.correct,updated:Date.now()});
     localStorage.removeItem('oq_pending_sync');
   }catch(e){}
 }
@@ -2576,9 +2571,9 @@ async function createRoom(){
   myName=document.getElementById('inp-name').value.trim()||'Joueur';
   localStorage.setItem('oq_name',myName);
   if(!myName){showErr('lob','Entre ton pseudo !');return;}
-  // Lire maxPlayers depuis le pill actif au moment de créer la salle
-  var activePill=document.querySelector('#maxplayers-row .pill.on');
-  if(activePill)maxPlayers=parseInt(activePill.dataset.v)||maxPlayers;
+  // Lire maxPlayers depuis le pill actif au moment exact de la création
+  var _activePill=document.querySelector('#maxplayers-row .pill.on');
+  if(_activePill)maxPlayers=parseInt(_activePill.dataset.v)||maxPlayers;
   const code=Math.random().toString(36).slice(2,8).toUpperCase();
   roomCode=code;myRole='host';
   try{
@@ -4096,7 +4091,7 @@ function renderStoryScreen(){
       +'<div style="font-size:.63rem;color:rgba(255,255,255,.28);margin-top:5px;line-height:1.4;font-style:italic">'+ch.narrative+'</div>'
       +'<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">'
       +'<span style="font-size:.62rem;background:'+ch.color+'22;color:'+ch.color+';padding:2px 8px;border-radius:4px;font-weight:700">'+ch.num+' Q · '+ch.diff.toUpperCase()+'</span>'
-      +'<span style="font-size:.58rem;color:rgba(255,168,0,.8);background:rgba(255,168,0,.1);padding:2px 7px;border-radius:4px;font-weight:700">🎯 90% pour valider</span>'
+      +'<span style="font-size:.58rem;color:rgba(255,168,0,.85);background:rgba(255,168,0,.1);padding:2px 7px;border-radius:4px;font-weight:700">🎯 90% requis</span>'
       +'<span style="font-size:.58rem;color:rgba(255,255,255,.3);margin-left:4px">{SCORE_MIN}% requis</span>'
       +'<span style="font-size:.68rem;font-weight:700;color:'+(done?'var(--green)':isNext?'var(--gold)':'rgba(255,255,255,.3)')+'">'+progTxt+'</span>'
       +'</div>';
@@ -4311,16 +4306,9 @@ function v51Init(){
   updateProfileUI();
   updateHeaderProfile();
   startPresenceHeartbeat();
-  // Synchroniser les scores en attente dès le lancement si online
+  // Flush scores joués offline dès le lancement si online
   setTimeout(function(){
-    if(navigator.onLine){
-      try{flushPendingSync();}catch(e){}
-      // Écouter les DM globalement (notifications même hors communauté)
-      if(window.fbOK&&fbOK()){
-        try{listenDmInvites();}catch(e){}
-        try{listenDmConversationsGlobal();}catch(e){}
-      }
-    }
+    try{_flushPendingSync();}catch(e){}
   }, 3000);
   // Friends count
   var friends=loadFriends();
@@ -4511,6 +4499,8 @@ function updateSidebarAvatarDisplay(){
 var _commListeners = [];
 var _commTab = 'global';
 var _onlinePlayers = {};
+var _cachedDmConvs = [];
+var _cachedDmInvites = {};
 var _dmPartner = null;      // {id, name, avatar}
 var _dmConvKey = null;
 var _dmMediaData = null;
@@ -4538,8 +4528,6 @@ function openCommunity(){
   listenCommMessages();
   listenDmInvites();
   listenDmConversations();
-  // Démarrer aussi le listener global si pas encore actif
-  if(!_globalDmListener){listenDmConversationsGlobal();}
 }
 
 function leaveCommunity(){
@@ -4748,11 +4736,7 @@ function switchCommTab(tab){
   document.getElementById('tab-dm').classList.toggle('active', tab==='dm');
   document.getElementById('comm-panel-global').style.display = tab==='global'?'flex':'none';
   document.getElementById('comm-panel-dm').style.display = tab==='dm'?'flex':'none';
-  if(tab==='dm'){
-    renderDmList();
-    // Réinitialiser badge non-lu quand on ouvre l'onglet messages
-    resetDmTabBadge();
-  }
+  if(tab==='dm'){ renderDmList(); }
 }
 
 // ── JOUEURS EN LIGNE PANEL ────────────────────────────────────
@@ -4810,23 +4794,15 @@ function acceptSendDmInvite(){
   _dmConvKey = buildDmKey(myId, _dmPartner.id);
   var p = loadProfile()||{};
   var myName2 = p.pseudo||myName||'Joueur';
-  var myAv = p.avatar||'⚡';
-  // Envoyer invitation Firebase (pour que le destinataire la voit dans ses Messages)
-  var invite = {
-    fromId:myId, fromName:myName2, fromAvatar:myAv,
-    toId:_dmPartner.id, ts:Date.now(), status:'pending'
-  };
-  dbU(FB_INVITES+'/'+_dmPartner.id+'/'+myId, invite).catch(()=>{});
-  // Créer immédiatement le meta de conversation dans FB_DM
-  // → les deux joueurs voient la conversation dans leur onglet Messages
-  var metaData = {
-    participants:[myId, _dmPartner.id],
-    lastMsg:'📨 Invitation envoyée — en attente de réponse',
-    lastTs: Date.now(),
-    names:{[myId]:myName2, [_dmPartner.id]:_dmPartner.name||'Joueur'},
-    avatars:{[myId]:myAv, [_dmPartner.id]:_dmPartner.avatar||'⚡'}
-  };
-  dbU(FB_DM+'/'+_dmConvKey+'/meta', metaData).catch(()=>{});
+  var myAv2 = p.avatar||'⚡';
+  // Envoyer invitation Firebase
+  var invite = {fromId:myId, fromName:myName2, fromAvatar:myAv2, toId:_dmPartner.id, ts:Date.now(), status:'pending'};
+  dbU(FB_INVITES+'/'+_dmPartner.id+'/'+myId, invite).catch(function(){});
+  // Créer aussi le meta de conversation pour que l'expéditeur voit la conv dans ses Messages
+  var metaObj2 = {participants:[myId,_dmPartner.id], lastMsg:'📨 Invitation envoyée', lastTs:Date.now()};
+  metaObj2.names = {}; metaObj2.names[myId]=myName2; metaObj2.names[_dmPartner.id]=_dmPartner.name||'Joueur';
+  metaObj2.avatars = {}; metaObj2.avatars[myId]=myAv2; metaObj2.avatars[_dmPartner.id]=_dmPartner.avatar||'⚡';
+  dbU(FB_DM+'/'+_dmConvKey+'/meta', metaObj2).catch(function(){});
   showSF('💬 Invitation envoyée !','#bf5af2');
   openDmScreen(_dmPartner);
 }
@@ -4853,10 +4829,7 @@ function listenDmInvites(){
       }
     });
   });
-  // Stocker le listener pour pouvoir l'annuler
   _commListeners.push(fn);
-  // Stocker aussi globalement pour le démarrage hors communauté
-  if(!window._globalInviteListener) window._globalInviteListener = fn;
 }
 
 function showIncomingInviteNotif(inv){
@@ -4878,22 +4851,15 @@ function acceptDmInvite(){
   if(!_pendingInvite) return;
   var inv = _pendingInvite;
   _pendingInvite = null;
-  // Supprimer l'invitation de Firebase
-  dbS(FB_INVITES+'/'+myId+'/'+inv.fromId, null).catch(()=>{});
-  // Créer meta de conversation dans FB_DM (visible des deux côtés)
+  dbS(FB_INVITES+'/'+myId+'/'+inv.fromId, null).catch(function(){});
   var p = loadProfile()||{};
-  var convKey = buildDmKey(myId, inv.fromId);
-  var metaData = {
-    participants:[myId, inv.fromId],
-    lastMsg:'💬 Conversation démarrée',
-    lastTs: Date.now(),
-    names:{[myId]:p.pseudo||myName||'Joueur',[inv.fromId]:inv.fromName||'Joueur'},
-    avatars:{[myId]:p.avatar||'⚡',[inv.fromId]:inv.fromAvatar||'⚡'}
-  };
-  dbU(FB_DM+'/'+convKey+'/meta', metaData).catch(()=>{});
-  // Ouvrir DM
+  var convKey2 = buildDmKey(myId, inv.fromId);
+  var metaObj3 = {participants:[myId,inv.fromId], lastMsg:'💬 Conversation démarrée', lastTs:Date.now()};
+  metaObj3.names = {}; metaObj3.names[myId]=p.pseudo||myName||'Joueur'; metaObj3.names[inv.fromId]=inv.fromName||'Joueur';
+  metaObj3.avatars = {}; metaObj3.avatars[myId]=p.avatar||'⚡'; metaObj3.avatars[inv.fromId]=inv.fromAvatar||'⚡';
+  dbU(FB_DM+'/'+convKey2+'/meta', metaObj3).catch(function(){});
   _dmPartner = {id:inv.fromId, name:inv.fromName, avatar:inv.fromAvatar||'⚡'};
-  _dmConvKey = convKey;
+  _dmConvKey = convKey2;
   openDmScreen(_dmPartner);
   showSF('✅ Invitation acceptée !','var(--green)');
 }
@@ -4910,9 +4876,6 @@ function declineDmInvite(){
 function openDmScreen(partner){
   _dmPartner = partner;
   _dmConvKey = buildDmKey(myId, partner.id);
-  // Marquer cette conv comme lue
-  if(_dmConvKey){_globalDmUnread[_dmConvKey]=Date.now();}
-  hideDmNotif();
   // UI
   var screen = document.getElementById('dm-screen');
   var avEl = document.getElementById('dm-partner-av');
@@ -4946,6 +4909,7 @@ function closeDmScreen(){
 }
 
 var _dmMsgListener = null;
+var _dmLastMsgTs = {};
 function listenDmMessages(){
   if(_dmMsgListener){try{_dmMsgListener();}catch(e){}}
   if(!_dmConvKey) return;
@@ -4960,7 +4924,6 @@ function listenDmMessages(){
       container.appendChild(buildMsgEl(msg, myId));
     });
     if(wasAtBottom) container.scrollTop = container.scrollHeight;
-    // Reset unread
     _dmUnread[_dmConvKey] = 0;
   });
 }
@@ -5002,38 +4965,44 @@ function onDmFileSelect(evt){
 
 function removeDmMedia(){_dmMediaData=null;document.getElementById('dm-media-preview').style.display='none';}
 
-// ── LISTE CONVERSATIONS DM (invitations + messages) ───────────
-// Données en mémoire pour la liste fusionnée
-var _cachedConvs = [];      // conversations FB_DM
-var _cachedInvites = {};    // invitations FB_INVITES en attente
-
+// ── LISTE CONVERSATIONS DM (invitations + messages) ───────────────────
 function listenDmConversations(){
-  // 1) Écouter les conversations existantes (FB_DM)
+  var _prevConvTs = {};
   var fnConv = dbOn(FB_DM, function(snap){
-    _cachedConvs = [];
+    _cachedDmConvs = [];
     if(snap.exists()){
-      var convs = snap.val();
-      Object.keys(convs).forEach(function(key){
-        var c = convs[key];
+      var val = snap.val();
+      Object.keys(val).forEach(function(key){
+        var c = val[key];
         if(c.meta && c.meta.participants && c.meta.participants.includes(myId)){
-          _cachedConvs.push({key:key, meta:c.meta});
+          _cachedDmConvs.push({key:key, meta:c.meta});
+          // Notif si nouveau message d'un autre joueur
+          var lastTs = c.meta.lastTs||0;
+          var prevTs = _prevConvTs[key]||0;
+          var partnerId2 = (c.meta.participants||[]).find(function(id){return id!==myId;})||'';
+          var dmScreen = document.getElementById('dm-screen');
+          var dmOpen = dmScreen && dmScreen.classList.contains('open');
+          var sameConv = _dmConvKey===key;
+          if(lastTs > prevTs && prevTs > 0 && !(dmOpen && sameConv)){
+            var pName2 = (c.meta.names&&c.meta.names[partnerId2])||'Joueur';
+            var pAv2 = (c.meta.avatars&&c.meta.avatars[partnerId2])||'⚡';
+            _showDmFloatNotif({id:partnerId2,name:pName2,avatar:pAv2}, c.meta.lastMsg||'Nouveau message');
+          }
+          _prevConvTs[key] = lastTs;
         }
       });
-      _cachedConvs.sort(function(a,b){return (b.meta.lastTs||0)-(a.meta.lastTs||0);});
+      _cachedDmConvs.sort(function(a,b){return (b.meta.lastTs||0)-(a.meta.lastTs||0);});
     }
     renderDmList();
   });
   _commListeners.push(fnConv);
-
-  // 2) Écouter les invitations reçues (FB_INVITES) — les afficher DANS la liste
   var fnInv = dbOn(FB_INVITES+'/'+myId, function(snap){
-    _cachedInvites = {};
+    _cachedDmInvites = {};
     if(snap.exists()){
-      var invites = snap.val();
-      Object.keys(invites).forEach(function(fromId){
-        var inv = invites[fromId];
-        if(inv.status === 'pending'){
-          _cachedInvites[fromId] = inv;
+      var invs = snap.val();
+      Object.keys(invs).forEach(function(fromId){
+        if(invs[fromId].status === 'pending'){
+          _cachedDmInvites[fromId] = invs[fromId];
         }
       });
     }
@@ -5042,338 +5011,188 @@ function listenDmConversations(){
   _commListeners.push(fnInv);
 }
 
+function _dmFmtTime(ts){
+  if(!ts) return '';
+  var d = new Date(ts), now = new Date();
+  if(d.toDateString()===now.toDateString())
+    return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  var diff = Math.floor((now-d)/86400000);
+  if(diff===1) return 'Hier';
+  if(diff<7) return d.toLocaleDateString('fr-FR',{weekday:'short'});
+  return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
+}
+
 function renderDmList(){
   var list = document.getElementById('dm-list');
   if(!list) return;
-
-  // Fusionner invitations en attente + conversations existantes
   var items = [];
-
-  // Ajouter les invitations reçues en premier (elles n'ont pas encore de conv)
-  Object.keys(_cachedInvites).forEach(function(fromId){
-    var inv = _cachedInvites[fromId];
-    // Vérifier que cette invitation n'a pas déjà une conversation ouverte
+  Object.keys(_cachedDmInvites).forEach(function(fromId){
+    var inv = _cachedDmInvites[fromId];
     var convKey = buildDmKey(myId, fromId);
-    var hasConv = _cachedConvs.some(function(c){ return c.key === convKey; });
-    if(!hasConv){
-      items.push({type:'invite', inv:inv, ts:inv.ts||0});
-    }
+    var hasConv = _cachedDmConvs.some(function(c){ return c.key===convKey; });
+    if(!hasConv) items.push({type:'invite', inv:inv, ts:inv.ts||0});
   });
-
-  // Ajouter les conversations existantes
-  _cachedConvs.forEach(function(conv){
+  _cachedDmConvs.forEach(function(conv){
     items.push({type:'conv', conv:conv, ts:conv.meta.lastTs||0});
   });
-
-  // Trier par date décroissante
   items.sort(function(a,b){ return b.ts - a.ts; });
 
-  if(items.length === 0){
+  if(items.length===0){
     list.innerHTML = '<div style="text-align:center;padding:40px 0;color:rgba(255,255,255,.2);font-size:.8rem">'
       +'<div style="font-size:2.5rem;margin-bottom:10px">💬</div>'
       +'<div style="font-family:Bangers,cursive;font-size:1rem;letter-spacing:2px;margin-bottom:6px">AUCUN MESSAGE PRIVÉ</div>'
       +'<div style="font-size:.72rem;line-height:1.5">Appuie sur un joueur en ligne<br>pour lui envoyer une invitation !</div></div>';
     return;
   }
-
   list.innerHTML = '';
   items.forEach(function(item){
-    if(item.type === 'invite'){
-      // ── CARTE INVITATION EN ATTENTE ──
+    var el = document.createElement('div');
+    el.className = 'dm-conv-item';
+    if(item.type==='invite'){
       var inv = item.inv;
       var av = inv.fromAvatar||'⚡';
       var avHtml = av.startsWith('data:')
-        ?'<img src="'+av+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid rgba(191,90,242,.5)">'
-        :'<span style="font-size:1.6rem">'+av+'</span>';
-      var timeStr = inv.ts ? _formatDmTime(inv.ts) : '';
-      var el = document.createElement('div');
-      el.className = 'dm-conv-item';
+        ? '<img src="'+av+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid rgba(191,90,242,.5)">'
+        : '<span style="font-size:1.6rem">'+av+'</span>';
       el.style.cssText = 'border-left:3px solid #bf5af2;background:rgba(191,90,242,.07)';
-      el.innerHTML = '<div class="dm-conv-av" style="position:relative">'+avHtml
-        +'<div style="position:absolute;bottom:-2px;right:-2px;background:#bf5af2;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:.55rem">💬</div>'
-        +'</div>'
+      el.innerHTML = '<div class="dm-conv-av">'+avHtml+'</div>'
         +'<div class="dm-conv-info">'
           +'<div class="dm-conv-name">'+escapeCommHtml(inv.fromName||'Joueur')+'</div>'
           +'<div class="dm-conv-preview" style="color:#bf5af2;font-weight:600">📨 Invitation à chatter</div>'
         +'</div>'
-        +'<div class="dm-conv-meta">'
-          +'<div class="dm-conv-time">'+timeStr+'</div>'
-          +'<div style="display:flex;gap:4px;margin-top:4px">'
-            +'<button onclick="event.stopPropagation();_acceptInviteFromList(''+inv.fromId+'','+JSON.stringify(inv)+')" '
-              +'style="padding:3px 8px;background:var(--green);border:none;border-radius:6px;color:#fff;font-size:.65rem;font-weight:700;cursor:pointer">✅</button>'
-            +'<button onclick="event.stopPropagation();_declineInviteFromList(''+inv.fromId+'')" '
-              +'style="padding:3px 8px;background:rgba(255,59,48,.7);border:none;border-radius:6px;color:#fff;font-size:.65rem;font-weight:700;cursor:pointer">❌</button>'
+        +'<div class="dm-conv-meta" style="align-items:flex-end">'
+          +'<div class="dm-conv-time">'+_dmFmtTime(inv.ts)+'</div>'
+          +'<div style="display:flex;gap:4px;margin-top:5px">'
+            +'<button class="dm-acc-btn" style="padding:4px 9px;background:var(--green);border:none;border-radius:7px;color:#fff;font-size:.68rem;font-weight:700;cursor:pointer">✅ OUI</button>'
+            +'<button class="dm-dec-btn" style="padding:4px 9px;background:rgba(255,59,48,.8);border:none;border-radius:7px;color:#fff;font-size:.68rem;font-weight:700;cursor:pointer">❌ NON</button>'
           +'</div>'
         +'</div>';
-      list.appendChild(el);
-
+      var fromId2 = inv.fromId;
+      el.querySelector('.dm-acc-btn').addEventListener('click',function(e){
+        e.stopPropagation();
+        _acceptInvFromList(fromId2, inv);
+      });
+      el.querySelector('.dm-dec-btn').addEventListener('click',function(e){
+        e.stopPropagation();
+        dbS(FB_INVITES+'/'+myId+'/'+fromId2, null).catch(function(){});
+        delete _cachedDmInvites[fromId2];
+        renderDmList();
+        showSF('Invitation refusée','rgba(255,255,255,.4)');
+      });
     } else {
-      // ── CARTE CONVERSATION EXISTANTE ──
       var meta = item.conv.meta;
-      var partnerId = meta.participants.find(function(id){ return id !== myId; })||'';
-      var partnerName = (meta.names&&meta.names[partnerId])||'Joueur';
-      var partnerAv = (meta.avatars&&meta.avatars[partnerId])||'⚡';
+      var partnerId = (meta.participants||[]).find(function(id){ return id!==myId; })||'';
+      var pName = (meta.names&&meta.names[partnerId])||'Joueur';
+      var pAv = (meta.avatars&&meta.avatars[partnerId])||'⚡';
       var isOnline = !!_onlinePlayers[partnerId];
-      var av2 = partnerAv;
-      var avHtml2 = av2.startsWith('data:')
-        ?'<img src="'+av2+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover">'
-        :'<span style="font-size:1.6rem">'+av2+'</span>';
-      var timeStr2 = meta.lastTs ? _formatDmTime(meta.lastTs) : '';
-      // Vérifier si non-lu
-      var convKey2 = item.conv.key;
-      var lastKnown2 = _globalDmUnread[convKey2]||0;
-      var hasUnread2 = meta.lastTs && meta.lastTs > lastKnown2 && partnerId !== myId;
-      var el2 = document.createElement('div');
-      el2.className = 'dm-conv-item';
-      if(hasUnread2) el2.style.background = 'rgba(191,90,242,.06)';
-      el2.innerHTML = '<div class="dm-conv-av" style="position:relative">'+avHtml2
-        +(isOnline?'<div style="position:absolute;bottom:0;right:0;width:12px;height:12px;background:var(--green);border-radius:50%;border:2px solid #05050e"></div>':'')
+      var avHtml2 = pAv.startsWith('data:')
+        ? '<img src="'+pAv+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover">'
+        : '<span style="font-size:1.6rem">'+pAv+'</span>';
+      el.innerHTML = '<div class="dm-conv-av" style="position:relative">'+avHtml2
+        +(isOnline?'<div style="position:absolute;bottom:0;right:0;width:11px;height:11px;background:var(--green);border-radius:50%;border:2px solid #05050e"></div>':'')
         +'</div>'
         +'<div class="dm-conv-info">'
-          +'<div class="dm-conv-name">'+escapeCommHtml(partnerName)+(hasUnread2?'<span style="display:inline-block;width:8px;height:8px;background:#bf5af2;border-radius:50%;margin-left:6px;vertical-align:middle"></span>':'')+'</div>'
+          +'<div class="dm-conv-name">'+escapeCommHtml(pName)+'</div>'
           +'<div class="dm-conv-preview">'+(meta.lastMsg?escapeCommHtml(meta.lastMsg.substring(0,40)):'Commence à chatter !')+'</div>'
         +'</div>'
         +'<div class="dm-conv-meta">'
-          +'<div class="dm-conv-time">'+timeStr2+'</div>'
+          +'<div class="dm-conv-time">'+_dmFmtTime(meta.lastTs)+'</div>'
+          +(isOnline?'<div class="dm-online-dot"></div>':'')
         +'</div>';
-      el2.onclick = function(){
-        _dmPartner = {id:partnerId, name:partnerName, avatar:partnerAv};
+      el.onclick = (function(pid,pn,pa){ return function(){
+        _dmPartner={id:pid,name:pn,avatar:pa};
         openDmScreen(_dmPartner);
-      };
-      list.appendChild(el2);
+      }; })(partnerId, pName, pAv);
     }
+    list.appendChild(el);
   });
 }
 
-// Formater l'heure : aujourd'hui → heure, sinon → date courte
-function _formatDmTime(ts){
-  if(!ts) return '';
-  var d = new Date(ts);
-  var now = new Date();
-  var isToday = d.toDateString() === now.toDateString();
-  if(isToday) return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-  var diff = Math.floor((now - d) / 86400000);
-  if(diff === 1) return 'Hier';
-  if(diff < 7) return d.toLocaleDateString('fr-FR',{weekday:'short'});
-  return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
-}
-
-// Accepter une invitation depuis la liste Messages
-function _acceptInviteFromList(fromId, inv){
-  // Supprimer l'invitation de Firebase
+function _acceptInvFromList(fromId, inv){
   dbS(FB_INVITES+'/'+myId+'/'+fromId, null).catch(function(){});
-  // Créer la conv dans FB_DM avec un meta initial
   var p = loadProfile()||{};
   var convKey = buildDmKey(myId, fromId);
-  var metaData = {
-    participants:[myId, fromId],
-    lastMsg:'💬 Conversation démarrée',
-    lastTs: Date.now(),
-    names:{[myId]:p.pseudo||myName||'Joueur',[fromId]:inv.fromName||'Joueur'},
-    avatars:{[myId]:p.avatar||'⚡',[fromId]:inv.fromAvatar||'⚡'}
-  };
-  dbU(FB_DM+'/'+convKey+'/meta', metaData).catch(function(){});
-  // Ouvrir la conversation
+  var metaObj = {participants:[myId,fromId],lastMsg:'💬 Conversation démarrée',lastTs:Date.now()};
+  metaObj.names = {}; metaObj.names[myId]=p.pseudo||myName||'Joueur'; metaObj.names[fromId]=inv.fromName||'Joueur';
+  metaObj.avatars = {}; metaObj.avatars[myId]=p.avatar||'⚡'; metaObj.avatars[fromId]=inv.fromAvatar||'⚡';
+  dbU(FB_DM+'/'+convKey+'/meta', metaObj).catch(function(){});
   _dmPartner = {id:fromId, name:inv.fromName||'Joueur', avatar:inv.fromAvatar||'⚡'};
   _dmConvKey = convKey;
   openDmScreen(_dmPartner);
   showSF('✅ Invitation acceptée !','var(--green)');
 }
 
-// Refuser une invitation depuis la liste Messages
-function _declineInviteFromList(fromId){
-  dbS(FB_INVITES+'/'+myId+'/'+fromId, null).catch(function(){});
-  delete _cachedInvites[fromId];
-  renderDmList();
-  showSF('Invitation refusée','rgba(255,255,255,.4)');
-}
 
-// ══════════════════════════════════════════════════════════════
-// SYSTÈME DE NOTIFICATION DM STYLE WHATSAPP (global, hors communauté)
-// ══════════════════════════════════════════════════════════════
-var _globalDmListener = null;
-var _globalDmUnread = {};    // {convKey: lastTs connu}
-var _dmNotifQueue = [];      // File de notifications à afficher
-var _dmNotifShowing = false;
-
-// Son de notification style WhatsApp (double bip doux)
-function playDmNotifSound(){
+// ── NOTIFICATIONS DM STYLE WHATSAPP ─────────────────────────────
+function _playDmSound(){
   try{
-    if(!SFX.ready)return;
-    var AC=new (window.AudioContext||window.webkitAudioContext)();
-    // Premier bip
+    var AC=new(window.AudioContext||window.webkitAudioContext)();
     var o1=AC.createOscillator(),g1=AC.createGain();
     o1.connect(g1);g1.connect(AC.destination);
-    o1.type='sine';o1.frequency.setValueAtTime(880,AC.currentTime);
+    o1.type='sine';o1.frequency.value=880;
     g1.gain.setValueAtTime(0,AC.currentTime);
-    g1.gain.linearRampToValueAtTime(0.25,AC.currentTime+0.02);
+    g1.gain.linearRampToValueAtTime(0.22,AC.currentTime+0.02);
     g1.gain.exponentialRampToValueAtTime(0.001,AC.currentTime+0.18);
-    o1.start(AC.currentTime);o1.stop(AC.currentTime+0.18);
-    // Deuxième bip (légèrement après)
+    o1.start();o1.stop(AC.currentTime+0.18);
     var o2=AC.createOscillator(),g2=AC.createGain();
     o2.connect(g2);g2.connect(AC.destination);
-    o2.type='sine';o2.frequency.setValueAtTime(1046,AC.currentTime+0.22);
+    o2.type='sine';o2.frequency.value=1046;
     g2.gain.setValueAtTime(0,AC.currentTime+0.22);
-    g2.gain.linearRampToValueAtTime(0.2,AC.currentTime+0.24);
-    g2.gain.exponentialRampToValueAtTime(0.001,AC.currentTime+0.4);
-    o2.start(AC.currentTime+0.22);o2.stop(AC.currentTime+0.4);
+    g2.gain.linearRampToValueAtTime(0.18,AC.currentTime+0.24);
+    g2.gain.exponentialRampToValueAtTime(0.001,AC.currentTime+0.42);
+    o2.start(AC.currentTime+0.22);o2.stop(AC.currentTime+0.42);
   }catch(e){}
 }
 
-// Créer ou récupérer la barre de notification DM flottante
-function getDmNotifBar(){
-  var bar=document.getElementById('wapp-dm-notif');
+function _showDmFloatNotif(partner, msgText){
+  var bar=document.getElementById('_dmFloatBar');
   if(!bar){
     bar=document.createElement('div');
-    bar.id='wapp-dm-notif';
-    bar.style.cssText=[
-      'position:fixed','top:-90px','left:50%','transform:translateX(-50%)',
-      'z-index:99999','min-width:280px','max-width:92vw',
-      'background:linear-gradient(135deg,#1e1e2e,#12122a)',
-      'border:1.5px solid rgba(191,90,242,.5)',
-      'border-radius:16px','padding:10px 14px',
-      'box-shadow:0 8px 30px rgba(0,0,0,.6)',
-      'transition:top .35s cubic-bezier(.34,1.56,.64,1)',
-      'cursor:pointer','display:flex','align-items:center','gap:10px'
-    ].join(';');
-    bar.innerHTML=
-      '<div id="wapp-dm-av" style="font-size:1.6rem;flex-shrink:0">⚡</div>'
+    bar.id='_dmFloatBar';
+    bar.style.cssText='position:fixed;top:-80px;left:50%;transform:translateX(-50%);z-index:99999;'
+      +'min-width:270px;max-width:90vw;background:linear-gradient(135deg,#1e1e30,#12122a);'
+      +'border:1.5px solid rgba(191,90,242,.55);border-radius:16px;padding:10px 14px;'
+      +'box-shadow:0 8px 30px rgba(0,0,0,.65);transition:top .35s cubic-bezier(.34,1.56,.64,1);'
+      +'cursor:pointer;display:flex;align-items:center;gap:10px';
+    bar.innerHTML='<div id="_dmFBAv" style="font-size:1.6rem;flex-shrink:0">⚡</div>'
       +'<div style="flex:1;min-width:0">'
-        +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">'
-          +'<span style="font-family:Bangers,cursive;font-size:.75rem;letter-spacing:2px;color:#bf5af2">💬 MESSAGE PRIVÉ</span>'
-          +'<span id="wapp-dm-time" style="font-size:.62rem;color:rgba(255,255,255,.3);margin-left:auto"></span>'
-        +'</div>'
-        +'<div id="wapp-dm-name" style="font-weight:800;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>'
-        +'<div id="wapp-dm-text" style="font-size:.75rem;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px"></div>'
-      +'</div>'
-      +'<div id="wapp-dm-badge" style="background:var(--red);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0">1</div>';
+        +'<div style="font-family:Bangers,cursive;font-size:.72rem;letter-spacing:2px;color:#bf5af2;margin-bottom:1px">💬 MESSAGE PRIVÉ</div>'
+        +'<div id="_dmFBName" style="font-weight:800;font-size:.85rem"></div>'
+        +'<div id="_dmFBText" style="font-size:.74rem;color:rgba(255,255,255,.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px"></div>'
+      +'</div>';
     bar.onclick=function(){
-      hideDmNotif();
-      // Ouvrir la conversation si on connait le partenaire
-      if(bar._partner){
-        // Ouvrir la communauté + DM directement
-        var p=loadProfile();
-        if(!p){showSF('⚠️ Crée ton profil d\'abord !','var(--red)');return;}
-        if(!fbOK()||!navigator.onLine){showSF('📡 Internet requis','var(--red)');return;}
-        go('community');
-        switchCommTab('dm');
-        setTimeout(function(){
-          openDmScreen(bar._partner);
-        },300);
+      bar.style.top='-80px';
+      if(bar._p){
+        var prof=loadProfile();
+        if(!prof){return;}
+        if(!fbOK()||!navigator.onLine){return;}
+        go('community'); switchCommTab('dm');
+        setTimeout(function(){openDmScreen(bar._p);},300);
       }
     };
     document.body.appendChild(bar);
   }
-  return bar;
-}
-
-function showDmNotif(partner,msgText,unreadCount){
-  var bar=getDmNotifBar();
-  bar._partner=partner;
-  // Mettre à jour le contenu
+  bar._p=partner;
+  var avEl=document.getElementById('_dmFBAv');
   var av=partner.avatar||'⚡';
-  var avEl=document.getElementById('wapp-dm-av');
-  if(avEl)avEl.innerHTML=av.startsWith('data:')
-    ?'<img src="'+av+'" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid rgba(191,90,242,.4)">'
-    :'<span style="font-size:1.6rem">'+av+'</span>';
-  var nameEl=document.getElementById('wapp-dm-name');
-  if(nameEl)nameEl.textContent=partner.name||'Joueur';
-  var textEl=document.getElementById('wapp-dm-text');
-  if(textEl)textEl.textContent=msgText||'Nouveau message';
-  var timeEl=document.getElementById('wapp-dm-time');
-  if(timeEl)timeEl.textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-  var badgeEl=document.getElementById('wapp-dm-badge');
-  if(badgeEl){badgeEl.textContent=unreadCount>9?'9+':unreadCount;badgeEl.style.display=unreadCount>0?'flex':'none';}
-  // Animer l'entrée
+  if(avEl) avEl.innerHTML=av.startsWith('data:')
+    ?'<img src="'+av+'" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(191,90,242,.4)">'
+    :'<span style="font-size:1.5rem">'+av+'</span>';
+  var nEl=document.getElementById('_dmFBName'); if(nEl)nEl.textContent=partner.name||'Joueur';
+  var tEl=document.getElementById('_dmFBText'); if(tEl)tEl.textContent=msgText||'Nouveau message';
   bar.style.top='12px';
-  playDmNotifSound();
-  // Vibration mobile
+  _playDmSound();
   try{if(navigator.vibrate)navigator.vibrate([30,15,30]);}catch(e){}
-  // Mettre à jour badge onglet DM
-  updateDmTabBadge();
-  // Auto-dismiss après 5s
-  clearTimeout(bar._timer);
-  bar._timer=setTimeout(hideDmNotif,5000);
-}
-
-function hideDmNotif(){
-  var bar=document.getElementById('wapp-dm-notif');
-  if(bar){bar.style.top='-90px';}
-}
-
-var _globalDmUnreadTotal=0;
-function updateDmTabBadge(){
+  clearTimeout(bar._t);
+  bar._t=setTimeout(function(){bar.style.top='-80px';},5000);
+  // Badge onglet DM
   var badge=document.getElementById('dm-tab-notif');
   if(badge){
-    _globalDmUnreadTotal++;
-    badge.textContent=_globalDmUnreadTotal>9?'9+':_globalDmUnreadTotal;
-    badge.style.display=_globalDmUnreadTotal>0?'inline-flex':'none';
-  }
-  // Badge sur l'icône community en home
-  var homeBadge=document.getElementById('comm-dm-home-badge');
-  if(homeBadge){
-    homeBadge.textContent=_globalDmUnreadTotal>9?'9+':_globalDmUnreadTotal;
-    homeBadge.style.display=_globalDmUnreadTotal>0?'flex':'none';
+    var cur=parseInt(badge.textContent)||0;
+    badge.textContent=cur+1;
+    badge.style.display='inline-flex';
   }
 }
-
-function resetDmTabBadge(){
-  _globalDmUnreadTotal=0;
-  var badge=document.getElementById('dm-tab-notif');
-  if(badge){badge.textContent='0';badge.style.display='none';}
-}
-
-// Écouter les DM globalement (dès le lancement, même hors communauté)
-function listenDmConversationsGlobal(){
-  if(_globalDmListener){try{_globalDmListener();}catch(e){}}
-  if(!fbOK()||!myId)return;
-  _globalDmListener = dbOn(FB_DM, function(snap){
-    if(!snap.exists())return;
-    var convs=snap.val();
-    var now=Date.now();
-    Object.keys(convs).forEach(function(key){
-      var c=convs[key];
-      if(!c.meta||!c.meta.participants||!c.meta.participants.includes(myId))return;
-      var lastTs=c.meta.lastTs||0;
-      var lastKnown=_globalDmUnread[key]||0;
-      // Nouveau message depuis la dernière fois qu'on a vu cette conv ?
-      if(lastTs>lastKnown && lastTs>(now-86400000)){
-        // Trouver le partenaire
-        var partnerId=c.meta.participants.find(function(id){return id!==myId;})||'';
-        var partnerName=(c.meta.names&&c.meta.names[partnerId])||'Joueur';
-        var partnerAvatar=(c.meta.avatars&&c.meta.avatars[partnerId])||'⚡';
-        var lastMsg=c.meta.lastMsg||'Nouveau message';
-        // Ne pas notifier si la conv est actuellement ouverte
-        var dmScreen=document.getElementById('dm-screen');
-        var dmOpen=dmScreen&&dmScreen.classList.contains('open');
-        var samePartner=_dmPartner&&_dmPartner.id===partnerId;
-        if(!(dmOpen&&samePartner)){
-          showDmNotif({id:partnerId,name:partnerName,avatar:partnerAvatar},lastMsg,1);
-        }
-        _globalDmUnread[key]=lastTs;
-      }else if(lastKnown===0){
-        // Première fois qu'on voit cette conv — enregistrer sans notifier
-        _globalDmUnread[key]=lastTs;
-      }
-    });
-    // Mettre à jour la liste DM si l'onglet est ouvert
-    if(_commTab==='dm'){
-      // Mettre à jour le cache et re-rendre
-      _cachedConvs=[];
-      Object.keys(convs).forEach(function(key){
-        var c=convs[key];
-        if(c.meta&&c.meta.participants&&c.meta.participants.includes(myId)){
-          _cachedConvs.push({key:key,meta:c.meta});
-        }
-      });
-      _cachedConvs.sort(function(a,b){return (b.meta.lastTs||0)-(a.meta.lastTs||0);});
-      renderDmList();
-    }
-  });
-}
-
-// Réinitialiser le badge quand on ouvre l'onglet DM
-var _origSwitchCommTab=window.switchCommTab;
 
 // ── OUVRIR IMAGE EN PLEIN ÉCRAN ───────────────────────────────
 function openMediaFull(src){
@@ -5425,8 +5244,7 @@ window.addEventListener('DOMContentLoaded',function(){
 
 // ─── PARTAGE DE SALLE ────────────────────────────────────────
 function getRoomLink(){
-  // Utiliser toujours l'URL réelle de la page courante comme base
-  var base = (window.location.href.startsWith('http'))
+  var base = window.location.href.startsWith('http')
     ? window.location.href.split('?')[0].split('#')[0]
     : (GAME_LINK.startsWith('http') ? GAME_LINK : 'https://itachi225az.github.io/otaku-quiz');
   return base + '?room=' + roomCode;
