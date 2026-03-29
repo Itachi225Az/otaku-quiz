@@ -7,6 +7,84 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#05050e">
 <style>
+/* ══ NOTIFICATION CENTER ══════════════════════════════════ */
+.notif-bell-btn{
+  position:relative;background:rgba(255,255,255,.06);
+  border:1.5px solid rgba(255,255,255,.1);border-radius:12px;
+  padding:9px 12px;cursor:pointer;color:rgba(255,255,255,.7);
+  transition:all .2s;font-size:1.1rem;display:flex;align-items:center;
+}
+.notif-bell-btn:hover{background:rgba(255,255,255,.12);}
+.notif-bell-count{
+  position:absolute;top:-5px;right:-5px;
+  width:18px;height:18px;background:var(--red);
+  border-radius:50%;font-size:.6rem;font-weight:800;
+  display:none;align-items:center;justify-content:center;
+  color:#fff;border:2px solid var(--ink);
+}
+.notif-bell-count.show{display:flex;}
+
+.notif-panel{
+  position:fixed;top:0;right:0;width:min(320px,100vw);height:100vh;
+  background:linear-gradient(180deg,#0c0c1e,#07070f);
+  z-index:500;transform:translateX(100%);
+  transition:transform .35s cubic-bezier(.25,.46,.45,.94);
+  border-left:1px solid rgba(255,255,255,.08);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.notif-panel.open{transform:translateX(0);}
+.notif-panel-hdr{
+  padding:18px 16px;border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.notif-panel-title{font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:3px;color:var(--paper);}
+.notif-list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.notif-item{
+  display:flex;align-items:flex-start;gap:11px;
+  padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.05);
+  cursor:pointer;transition:background .2s;position:relative;
+}
+.notif-item:hover{background:rgba(255,255,255,.05);}
+.notif-item.unread{background:rgba(191,90,242,.06);}
+.notif-item.unread::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3px;background:#bf5af2;border-radius:0 3px 3px 0;
+}
+.notif-av{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  background:rgba(255,255,255,.08);display:flex;align-items:center;
+  justify-content:center;font-size:1.2rem;overflow:hidden;border:2px solid rgba(255,255,255,.1);
+}
+.notif-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.notif-body{flex:1;min-width:0;}
+.notif-text{font-size:.8rem;line-height:1.45;color:rgba(255,255,255,.85);}
+.notif-text strong{color:#fff;}
+.notif-time{font-size:.62rem;color:rgba(255,255,255,.3);margin-top:3px;}
+.notif-icon{font-size:1rem;flex-shrink:0;margin-top:2px;}
+.notif-actions{display:flex;gap:6px;margin-top:8px;}
+.notif-btn-accept{padding:6px 14px;background:linear-gradient(135deg,var(--green),#16a34a);border:none;border-radius:8px;color:#fff;font-family:'Bangers',cursive;font-size:.82rem;letter-spacing:1px;cursor:pointer;}
+.notif-btn-decline{padding:6px 12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:rgba(255,255,255,.5);font-family:'Bangers',cursive;font-size:.82rem;letter-spacing:1px;cursor:pointer;}
+.notif-empty{text-align:center;padding:50px 20px;color:rgba(255,255,255,.25);}
+.notif-clear-btn{padding:8px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.4);font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.notif-clear-btn:hover{background:rgba(255,255,255,.1);color:#fff;}
+
+/* ══ ALL PLAYERS (Découvrir joueurs) ══════════════════════ */
+.player-card{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);border-radius:14px;
+  margin-bottom:8px;transition:all .2s;
+}
+.player-card:hover{background:rgba(255,255,255,.08);border-color:rgba(191,90,242,.25);}
+.player-card-av{width:46px;height:46px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:1.4rem;overflow:hidden;border:2px solid rgba(255,255,255,.1);}
+.player-card-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.player-card-info{flex:1;min-width:0;}
+.player-card-name{font-weight:800;font-size:.92rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.player-card-sub{font-size:.68rem;color:rgba(255,255,255,.38);margin-top:2px;}
+.player-online-dot{width:9px;height:9px;border-radius:50%;background:var(--green);border:2px solid var(--ink);flex-shrink:0;}
+.invite-sent-badge{font-size:.65rem;font-weight:700;color:#bf5af2;background:rgba(191,90,242,.12);border:1px solid rgba(191,90,242,.25);border-radius:8px;padding:4px 10px;white-space:nowrap;}
+
 /* ── SHARE ROOM BUTTONS ── */
 .room-share-btns{display:flex;gap:8px;margin:8px 0 4px;justify-content:center;}
 .room-share-btn{flex:1;max-width:160px;padding:10px 8px;border:none;border-radius:12px;font-family:'Bangers',cursive;font-size:.9rem;letter-spacing:1.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;}
@@ -82,7 +160,7 @@
 .mcard.online-only.offline-disabled .offline-lock-icon{display:block;}
 .mcard.online-only.offline-disabled .online-badge{display:none;}
 </style>
-<title>Quiz Otaku 5.6.1 🎌</title>
+<title>Quiz Otaku 5.5 🎌</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <!-- Bootstrap 5.3 — CDN (online) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous" media="print" onload="this.media='all'">
@@ -1004,7 +1082,7 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 
   <div class="version-box">
     <div class="v-label">VERSION DU JEU</div>
-    <div class="v-num">5.6.1 🎌</div>
+    <div class="v-num">5.5 🎌</div>
     <div style="font-size:.65rem;color:rgba(255,255,255,.25);margin-top:3px">500+ questions · 8 modes · Multijoueur 2-20</div>
   </div>
 
@@ -1039,7 +1117,7 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 <div id="app">
 <header class="hdr">
   <div class="hdr-left">
-    <div class="hdr-badge" style="display:inline-flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="font-size:8px"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855-.143.268-.276.56-.395.872.705.157 1.472.257 2.282.287V1.077zM4.249 3.539c.142-.384.304-.744.481-1.078a6.7 6.7 0 0 1 .597-.933A7.01 7.01 0 0 0 3.051 3.05c.362.184.763.349 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9.124 9.124 0 0 1-1.565-.667A6.964 6.964 0 0 0 1.018 7.5h2.49zm1.4-2.741a12.344 12.344 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332zM8.5 5.09V7.5h2.99a12.342 12.342 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.612 13.612 0 0 1 7.5 10.91V8.5H4.51zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741H8.5zm-3.282 3.696c.12.312.252.604.395.872.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a6.696 6.696 0 0 1-.598-.933 8.853 8.853 0 0 1-.481-1.079 8.38 8.38 0 0 0-1.198.49 7.01 7.01 0 0 0 2.276 1.522zm-1.383-2.964A13.36 13.36 0 0 1 3.508 8.5h-2.49a6.963 6.963 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667zm6.728 2.964a7.009 7.009 0 0 0 2.275-1.521 8.376 8.376 0 0 0-1.197-.49 8.853 8.853 0 0 1-.481 1.078 6.688 6.688 0 0 1-.597.933zM8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855.143-.268.276-.56.395-.872A12.63 12.63 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.963 6.963 0 0 0 14.982 8.5h-2.49a13.36 13.36 0 0 1-.437 3.008zM14.982 7.5a6.963 6.963 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008h2.49zM11.27 2.461c.177.334.339.694.482 1.078a8.368 8.368 0 0 0 1.196-.49 7.01 7.01 0 0 0-2.275-1.52c.218.283.418.597.597.932zm-.488 1.343a7.765 7.765 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z"/></svg> V5.6.1</div>
+    <div class="hdr-badge" style="display:inline-flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="font-size:8px"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855-.143.268-.276.56-.395.872.705.157 1.472.257 2.282.287V1.077zM4.249 3.539c.142-.384.304-.744.481-1.078a6.7 6.7 0 0 1 .597-.933A7.01 7.01 0 0 0 3.051 3.05c.362.184.763.349 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9.124 9.124 0 0 1-1.565-.667A6.964 6.964 0 0 0 1.018 7.5h2.49zm1.4-2.741a12.344 12.344 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332zM8.5 5.09V7.5h2.99a12.342 12.342 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.612 13.612 0 0 1 7.5 10.91V8.5H4.51zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741H8.5zm-3.282 3.696c.12.312.252.604.395.872.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a6.696 6.696 0 0 1-.598-.933 8.853 8.853 0 0 1-.481-1.079 8.38 8.38 0 0 0-1.198.49 7.01 7.01 0 0 0 2.276 1.522zm-1.383-2.964A13.36 13.36 0 0 1 3.508 8.5h-2.49a6.963 6.963 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667zm6.728 2.964a7.009 7.009 0 0 0 2.275-1.521 8.376 8.376 0 0 0-1.197-.49 8.853 8.853 0 0 1-.481 1.078 6.688 6.688 0 0 1-.597.933zM8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855.143-.268.276-.56.395-.872A12.63 12.63 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.963 6.963 0 0 0 14.982 8.5h-2.49a13.36 13.36 0 0 1-.437 3.008zM14.982 7.5a6.963 6.963 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008h2.49zM11.27 2.461c.177.334.339.694.482 1.078a8.368 8.368 0 0 0 1.196-.49 7.01 7.01 0 0 0-2.275-1.52c.218.283.418.597.597.932zm-.488 1.343a7.765 7.765 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z"/></svg> V5.5</div>
     <div class="hdr-title">QUIZ<br>OTAKU</div>
     <div class="hdr-flags" style="display:flex;align-items:center;gap:6px;margin-top:4px">
       <span style="font-size:1rem">🇯🇵</span>
@@ -1055,13 +1133,11 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
         <div id="hdr-coins-row" style="display:flex;align-items:center;gap:3px;font-size:.65rem;color:var(--gold)"><span>🪙</span><span id="hdr-coins">0</span></div>
       </div>
     </div>
-    <button class="settings-btn" onclick="openNotifications()" style="position:relative;margin-right:2px" id="notif-bell-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
-      </svg>
-      <span id="notif-bell-badge" style="display:none;position:absolute;top:-3px;right:-3px;background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;font-size:.55rem;font-weight:800;align-items:center;justify-content:center;border:2px solid #05050e">0</span>
-    </button>
-    <button class="settings-btn" id="hdr-settings-btn" onclick="openSidebar()"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2v4.586l7 7L14.586 9l-7-7H3zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2z"/><circle cx="4.5" cy="4.5" r="1.5"/><path fill-rule="evenodd" d="M14.5 1.5l-4 4L14 8.5l4-4L14.5 1.5z"/></svg></button>
+    <button class="notif-bell-btn" id="notif-bell-btn" onclick="openNotifPanel()">
+    🔔
+    <span class="notif-bell-count" id="notif-bell-count">0</span>
+  </button>
+  <button class="settings-btn" id="hdr-settings-btn" onclick="openSidebar()"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2v4.586l7 7L14.586 9l-7-7H3zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2z"/><circle cx="4.5" cy="4.5" r="1.5"/><path fill-rule="evenodd" d="M14.5 1.5l-4 4L14 8.5l4-4L14.5 1.5z"/></svg></button>
     <span class="badge rounded-pill" id="fb-badge" style="background:rgba(255,214,10,.15);color:var(--gold);border:1.5px solid rgba(255,214,10,.3);font-size:.6rem;letter-spacing:1px"><span class="fb-dot"></span> <span id="fb-txt">Firebase...</span></span>
   </div>
 </header>
@@ -1092,26 +1168,6 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
       <span style="font-size:.65rem;color:rgba(255,255,255,.3);letter-spacing:1px">VOIR TOUT →</span>
     </div>
     <div id="top3-list"><div style="font-size:.72rem;color:rgba(255,255,255,.35)">Chargement...</div></div>
-  </div>
-
-  <!-- Raccourcis rapides Joueurs + Notifications -->
-  <div style="display:flex;gap:8px;margin:0 0 12px">
-    <div onclick="checkOnlineThenRun(openPlayers)" style="flex:1;background:linear-gradient(135deg,rgba(48,209,88,.12),rgba(10,132,255,.08));border:1.5px solid rgba(48,209,88,.25);border-radius:14px;padding:12px 10px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .25s;position:relative" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-      <div style="font-size:1.5rem">👥</div>
-      <div>
-        <div style="font-family:'Bangers',cursive;font-size:.9rem;letter-spacing:2px;color:var(--green)">JOUEURS</div>
-        <div style="font-size:.65rem;color:rgba(255,255,255,.4)">Tous les inscrits</div>
-      </div>
-      <div id="players-online-home" style="position:absolute;top:8px;right:8px;font-size:.55rem;font-weight:800;padding:2px 7px;border-radius:10px;background:rgba(48,209,88,.2);color:var(--green);border:1px solid rgba(48,209,88,.3)">• EN LIGNE</div>
-    </div>
-    <div onclick="openNotifications()" style="flex:1;background:linear-gradient(135deg,rgba(255,59,48,.12),rgba(245,168,0,.08));border:1.5px solid rgba(255,59,48,.25);border-radius:14px;padding:12px 10px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .25s;position:relative" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-      <div style="font-size:1.5rem">🔔</div>
-      <div>
-        <div style="font-family:'Bangers',cursive;font-size:.9rem;letter-spacing:2px;color:var(--red)">NOTIFS</div>
-        <div style="font-size:.65rem;color:rgba(255,255,255,.4)">Alertes &amp; invitations</div>
-      </div>
-      <div id="home-notif-badge" style="display:none;position:absolute;top:8px;right:8px;background:var(--red);color:#fff;border-radius:50%;width:18px;height:18px;font-size:.6rem;font-weight:800;align-items:center;justify-content:center;border:2px solid #05050e">0</div>
-    </div>
   </div>
 
   <div style="font-family:'Bangers',cursive;font-size:.78rem;letter-spacing:4px;color:rgba(255,255,255,.25);text-align:center;margin:16px 0 10px;display:flex;align-items:center;gap:10px;justify-content:center"><span style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1))"></span>CHOISIR UN MODE<span style="flex:1;height:1px;background:linear-gradient(270deg,transparent,rgba(255,255,255,.1))"></span></div>
@@ -1502,7 +1558,10 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
     </div>
     <input class="inp" id="friend-pseudo-inp" placeholder="Pseudo de l'ami..." maxlength="15" style="margin-bottom:8px">
     <input class="inp" id="friend-id-inp" placeholder="ID de l'ami (ex: u_abc12345)..." maxlength="20">
-    <button class="btn btn-blue btn-full" style="margin-top:10px" id="btn-add-friend" onclick="addFriend()">
+    <button class="btn btn-gold btn-full" onclick="checkOnlineThenRun(openAllPlayers)">
+      🌍 DÉCOUVRIR DES JOUEURS
+    </button>
+    <button class="btn btn-blue btn-full" style="margin-top:8px" id="btn-add-friend" onclick="addFriend()">
       <span id="add-friend-txt">👥 VÉRIFIER ET AJOUTER</span>
     </button>
     <div id="err-friends" class="errbox hidden"></div>
@@ -1794,6 +1853,51 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
   <div style="display:flex;gap:6px;flex-shrink:0">
     <button onclick="requestNotifPermission()" style="padding:8px 12px;background:linear-gradient(135deg,#bf5af2,#7c3aed);border:none;border-radius:10px;color:#fff;font-family:'Bangers',cursive;font-size:.8rem;letter-spacing:1px;cursor:pointer">OUI</button>
     <button onclick="dismissNotifBar()" style="padding:8px 10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.4);font-size:.8rem;cursor:pointer">✕</button>
+  </div>
+</div>
+
+
+<!-- ════ NOTIFICATION PANEL ════ -->
+<div id="notif-panel" class="notif-panel">
+  <div class="notif-panel-hdr">
+    <div class="notif-panel-title">🔔 NOTIFICATIONS</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="notif-clear-btn" onclick="clearAllNotifs()">Tout lire</button>
+      <button onclick="closeNotifPanel()" style="background:rgba(255,255,255,.07);border:none;border-radius:8px;padding:6px 10px;color:rgba(255,255,255,.5);cursor:pointer;font-size:.85rem">✕</button>
+    </div>
+  </div>
+  <div class="notif-list" id="notif-list">
+    <div class="notif-empty">
+      <div style="font-size:2.5rem;margin-bottom:8px">🔔</div>
+      <div style="font-family:'Bangers',cursive;font-size:.95rem;letter-spacing:2px;margin-bottom:4px">AUCUNE NOTIFICATION</div>
+      <div style="font-size:.72rem">Tes notifications apparaîtront ici</div>
+    </div>
+  </div>
+</div>
+<div id="notif-overlay" onclick="closeNotifPanel()" style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:499;display:none;backdrop-filter:blur(3px)"></div>
+
+<!-- ════ ALL PLAYERS SCREEN ════ -->
+<div id="s-players" class="screen hidden">
+  <button class="back-btn" onclick="go('friends')">← Retour</button>
+  <div style="font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:3px;margin-bottom:4px">🌍 DÉCOUVRIR DES JOUEURS</div>
+  <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-bottom:14px">Envoie une invitation à n'importe quel joueur enregistré</div>
+
+  <!-- Recherche -->
+  <div style="position:relative;margin-bottom:12px">
+    <input id="players-search" class="inp" placeholder="Rechercher un joueur..."
+      oninput="filterPlayers(this.value)" style="padding-left:38px">
+    <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.3);font-size:.9rem">🔍</span>
+  </div>
+
+  <!-- Filtres -->
+  <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+    <button class="pill on" onclick="setPlayersFilter('all',this)">Tous</button>
+    <button class="pill" onclick="setPlayersFilter('online',this)">● En ligne</button>
+    <button class="pill" onclick="setPlayersFilter('top',this)">🏆 Top scores</button>
+  </div>
+
+  <div id="players-list" style="display:flex;flex-direction:column;gap:0">
+    <div style="text-align:center;padding:40px;color:rgba(255,255,255,.3)">Chargement...</div>
   </div>
 </div>
 
@@ -2264,7 +2368,7 @@ function dbOn(p,cb){return window._fb.onValue(dbR(p),cb);}
 
 // Screens
 function go(name){
-  ['home','lobby','wait','loading','cd','game','results','leaderboard','profile','story','friends','weekly','badges','community','notif','players'].forEach(s=>{
+  ['home','lobby','wait','loading','cd','game','results','leaderboard','profile','story','friends','weekly','badges','community','players'].forEach(s=>{
     const el=document.getElementById('s-'+s);
     if(el)el.classList.add('hidden');
   });
@@ -2557,7 +2661,7 @@ function setupMaxPlayersPills(){
   document.querySelectorAll('#maxplayers-row .pill').forEach(b=>{
     b.addEventListener('click',()=>{
       document.querySelectorAll('#maxplayers-row .pill').forEach(x=>x.classList.remove('on'));
-      b.classList.add('on');maxPlayers=parseInt(b.dataset.v);
+      b.classList.add('on');maxPlayers=parseInt(b.dataset.v)||maxPlayers;console.log('[OQ] pill selected maxPlayers='+maxPlayers);
       renderSlots();
     });
   });
@@ -2571,10 +2675,8 @@ function renderSlots(){
   const players=roomData.players||{};
   const pList=Object.values(players);
   // Source de vérité = roomData.maxPlayers (Firebase), sinon variable locale
-  const _slots = (roomData.maxPlayers && roomData.maxPlayers > 0)
-    ? parseInt(roomData.maxPlayers)
-    : (maxPlayers > 0 ? maxPlayers : 2);
-  maxPlayers = _slots;
+  const _slots = roomData.maxPlayers || maxPlayers || 2;
+  maxPlayers = _slots; // resynchroniser la variable globale
   for(let i=0;i<_slots;i++){
     const p=pList[i];
     const div=document.createElement('div');
@@ -2602,28 +2704,26 @@ async function createRoom(){
   myName=document.getElementById('inp-name').value.trim()||'Joueur';
   localStorage.setItem('oq_name',myName);
   if(!myName){showErr('lob','Entre ton pseudo !');return;}
-  // Lire maxPlayers depuis le pill actif au moment exact de la création
-  // Lire le nombre de joueurs depuis le pill actif — source de vérité absolue
+  // Lire maxPlayers depuis le pill actif — FORCER valeur correcte
   var _activePill=document.querySelector('#maxplayers-row .pill.on');
-  var _chosenMax = _activePill ? (parseInt(_activePill.dataset.v)||2) : maxPlayers;
-  maxPlayers = _chosenMax; // synchroniser le global aussi
+  var _chosenMax = _activePill ? (parseInt(_activePill.dataset.v)||2) : 2;
+  maxPlayers = _chosenMax;
+  console.log('[OQ] createRoom maxPlayers='+maxPlayers);
   const code=Math.random().toString(36).slice(2,8).toUpperCase();
   roomCode=code;myRole='host';
   try{
     const initialPlayer={};
     var _myProf=loadProfile();var _myAv=_myProf?(_myProf.avatar||'⚡'):'⚡';
     initialPlayer[myId]={name:myName,avatar:_myAv,score:0,correct:0,wrong:0,answers:{},joinedAt:Date.now()};
-    // On écrit maxPlayers explicitement sous forme d'entier pour éviter tout problème Firebase
-    var _maxInt = parseInt(_chosenMax);
     await dbS('rooms/'+code,{
       players:initialPlayer,
       hostId:myId,
-      maxPlayers:_maxInt,
+      maxPlayers:maxPlayers,
       status:'waiting',
       questions:null,
       created:Date.now()
     });
-    roomData={players:initialPlayer,hostId:myId,maxPlayers:_maxInt,status:'waiting'};
+    roomData={players:initialPlayer,hostId:myId,maxPlayers,status:'waiting'};
     document.getElementById('room-code').textContent=code;
     document.getElementById('host-players-cfg').classList.remove('hidden');
     document.getElementById('host-cfg').classList.remove('hidden');
@@ -2664,7 +2764,7 @@ function listenRoom(){
     if(!snap.exists())return;
     const d=snap.val();roomData=d;
     // Utiliser maxPlayers de Firebase seulement s'il est valide (>0)
-    if(d.maxPlayers && parseInt(d.maxPlayers) > 0) maxPlayers = parseInt(d.maxPlayers);
+    if(d.maxPlayers && d.maxPlayers > 0) maxPlayers = d.maxPlayers;
     const players=d.players||{};
     const pCount=Object.keys(players).length;
     // update slots
@@ -4362,8 +4462,6 @@ function _hookScreenRenders(){
     else if(name==='story'){renderStoryScreen();}
     else if(name==='weekly'){closeSidebar();renderWeeklyScreen();}
     else if(name==='badges'){closeSidebar();renderBadgesScreen();}
-    else if(name==='notif'){renderNotifScreen();}
-    else if(name==='players'){renderPlayersScreen();}
   };
 }
 
@@ -5245,6 +5343,15 @@ function openMediaFull(src){
   document.body.appendChild(overlay);
 }
 
+// ── CLICK DELEGATION pour notifs + images + story nav
+document.addEventListener('click',function(e){
+  var acceptDm = e.target.closest('[data-notif-accept-dm]');
+  if(acceptDm){ acceptNotifDmInvite(acceptDm.dataset.notifAcceptDm); return; }
+  var acceptFriend = e.target.closest('[data-notif-accept-friend]');
+  if(acceptFriend){ acceptFriendInvite(acceptFriend.dataset.notifAcceptFriend); return; }
+  var decline = e.target.closest('[data-notif-decline]');
+  if(decline){ declineNotifDmInvite(decline.dataset.notifDecline); return; }
+});
 // ── CLICK DELEGATION pour images + story nav ─────────────────────
 document.addEventListener('click',function(e){
   var target=e.target.closest('[data-goto]');
@@ -5506,296 +5613,442 @@ function markPlayedNow(){
   localStorage.setItem('oq_last_play', Date.now().toString());
 }
 
-
 // ══════════════════════════════════════════════════════════════
-// SYSTÈME DE NOTIFICATIONS COMPLET (Facebook-style)
+//  NOTIFICATION CENTER — localStorage + Firebase DM invites
 // ══════════════════════════════════════════════════════════════
-var _notifData = [];   // [{id, type, title, body, ts, read, data}]
-var _notifFilter = 'all';
+var _notifs = [];        // [{id,type,text,subtext,avatar,ts,read,data}]
+var _notifListener = null;
 
-function _loadNotifs(){
-  try{ return JSON.parse(localStorage.getItem('oq_notifs'))||[]; }catch(e){ return []; }
+function loadNotifs(){
+  try{ _notifs = JSON.parse(localStorage.getItem('oq_notifs')||'[]'); }
+  catch(e){ _notifs = []; }
+  return _notifs;
 }
-function _saveNotifs(n){
-  try{ localStorage.setItem('oq_notifs', JSON.stringify(n.slice(-60))); }catch(e){}
+
+function saveNotifs(){
+  try{ localStorage.setItem('oq_notifs', JSON.stringify(_notifs.slice(-100))); }
+  catch(e){}
 }
-function _pushNotif(type, title, body, data){
-  var notifs = _loadNotifs();
-  var n = {id:'n_'+Date.now(), type:type, title:title, body:body, ts:Date.now(), read:false, data:data||{}};
-  notifs.unshift(n);
-  _saveNotifs(notifs);
-  _notifData = notifs;
-  _updateNotifBadge();
+
+function addNotif(type, text, subtext, avatar, data){
+  loadNotifs();
+  var n = {
+    id: 'n_'+Date.now()+'_'+Math.random().toString(36).slice(2,5),
+    type: type,  // 'dm_invite' | 'friend_invite' | 'daily' | 'new_player' | 'system'
+    text: text,
+    subtext: subtext||'',
+    avatar: avatar||'🔔',
+    ts: Date.now(),
+    read: false,
+    data: data||{}
+  };
+  _notifs.unshift(n);
+  saveNotifs();
+  updateNotifBadge();
+  renderNotifList();
+  // Vibration légère
+  try{if(navigator.vibrate)navigator.vibrate([30,10,30]);}catch(e){}
+  // Push notification native si permission accordée
+  if(typeof Notification !== 'undefined' && Notification.permission === 'granted'){
+    try{
+      new Notification('Quiz Otaku 🎌', {
+        body: text + (subtext ? ' — '+subtext : ''),
+        icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎌</text></svg>',
+        tag: type
+      });
+    }catch(e){}
+  }
   return n;
 }
-function _unreadCount(){
-  return _loadNotifs().filter(function(n){ return !n.read; }).length;
-}
-function _updateNotifBadge(){
-  var cnt = _unreadCount();
-  // Cloche header
-  var bell = document.getElementById('notif-bell-badge');
-  if(bell){ bell.textContent=cnt>9?'9+':cnt; bell.style.display=cnt>0?'flex':'none'; }
-  // Badge accueil
-  var hb = document.getElementById('home-notif-badge');
-  if(hb){ hb.textContent=cnt>9?'9+':cnt; hb.style.display=cnt>0?'flex':'none'; }
+
+function updateNotifBadge(){
+  loadNotifs();
+  var unread = _notifs.filter(function(n){return !n.read;}).length;
+  var badge = document.getElementById('notif-bell-count');
+  if(!badge) return;
+  if(unread > 0){
+    badge.textContent = unread > 9 ? '9+' : unread;
+    badge.classList.add('show');
+  } else {
+    badge.classList.remove('show');
+  }
 }
 
-function openNotifications(){
-  go('notif');
-  renderNotifScreen();
+function openNotifPanel(){
+  loadNotifs();
+  renderNotifList();
+  document.getElementById('notif-panel').classList.add('open');
+  document.getElementById('notif-overlay').style.display = 'block';
+  // Marquer comme lus après 1.5s
+  setTimeout(function(){
+    _notifs.forEach(function(n){n.read = true;});
+    saveNotifs();
+    updateNotifBadge();
+  }, 1500);
 }
-function renderNotifScreen(){
-  _notifData = _loadNotifs();
-  // Marquer tout comme lu
-  _notifData.forEach(function(n){ n.read=true; });
-  _saveNotifs(_notifData);
-  _updateNotifBadge();
 
+function closeNotifPanel(){
+  document.getElementById('notif-panel').classList.remove('open');
+  document.getElementById('notif-overlay').style.display = 'none';
+}
+
+function clearAllNotifs(){
+  _notifs = [];
+  saveNotifs();
+  updateNotifBadge();
+  renderNotifList();
+}
+
+function renderNotifList(){
   var list = document.getElementById('notif-list');
   if(!list) return;
-  var filtered = _notifFilter==='all' ? _notifData
-    : _notifData.filter(function(n){ return n.type===_notifFilter; });
-
-  if(filtered.length===0){
-    list.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,.25)">'
-      +'<div style="font-size:2.5rem;margin-bottom:10px">🔔</div>'
-      +'<div style="font-family:Bangers,cursive;font-size:1rem;letter-spacing:2px">AUCUNE NOTIFICATION</div></div>';
+  loadNotifs();
+  if(_notifs.length === 0){
+    list.innerHTML = '<div class="notif-empty"><div style="font-size:2.5rem;margin-bottom:8px">🔔</div>'
+      +'<div style="font-family:Bangers,cursive;font-size:.95rem;letter-spacing:2px;margin-bottom:4px">AUCUNE NOTIFICATION</div>'
+      +'<div style="font-size:.72rem">Tes notifications apparaîtront ici</div></div>';
     return;
   }
-  list.innerHTML='';
-  filtered.forEach(function(n){
-    var icon = n.type==='invite'?'⚔️':n.type==='msg'?'💬':n.type==='friend'?'👥':n.type==='game'?'🎮':'🔔';
-    var timeStr = _dmFmtTime(n.ts);
-    var el = document.createElement('div');
-    el.style.cssText = 'background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);'
-      +'border-radius:14px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:background .2s';
-    if(!n.read) el.style.background='rgba(191,90,242,.07)';
-    el.innerHTML = '<div style="font-size:1.8rem;flex-shrink:0;margin-top:2px">'+icon+'</div>'
-      +'<div style="flex:1;min-width:0">'
-        +'<div style="font-weight:800;font-size:.85rem;margin-bottom:2px">'+n.title+'</div>'
-        +'<div style="font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.4">'+n.body+'</div>'
-        +'<div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:4px">'+timeStr+'</div>'
-      +'</div>';
-    // Actions selon le type
-    if(n.type==='invite' && n.data && n.data.fromId){
-      var actDiv = document.createElement('div');
-      actDiv.style.cssText='display:flex;gap:6px;margin-top:8px';
-      actDiv.innerHTML='<button onclick="event.stopPropagation();_notifAcceptInvite(''+n.id+'','+JSON.stringify(n.data).replace(/"/g,"'")+')" style="flex:1;padding:7px;background:var(--green);border:none;border-radius:8px;color:#fff;font-family:Bangers,cursive;font-size:.82rem;letter-spacing:1px;cursor:pointer">✅ ACCEPTER</button>'
-        +'<button onclick="event.stopPropagation();_notifDeclineInvite(''+n.id+'',''+n.data.fromId+'')" style="flex:1;padding:7px;background:rgba(255,59,48,.7);border:none;border-radius:8px;color:#fff;font-family:Bangers,cursive;font-size:.82rem;letter-spacing:1px;cursor:pointer">❌ REFUSER</button>';
-      el.querySelector('div[style*="flex:1"]').appendChild(actDiv);
-    } else if(n.type==='msg' && n.data && n.data.partnerId){
-      el.onclick=function(){
-        if(!fbOK()||!navigator.onLine){showSF('📡 Internet requis','var(--red)');return;}
-        go('community'); switchCommTab('dm');
-        setTimeout(function(){ openDmScreen({id:n.data.partnerId,name:n.data.partnerName||'Joueur',avatar:n.data.partnerAvatar||'⚡'}); },300);
-      };
+  list.innerHTML = '';
+  _notifs.forEach(function(n){
+    var item = document.createElement('div');
+    item.className = 'notif-item' + (n.read ? '' : ' unread');
+    var av = n.avatar||'🔔';
+    var avHtml = (av && av.startsWith('data:'))
+      ? '<img src="'+av+'">'
+      : av;
+    var timeStr = formatNotifTime(n.ts);
+    var icon = {
+      'dm_invite':'💬','friend_invite':'🤝','daily':'🎯',
+      'new_player':'👤','system':'📢','dm_msg':'✉️'
+    }[n.type]||'🔔';
+
+    var actionsHtml = '';
+    if(n.type === 'dm_invite' && n.data && n.data.fromId){
+      actionsHtml = '<div class="notif-actions">'
+        +'<button class="notif-btn-accept" data-notif-accept-dm="'+n.id+'">✅ Accepter</button>'
+        +'<button class="notif-btn-decline" data-notif-decline="'+n.id+'">❌ Refuser</button>'
+        +'</div>';
+    } else if(n.type === 'friend_invite' && n.data && n.data.fromId){
+      actionsHtml = '<div class="notif-actions">'
+        +'<button class="notif-btn-accept" data-notif-accept-friend="'+n.id+'">✅ Accepter</button>'
+        +'<button class="notif-btn-decline" data-notif-decline="'+n.id+'">❌ Refuser</button>'
+        +'</div>';
     }
-    list.appendChild(el);
+
+    item.innerHTML = '<div class="notif-av">'+avHtml+'</div>'
+      +'<div class="notif-body">'
+        +'<div class="notif-text"><strong>'+escapeCommHtml(n.text)+'</strong>'
+        +(n.subtext?'<br><span style="font-weight:400;color:rgba(255,255,255,.6)">'+escapeCommHtml(n.subtext)+'</span>':'')
+        +'</div>'
+        +actionsHtml
+        +'<div class="notif-time">'+timeStr+'</div>'
+      +'</div>'
+      +'<div class="notif-icon">'+icon+'</div>';
+    list.appendChild(item);
   });
 }
-function filterNotifs(type, btn){
-  _notifFilter = type;
-  document.querySelectorAll('.notif-filter-btn').forEach(function(b){
-    b.style.background='rgba(255,255,255,.04)'; b.style.borderColor='rgba(255,255,255,.1)'; b.style.color='rgba(255,255,255,.5)';
-  });
-  btn.style.background='rgba(191,90,242,.15)'; btn.style.borderColor='rgba(191,90,242,.4)'; btn.style.color='#bf5af2';
-  renderNotifScreen();
-}
-function clearAllNotifs(){
-  if(!confirm('Effacer toutes les notifications ?')) return;
-  _saveNotifs([]); _notifData=[];
-  _updateNotifBadge();
-  renderNotifScreen();
-}
-function _notifAcceptInvite(notifId, data){
-  // Accepter l'invitation DM
-  dbS(FB_INVITES+'/'+myId+'/'+data.fromId, null).catch(function(){});
-  var p = loadProfile()||{};
-  var convKey = buildDmKey(myId, data.fromId);
-  var metaObj = {participants:[myId,data.fromId],lastMsg:'💬 Conversation démarrée',lastTs:Date.now()};
-  metaObj.names={}; metaObj.names[myId]=p.pseudo||myName||'Joueur'; metaObj.names[data.fromId]=data.fromName||'Joueur';
-  metaObj.avatars={}; metaObj.avatars[myId]=p.avatar||'⚡'; metaObj.avatars[data.fromId]=data.fromAvatar||'⚡';
-  dbU(FB_DM+'/'+convKey+'/meta', metaObj).catch(function(){});
-  // Marquer la notif comme traitée
-  var notifs = _loadNotifs();
-  var idx = notifs.findIndex(function(n){return n.id===notifId;});
-  if(idx>=0){ notifs[idx].read=true; notifs[idx].data._accepted=true; _saveNotifs(notifs); }
-  _dmPartner={id:data.fromId,name:data.fromName||'Joueur',avatar:data.fromAvatar||'⚡'};
-  _dmConvKey=convKey;
-  if(fbOK()&&navigator.onLine){ go('community'); switchCommTab('dm'); setTimeout(function(){openDmScreen(_dmPartner);},300); }
-  showSF('✅ Invitation acceptée !','var(--green)');
-  renderNotifScreen();
-}
-function _notifDeclineInvite(notifId, fromId){
-  dbS(FB_INVITES+'/'+myId+'/'+fromId, null).catch(function(){});
-  var notifs = _loadNotifs();
-  var idx = notifs.findIndex(function(n){return n.id===notifId;});
-  if(idx>=0){ notifs.splice(idx,1); _saveNotifs(notifs); }
-  showSF('Invitation refusée','rgba(255,255,255,.4)');
-  renderNotifScreen();
+
+function formatNotifTime(ts){
+  var diff = Date.now() - ts;
+  if(diff < 60000) return "À l\'instant";
+  if(diff < 3600000) return Math.floor(diff/60000)+'min';
+  if(diff < 86400000) return Math.floor(diff/3600000)+'h';
+  return new Date(ts).toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
 }
 
-// Brancher les invitations DM reçues sur le système de notifs
-var _origShowIncomingInviteNotif = window.showIncomingInviteNotif;
-window.showIncomingInviteNotif = function(inv){
-  // Appeler l'original (popup)
-  if(_origShowIncomingInviteNotif) _origShowIncomingInviteNotif(inv);
-  // Ajouter dans le système de notifs persistantes
-  _pushNotif('invite',
-    '💬 Invitation de ' + (inv.fromName||'Joueur'),
-    (inv.fromName||'Joueur') + ' veut chatter avec toi en privé !',
-    {fromId:inv.fromId, fromName:inv.fromName, fromAvatar:inv.fromAvatar}
-  );
-};
+function acceptNotifDmInvite(notifId){
+  var n = _notifs.find(function(x){return x.id===notifId;});
+  if(!n||!n.data) return;
+  _pendingInvite = {fromId:n.data.fromId,fromName:n.data.fromName,fromAvatar:n.data.fromAvatar};
+  acceptDmInvite();
+  // Supprimer notif
+  _notifs = _notifs.filter(function(x){return x.id!==notifId;});
+  saveNotifs();
+  renderNotifList();
+  closeNotifPanel();
+}
 
-// Brancher les nouveaux messages DM
-var _origShowDmFloatNotif = window._showDmFloatNotif;
-window._showDmFloatNotif = function(partner, msgText){
-  if(_origShowDmFloatNotif) _origShowDmFloatNotif(partner, msgText);
-  _pushNotif('msg',
-    '💬 Message de ' + (partner.name||'Joueur'),
-    msgText||'Nouveau message privé',
-    {partnerId:partner.id, partnerName:partner.name, partnerAvatar:partner.avatar}
+function declineNotifDmInvite(notifId){
+  _notifs = _notifs.filter(function(x){return x.id!==notifId;});
+  saveNotifs();
+  renderNotifList();
+}
+
+function acceptFriendInvite(notifId){
+  var n = _notifs.find(function(x){return x.id===notifId;});
+  if(!n||!n.data) return;
+  // Ajouter à la liste d'amis
+  var friends = loadFriends();
+  if(!friends.find(function(f){return f.id===n.data.fromId;})){
+    friends.push({id:n.data.fromId,pseudo:n.data.fromName,avatar:n.data.fromAvatar||'⚡',best:0,local:false});
+    saveFriends(friends);
+    renderFriendsList();
+    showSF('🤝 '+n.data.fromName+' ajouté !','var(--green)');
+  }
+  _notifs = _notifs.filter(function(x){return x.id!==notifId;});
+  saveNotifs();
+  renderNotifList();
+  closeNotifPanel();
+}
+
+// Intercepter les invitations DM → ajouter une notif
+var _origShowIncomingInviteNotif = null;
+if(typeof showIncomingInviteNotif !== 'undefined'){
+  _origShowIncomingInviteNotif = showIncomingInviteNotif;
+}
+// Override pour ajouter aussi dans le centre de notifs
+function showIncomingInviteNotif(inv){
+  // Notif native
+  var notif = document.getElementById('dm-incoming-notif');
+  var av = document.getElementById('notif-inv-av');
+  var nm = document.getElementById('notif-inv-name');
+  if(notif){
+    var icon = inv.fromAvatar||'⚡';
+    if(av) av.innerHTML = icon.startsWith('data:')
+      ? '<img src="'+icon+'" style="width:36px;height:36px;border-radius:50%;object-fit:cover">'
+      : icon;
+    if(nm) nm.textContent = inv.fromName||'Joueur';
+    notif.style.display = 'block';
+    try{if(navigator.vibrate)navigator.vibrate([40,20,40]);}catch(e){}
+  }
+  // Aussi dans le centre
+  addNotif('dm_invite',
+    inv.fromName+' veut chatter avec toi',
+    'Invitation de chat privé',
+    inv.fromAvatar||'⚡',
+    {fromId:inv.fromId,fromName:inv.fromName,fromAvatar:inv.fromAvatar}
   );
-};
+}
+
+// Notif pour nouveau joueur en ligne
+function notifyNewPlayer(name, avatar){
+  addNotif('new_player', name+' est maintenant en ligne', 'Viens le défier !', avatar||'👤', {});
+}
 
 // ══════════════════════════════════════════════════════════════
-// SYSTÈME JOUEURS (liste tous les inscrits)
+//  ALL PLAYERS — Découvrir et inviter tous les joueurs
 // ══════════════════════════════════════════════════════════════
 var _allPlayers = [];
 var _playersFilter = 'all';
+var _sentInvites = {};  // {playerId: true}
+var _allPlayersListener = null;
 
-function openPlayers(){
-  if(!fbOK()||!navigator.onLine){showSF('📡 Internet requis','var(--red)');return;}
-  go('players');
-  renderPlayersScreen();
-}
-
-async function renderPlayersScreen(){
-  var list = document.getElementById('players-list');
-  if(!list) return;
-  list.innerHTML='<div style="text-align:center;padding:30px;color:rgba(255,255,255,.3)">⏳ Chargement des joueurs...</div>';
-  try{
-    var snap = await dbG('leaderboard');
-    if(!snap.exists()){
-      list.innerHTML='<div style="text-align:center;padding:30px;color:rgba(255,255,255,.3)">Aucun joueur inscrit</div>';
-      return;
-    }
-    var val = snap.val();
-    _allPlayers = Object.keys(val).map(function(uid){
-      var d = val[uid];
-      return {id:uid, name:d.name||'Joueur', best:d.best||0, played:d.played||0, avatar:d.avatar||'⚡'};
-    }).filter(function(p){ return p.id !== myId; }) // ne pas s'afficher soi-même
-      .sort(function(a,b){ return b.best - a.best; });
-    // Récupérer les présences en ligne
-    try{
-      var snapP = await dbG('presence');
-      if(snapP.exists()){
-        var pres = snapP.val();
-        var now = Date.now();
-        _allPlayers.forEach(function(p){
-          var pr = pres[p.id];
-          p.online = !!(pr && pr.online && (now-(pr.lastSeen||0))<120000);
-        });
-      }
-    }catch(e){}
-    _renderPlayersList();
-  }catch(e){
-    list.innerHTML='<div style="text-align:center;padding:30px;color:rgba(255,59,48,.5)">❌ Erreur : '+e.message+'</div>';
-  }
-}
-
-function _renderPlayersList(){
-  var list = document.getElementById('players-list');
-  if(!list) return;
-  var searchVal = (document.getElementById('players-search')||{}).value||'';
-  var filtered = _allPlayers.filter(function(p){
-    var matchSearch = !searchVal || p.name.toLowerCase().includes(searchVal.toLowerCase());
-    var matchStatus = _playersFilter==='all' || (_playersFilter==='online' && p.online);
-    return matchSearch && matchStatus;
+function openAllPlayers(){
+  // Ajouter 'players' à la liste des screens
+  var allScreens = ['home','lobby','wait','loading','cd','game','results',
+    'leaderboard','profile','story','friends','weekly','badges','community','players'];
+  allScreens.forEach(function(s){
+    var el = document.getElementById('s-'+s);
+    if(el) el.classList.add('hidden');
   });
-  if(filtered.length===0){
-    list.innerHTML='<div style="text-align:center;padding:30px;color:rgba(255,255,255,.3)">Aucun joueur trouvé</div>';
+  var target = document.getElementById('s-players');
+  if(target) target.classList.remove('hidden');
+  loadAllPlayers();
+}
+
+function loadAllPlayers(){
+  var list = document.getElementById('players-list');
+  if(!list) return;
+  list.innerHTML = '<div style="text-align:center;padding:30px;color:rgba(255,255,255,.3)">Chargement...</div>';
+
+  if(!fbOK()){
+    list.innerHTML = '<div style="text-align:center;padding:30px;color:rgba(255,255,255,.3)">📡 Internet requis</div>';
     return;
   }
-  list.innerHTML='';
-  var myFriends = loadFriends().map(function(f){return f.id;});
-  filtered.forEach(function(p, idx){
+
+  // Écouter le leaderboard (contient tous les joueurs enregistrés)
+  if(_allPlayersListener){try{_allPlayersListener();}catch(e){}}
+  _allPlayersListener = dbOn('leaderboard', function(snap){
+    _allPlayers = [];
+    if(snap.exists()){
+      var val = snap.val();
+      Object.keys(val).forEach(function(uid){
+        if(uid === myId) return; // pas soi-même
+        var p = val[uid];
+        _allPlayers.push({
+          id: uid,
+          name: p.name||'Joueur',
+          avatar: p.avatar||'⚡',
+          best: p.best||0,
+          played: p.played||0,
+          online: !!(_onlinePlayers&&_onlinePlayers[uid])
+        });
+      });
+      // Trier : en ligne d'abord, puis par score
+      _allPlayers.sort(function(a,b){
+        if(a.online && !b.online) return -1;
+        if(!a.online && b.online) return 1;
+        return (b.best||0)-(a.best||0);
+      });
+    }
+    renderPlayersList(_allPlayers);
+  });
+}
+
+function renderPlayersList(players){
+  var list = document.getElementById('players-list');
+  if(!list) return;
+  if(!players||players.length===0){
+    list.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,.3)">'
+      +'<div style="font-size:2rem;margin-bottom:8px">👤</div>'
+      +'<div style="font-family:Bangers,cursive;font-size:.95rem;letter-spacing:2px">AUCUN JOUEUR TROUVÉ</div>'
+      +'</div>';
+    return;
+  }
+  list.innerHTML = '';
+  players.forEach(function(p){
     var av = p.avatar||'⚡';
     var avHtml = av.startsWith('data:')
-      ?'<img src="'+av+'" style="width:46px;height:46px;border-radius:50%;object-fit:cover">'
-      :'<span style="font-size:1.8rem">'+av+'</span>';
-    var isFriend = myFriends.includes(p.id);
-    var el = document.createElement('div');
-    el.style.cssText='background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px';
-    el.innerHTML='<div style="position:relative;flex-shrink:0">'+avHtml
-      +(p.online?'<div style="position:absolute;bottom:0;right:0;width:12px;height:12px;background:var(--green);border-radius:50%;border:2px solid #05050e"></div>':'')
-      +'</div>'
-      +'<div style="flex:1;min-width:0">'
-        +'<div style="font-weight:800;font-size:.88rem;display:flex;align-items:center;gap:6px">'
-          +escapeCommHtml(p.name)
-          +(p.online?'<span style="font-size:.55rem;padding:1px 6px;border-radius:8px;background:rgba(48,209,88,.2);color:var(--green);font-weight:700">EN LIGNE</span>':'')
+      ? '<img src="'+av+'" style="width:46px;height:46px;border-radius:50%;object-fit:cover">'
+      : '<span style="font-size:1.4rem">'+av+'</span>';
+    var isOnline = p.online;
+    var isFriend = loadFriends().find(function(f){return f.id===p.id;});
+    var sent = _sentInvites[p.id];
+
+    var card = document.createElement('div');
+    card.className = 'player-card';
+    card.innerHTML = '<div class="player-card-av">'+avHtml+'</div>'
+      +'<div class="player-card-info">'
+        +'<div class="player-card-name">'+escapeCommHtml(p.name)+'</div>'
+        +'<div class="player-card-sub">'
+          +(isOnline?'<span style="color:var(--green)">● En ligne</span> · ':'')
+          +'🏆 '+p.best+' pts · '+p.played+' parties'
         +'</div>'
-        +'<div style="font-size:.7rem;color:rgba(255,255,255,.4)">🏆 '+p.best+' pts · 🎮 '+p.played+' parties</div>'
-        +'<div style="font-size:.65rem;color:rgba(255,255,255,.25);font-family:monospace">'+p.id+'</div>'
-      +'</div>'
-      +'<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">'
-        +'<button class="pl-chat-btn" style="padding:6px 10px;background:rgba(191,90,242,.2);border:1px solid rgba(191,90,242,.3);border-radius:8px;color:#bf5af2;font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap">💬 Chatter</button>'
-        +(isFriend
-          ?'<button style="padding:5px 10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:rgba(255,255,255,.3);font-size:.7rem;cursor:default">✅ Ami</button>'
-          :'<button class="pl-add-btn" style="padding:6px 10px;background:rgba(48,209,88,.15);border:1px solid rgba(48,209,88,.3);border-radius:8px;color:var(--green);font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap">👥 Ajouter</button>'
-        )
       +'</div>';
-    // Bouton Chatter
-    el.querySelector('.pl-chat-btn').addEventListener('click', function(){
-      if(!fbOK()||!navigator.onLine){showSF('📡 Internet requis','var(--red)');return;}
-      // Envoyer invitation DM
-      var myProf = loadProfile()||{};
-      var inv2 = {fromId:myId, fromName:myProf.pseudo||myName||'Joueur', fromAvatar:myProf.avatar||'⚡', toId:p.id, ts:Date.now(), status:'pending'};
-      dbU(FB_INVITES+'/'+p.id+'/'+myId, inv2).catch(function(){});
-      var convKey2 = buildDmKey(myId, p.id);
-      var meta2 = {participants:[myId,p.id],lastMsg:'📨 Invitation envoyée',lastTs:Date.now()};
-      meta2.names={}; meta2.names[myId]=myProf.pseudo||myName||'Joueur'; meta2.names[p.id]=p.name;
-      meta2.avatars={}; meta2.avatars[myId]=myProf.avatar||'⚡'; meta2.avatars[p.id]=p.avatar||'⚡';
-      dbU(FB_DM+'/'+convKey2+'/meta', meta2).catch(function(){});
-      _dmPartner={id:p.id,name:p.name,avatar:p.avatar||'⚡'};
-      _dmConvKey=convKey2;
-      go('community'); switchCommTab('dm');
-      setTimeout(function(){openDmScreen(_dmPartner);},300);
-      showSF('💬 Invitation envoyée !','#bf5af2');
-    });
-    // Bouton Ajouter ami
-    var addBtn = el.querySelector('.pl-add-btn');
-    if(addBtn) addBtn.addEventListener('click', function(){
-      var friends2 = loadFriends();
-      if(!friends2.find(function(f){return f.id===p.id;})){
-        friends2.push({id:p.id, pseudo:p.name, best:p.best||0, played:p.played||0, online:p.online||false});
-        saveFriends(friends2);
-        addBtn.textContent='✅ Ami'; addBtn.style.background='rgba(255,255,255,.06)'; addBtn.style.color='rgba(255,255,255,.3)'; addBtn.disabled=true;
-        var bc = document.getElementById('sb-friends-count'); if(bc) bc.textContent=friends2.length;
-        showSF('👥 '+p.name+' ajouté !','var(--green)');
-        _pushNotif('friend','👥 Ami ajouté','Tu es maintenant ami avec '+p.name+' !',{playerId:p.id});
+
+    if(isOnline) {
+      var dot = document.createElement('div');
+      dot.className = 'player-online-dot';
+      card.appendChild(dot);
+    }
+
+    // Boutons d'action
+    var actions = document.createElement('div');
+    actions.style.cssText = 'display:flex;flex-direction:column;gap:5px;flex-shrink:0';
+
+    if(sent){
+      var sentBadge = document.createElement('div');
+      sentBadge.className = 'invite-sent-badge';
+      sentBadge.textContent = '✅ Envoyé';
+      actions.appendChild(sentBadge);
+    } else {
+      // Bouton ami
+      if(!isFriend){
+        var friendBtn = document.createElement('button');
+        friendBtn.style.cssText = 'padding:6px 10px;background:rgba(10,132,255,.15);border:1px solid rgba(10,132,255,.3);border-radius:8px;color:var(--blue);font-size:.65rem;font-weight:800;cursor:pointer;letter-spacing:.5px;white-space:nowrap';
+        friendBtn.textContent = '🤝 Ami';
+        (function(player, btn){
+          btn.onclick = function(){
+            sendFriendInviteToPlayer(player);
+            btn.textContent = '✅ Envoyé';
+            btn.disabled = true;
+            btn.style.opacity = '.5';
+          };
+        })(p, friendBtn);
+        actions.appendChild(friendBtn);
+      } else {
+        var friendBadge = document.createElement('div');
+        friendBadge.style.cssText = 'font-size:.62rem;color:var(--green);font-weight:800;padding:4px 8px;background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.25);border-radius:8px';
+        friendBadge.textContent = '✅ Ami';
+        actions.appendChild(friendBadge);
+      }
+
+      // Bouton DM si en ligne
+      if(isOnline){
+        var dmBtn = document.createElement('button');
+        dmBtn.style.cssText = 'padding:6px 10px;background:linear-gradient(135deg,rgba(191,90,242,.2),rgba(10,132,255,.15));border:1px solid rgba(191,90,242,.3);border-radius:8px;color:#bf5af2;font-size:.65rem;font-weight:800;cursor:pointer;letter-spacing:.5px;white-space:nowrap';
+        dmBtn.textContent = '💬 Chat';
+        (function(player){
+          dmBtn.onclick = function(){
+            showDmInviteModal(player.id, {name:player.name,avatar:player.avatar});
+          };
+        })(p);
+        actions.appendChild(dmBtn);
+      }
+    }
+
+    card.appendChild(actions);
+    list.appendChild(card);
+  });
+}
+
+function sendFriendInviteToPlayer(player){
+  if(!fbOK()) return;
+  var p = loadProfile()||{};
+  // Envoyer invitation via Firebase
+  var invite = {
+    type: 'friend',
+    fromId: myId,
+    fromName: p.pseudo||myName||'Joueur',
+    fromAvatar: p.avatar||'⚡',
+    ts: Date.now()
+  };
+  dbU('player_invites/'+player.id+'/'+myId, invite).catch(function(){});
+  _sentInvites[player.id] = true;
+  showSF('🤝 Invitation envoyée à '+player.name+'!','var(--blue)');
+}
+
+function filterPlayers(query){
+  if(!query || query.trim()===''){
+    renderPlayersList(applyPlayersFilter(_allPlayers));
+    return;
+  }
+  var q = query.toLowerCase();
+  var filtered = _allPlayers.filter(function(p){
+    return (p.name||'').toLowerCase().includes(q);
+  });
+  renderPlayersList(applyPlayersFilter(filtered));
+}
+
+function setPlayersFilter(filter, btn){
+  _playersFilter = filter;
+  document.querySelectorAll('#s-players .pill').forEach(function(b){b.classList.remove('on');});
+  if(btn) btn.classList.add('on');
+  renderPlayersList(applyPlayersFilter(_allPlayers));
+}
+
+function applyPlayersFilter(players){
+  if(_playersFilter==='online') return players.filter(function(p){return p.online;});
+  if(_playersFilter==='top') return [...players].sort(function(a,b){return (b.best||0)-(a.best||0);}).slice(0,20);
+  return players;
+}
+
+// Écouter les invitations reçues (DM + ami)
+function listenPlayerInvites(){
+  if(!fbOK()||!myId) return;
+  dbOn('player_invites/'+myId, function(snap){
+    if(!snap.exists()) return;
+    var invites = snap.val();
+    Object.keys(invites).forEach(function(fromId){
+      var inv = invites[fromId];
+      if(!inv) return;
+      // Vérifier si déjà traité (notif existante)
+      var exists = _notifs.find(function(n){
+        return n.data && n.data.fromId === fromId && n.ts >= (inv.ts||0)-5000;
+      });
+      if(!exists){
+        if(inv.type === 'friend'){
+          addNotif('friend_invite',
+            (inv.fromName||'Joueur')+' veut être ton ami !',
+            'Invitation d\'amitié',
+            inv.fromAvatar||'⚡',
+            {fromId:fromId,fromName:inv.fromName,fromAvatar:inv.fromAvatar}
+          );
+        }
       }
     });
-    list.appendChild(el);
   });
 }
 
-function filterPlayersList(val){
-  _renderPlayersList();
-}
-function filterPlayersByStatus(status, btn){
-  _playersFilter = status;
-  document.querySelectorAll('.players-tab-btn').forEach(function(b){
-    b.style.background='rgba(255,255,255,.04)'; b.style.borderColor='rgba(255,255,255,.1)'; b.style.color='rgba(255,255,255,.5)';
-  });
-  btn.style.background='rgba(191,90,242,.12)'; btn.style.borderColor='rgba(191,90,242,.35)'; btn.style.color='#bf5af2';
-  _renderPlayersList();
-}
+// Init badges et listeners au démarrage
+document.addEventListener('DOMContentLoaded',function(){
+  updateNotifBadge();
+  setTimeout(function(){
+    if(fbOK()&&navigator.onLine) listenPlayerInvites();
+  }, 3000);
+},false);
 
-// Init badges au chargement
-document.addEventListener('DOMContentLoaded', function(){
-  setTimeout(_updateNotifBadge, 1000);
-});
 </script>
+</body>
+</html>
