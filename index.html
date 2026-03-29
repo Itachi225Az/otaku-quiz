@@ -160,7 +160,7 @@
 .mcard.online-only.offline-disabled .offline-lock-icon{display:block;}
 .mcard.online-only.offline-disabled .online-badge{display:none;}
 </style>
-<title>Quiz Otaku 5.5 🎌</title>
+<title>Quiz Otaku 5.6.1 🎌</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <!-- Bootstrap 5.3 — CDN (online) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous" media="print" onload="this.media='all'">
@@ -1121,7 +1121,7 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
     <div class="hdr-title">QUIZ<br>OTAKU</div>
     <div class="hdr-flags" style="display:flex;align-items:center;gap:6px;margin-top:4px">
       <span style="font-size:1rem">🇯🇵</span>
-      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="font-size:.9rem;color:rgba(255,255,255,.4)"><path d="M7.5 3.75a.75.75 0 0 0-1.5 0v5.5a.75.75 0 0 0 1.5 0v-5.5zm0 9.5a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0zm2.25-9.5a.75.75 0 0 0-.75.75v2a.75.75 0 0 0 1.5 0v-2a.75.75 0 0 0-.75-.75zm-.75 5.25a.75.75 0 1 1 1.5 0 .75.75 0 0 1-1.5 0z"/><path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/><path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="font-size:.9rem;color:rgba(255,255,255,.4)"><path d="M7.5 3.75a.75.75 0 0 0-1.5 0v5.6.1a.75.75 0 0 0 1.5 0v-5.5zm0 9.5a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0zm2.25-9.5a.75.75 0 0 0-.75.75v2a.75.75 0 0 0 1.5 0v-2a.75.75 0 0 0-.75-.75zm-.75 5.25a.75.75 0 1 1 1.5 0 .75.75 0 0 1-1.5 0z"/><path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/><path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/></svg>
       <span style="font-size:1rem">🇨🇮</span>
     </div>
   </div>
@@ -1268,6 +1268,19 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
     <div class="sec">
       <h3><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"/></svg> CRÉER UNE SALLE</h3>
       <p style="font-size:.75rem;color:rgba(255,255,255,.38);margin-bottom:10px;line-height:1.5">Jusqu'à <strong style="color:var(--gold)">20 joueurs</strong> dans la même salle !</p>
+      <div style="font-size:.78rem;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:1px;margin-bottom:6px;">👥 NOMBRE DE JOUEURS</div>
+      <div class="pill-row" id="maxplayers-row-lobby" style="flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+        <button class="pill on" data-v="2">2</button>
+        <button class="pill" data-v="3">3</button>
+        <button class="pill" data-v="4">4</button>
+        <button class="pill" data-v="5">5</button>
+        <button class="pill" data-v="6">6</button>
+        <button class="pill" data-v="8">8</button>
+        <button class="pill" data-v="10">10</button>
+        <button class="pill" data-v="12">12</button>
+        <button class="pill" data-v="15">15</button>
+        <button class="pill" data-v="20">20 MAX</button>
+      </div>
       <button class="btn btn-red btn-full" onclick="createRoom()"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/></svg> CRÉER UNE SALLE</button>
     </div>
     <div class="sec">
@@ -1313,7 +1326,7 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
       <button class="pill" data-v="20">20 MAX</button>
     </div>
   </div>
-  <div class="slots" id="slots-grid"></div>
+  <div class="slots-multi" id="slots-grid"></div>
   <div id="host-cfg" class="hidden">
     <div class="sec-title">📚 THÈMES</div>
     <div class="cat-grid" id="cat-wait"></div>
@@ -1330,7 +1343,7 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
       <button class="pill" data-v="15">15</button>
     </div>
     <div id="err-wait" class="errbox hidden"></div>
-    <button class="btn btn-gold btn-full" id="btn-launch" disabled onclick="launchDuel()"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .491.408l1.5 8A.5.5 0 0 1 11.5 9H10v5.5a.5.5 0 0 1-.9.3l-5-6.5A.5.5 0 0 1 4.5 7.5H6.072l-1.532-7.14a.5.5 0 0 1-.02-.001z"/></svg> LANCER</button>
+    <button class="btn btn-gold btn-full" id="btn-launch" disabled onclick="launchDuel()"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .491.408l1.5 8A.5.5 0 0 1 11.5 9H10v5.6.1a.5.5 0 0 1-.9.3l-5-6.5A.5.5 0 0 1 4.5 7.5H6.072l-1.532-7.14a.5.5 0 0 1-.02-.001z"/></svg> LANCER</button>
     <p style="font-size:.62rem;color:rgba(255,255,255,.2);text-align:center;margin-top:5px">Attendre l'adversaire</p>
   </div>
   <div id="guest-cfg" class="hidden" style="text-align:center;padding:18px 0">
@@ -2658,10 +2671,33 @@ function startGame(){
 
 // ════ CREATE/JOIN ROOM (2-6 players) ════
 function setupMaxPlayersPills(){
+  // Gérer les pills du lobby (avant création de salle)
+  document.querySelectorAll('#maxplayers-row-lobby .pill').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('#maxplayers-row-lobby .pill').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      maxPlayers=parseInt(b.dataset.v)||maxPlayers;
+      // Synchroniser aussi le sélecteur de la salle d'attente
+      document.querySelectorAll('#maxplayers-row .pill').forEach(x=>{
+        x.classList.toggle('on', parseInt(x.dataset.v)===maxPlayers);
+      });
+    });
+  });
+  // Gérer les pills de la salle d'attente (après création, hôte peut changer)
   document.querySelectorAll('#maxplayers-row .pill').forEach(b=>{
     b.addEventListener('click',()=>{
       document.querySelectorAll('#maxplayers-row .pill').forEach(x=>x.classList.remove('on'));
-      b.classList.add('on');maxPlayers=parseInt(b.dataset.v)||maxPlayers;console.log('[OQ] pill selected maxPlayers='+maxPlayers);
+      b.classList.add('on');
+      maxPlayers=parseInt(b.dataset.v)||maxPlayers;
+      console.log('[OQ] pill selected maxPlayers='+maxPlayers);
+      // Synchroniser aussi le sélecteur lobby
+      document.querySelectorAll('#maxplayers-row-lobby .pill').forEach(x=>{
+        x.classList.toggle('on', parseInt(x.dataset.v)===maxPlayers);
+      });
+      // Mettre à jour Firebase immédiatement
+      if(roomCode && myRole==='host' && fbOK()){
+        dbU('rooms/'+roomCode,{maxPlayers:maxPlayers}).catch(function(){});
+      }
       renderSlots();
     });
   });
@@ -2673,10 +2709,21 @@ function renderSlots(){
   grid.className='slots-multi';
   grid.innerHTML='';
   const players=roomData.players||{};
-  const pList=Object.values(players);
-  // Source de vérité = roomData.maxPlayers (Firebase), sinon variable locale
-  const _slots = roomData.maxPlayers || maxPlayers || 2;
-  maxPlayers = _slots; // resynchroniser la variable globale
+  // Trier les joueurs : hôte en premier (hostId), puis par ordre d'arrivée
+  const hostId2 = roomData.hostId || '';
+  const pEntries = Object.entries(players).sort(([aId,a],[bId,b])=>{
+    if(aId===hostId2) return -1;
+    if(bId===hostId2) return 1;
+    return (a.joinedAt||0)-(b.joinedAt||0);
+  });
+  const pList = pEntries.map(([,p])=>p);
+  // Source de vérité :
+  // - Si hôte : maxPlayers local (ce qu'il a choisi)
+  // - Si guest : maxPlayers venant de Firebase (roomData)
+  if(myRole==='guest' && roomData.maxPlayers && roomData.maxPlayers > 0){
+    maxPlayers = roomData.maxPlayers;
+  }
+  const _slots = maxPlayers || roomData.maxPlayers || 2;
   for(let i=0;i<_slots;i++){
     const p=pList[i];
     const div=document.createElement('div');
@@ -2705,16 +2752,30 @@ async function createRoom(){
   localStorage.setItem('oq_name',myName);
   if(!myName){showErr('lob','Entre ton pseudo !');return;}
   // Lire maxPlayers depuis le pill actif — FORCER valeur correcte
-  var _activePill=document.querySelector('#maxplayers-row .pill.on');
-  var _chosenMax = _activePill ? (parseInt(_activePill.dataset.v)||2) : 2;
+  // Lire depuis le sélecteur du lobby (avant création) OU depuis s-wait (si changé après)
+  var _lobbyPill = document.querySelector('#maxplayers-row-lobby .pill.on');
+  var _waitPill  = document.querySelector('#maxplayers-row .pill.on');
+  var _chosenMax = 2;
+  if(_lobbyPill) _chosenMax = parseInt(_lobbyPill.dataset.v)||2;
+  else if(_waitPill) _chosenMax = parseInt(_waitPill.dataset.v)||2;
   maxPlayers = _chosenMax;
   console.log('[OQ] createRoom maxPlayers='+maxPlayers);
   const code=Math.random().toString(36).slice(2,8).toUpperCase();
   roomCode=code;myRole='host';
+  // Afficher la salle immédiatement SANS attendre Firebase (supprime le délai de 10s)
+  const initialPlayer={};
+  var _myProf=loadProfile();var _myAv=_myProf?(_myProf.avatar||'⚡'):'⚡';
+  initialPlayer[myId]={name:myName,avatar:_myAv,score:0,correct:0,wrong:0,answers:{},joinedAt:Date.now()};
+  roomData={players:initialPlayer,hostId:myId,maxPlayers:maxPlayers,status:'waiting'};
+  document.getElementById('room-code').textContent=code;
+  document.getElementById('host-players-cfg').classList.remove('hidden');
+  document.getElementById('host-cfg').classList.remove('hidden');
+  document.getElementById('guest-cfg').classList.add('hidden');
+  renderSlots();
+  listenRoom();
+  go('wait');
+  // Écriture Firebase en arrière-plan (non-bloquante)
   try{
-    const initialPlayer={};
-    var _myProf=loadProfile();var _myAv=_myProf?(_myProf.avatar||'⚡'):'⚡';
-    initialPlayer[myId]={name:myName,avatar:_myAv,score:0,correct:0,wrong:0,answers:{},joinedAt:Date.now()};
     await dbS('rooms/'+code,{
       players:initialPlayer,
       hostId:myId,
@@ -2723,14 +2784,8 @@ async function createRoom(){
       questions:null,
       created:Date.now()
     });
-    roomData={players:initialPlayer,hostId:myId,maxPlayers,status:'waiting'};
-    document.getElementById('room-code').textContent=code;
-    document.getElementById('host-players-cfg').classList.remove('hidden');
-    document.getElementById('host-cfg').classList.remove('hidden');
-    document.getElementById('guest-cfg').classList.add('hidden');
-    renderSlots();
-    listenRoom();go('wait');
-  }catch(e){showErr('lob','Erreur Firebase: '+e.message);}
+    console.log('[OQ] Room '+code+' créée sur Firebase maxPlayers='+maxPlayers);
+  }catch(e){showErr('wait','Erreur Firebase: '+e.message);}
 }
 
 async function joinRoom(){
@@ -2744,16 +2799,28 @@ async function joinRoom(){
     if(!snap.exists()){showErr('lob','Salle introuvable !');return;}
     const d=snap.val();
     if(d.status!=='waiting'){showErr('lob','Partie déjà en cours !');return;}
-    const pCount=Object.keys(d.players||{}).length;
-    const _maxP = (d.maxPlayers && d.maxPlayers > 0) ? d.maxPlayers : 2;
-    if(pCount>=_maxP){showErr('lob','Salle pleine !');return;}
-    roomCode=code;myRole='guest';if(d.maxPlayers&&d.maxPlayers>0)maxPlayers=d.maxPlayers;
+    // Relire depuis Firebase pour eviter la race condition (plusieurs joueurs qui rejoignent en meme temps)
+    const freshSnap=await dbG('rooms/'+code);
+    const freshD=freshSnap.exists()?freshSnap.val():d;
+    const pCount=Object.keys(freshD.players||{}).length;
+    const _maxP = (freshD.maxPlayers && freshD.maxPlayers > 0) ? freshD.maxPlayers : 2;
+    // Permettre la reconnexion si le joueur est deja dans la salle
+    const alreadyIn = freshD.players && freshD.players[myId];
+    if(!alreadyIn && pCount>=_maxP){showErr('lob','Salle pleine !');return;}
+    roomCode=code;myRole='guest';if(freshD.maxPlayers&&freshD.maxPlayers>0)maxPlayers=freshD.maxPlayers;
     var _myProf2=loadProfile();var _myAv2=_myProf2?(_myProf2.avatar||'⚡'):'⚡';
     await dbU('rooms/'+code,{['players/'+myId]:{name:myName,avatar:_myAv2,score:0,correct:0,wrong:0,answers:{},joinedAt:Date.now()}});
     document.getElementById('room-code').textContent=code;
     document.getElementById('host-players-cfg').classList.add('hidden');
     document.getElementById('host-cfg').classList.add('hidden');
     document.getElementById('guest-cfg').classList.remove('hidden');
+    // Synchroniser les pills maxplayers côté guest pour affichage cohérent
+    document.querySelectorAll('#maxplayers-row .pill').forEach(x=>{
+      x.classList.toggle('on', parseInt(x.dataset.v)===maxPlayers);
+    });
+    document.querySelectorAll('#maxplayers-row-lobby .pill').forEach(x=>{
+      x.classList.toggle('on', parseInt(x.dataset.v)===maxPlayers);
+    });
     listenRoom();go('wait');
   }catch(e){showErr('lob','Erreur: '+e.message);}
 }
@@ -2770,12 +2837,14 @@ function listenRoom(){
     // update slots
     renderSlots();
     // host: enable launch when enough players
+    // Mettre a jour le texte de joueurs connectes (visible pour tous)
+    const waitTxt=document.querySelector('#s-wait p');
+    const _mp=maxPlayers||roomData.maxPlayers||2;
+    if(waitTxt)waitTxt.textContent=`${pCount}/${_mp} joueur${pCount>1?'s':''} connecté${pCount>1?'s':''}`;
     if(myRole==='host'){
       const btnL=document.getElementById('btn-launch');
+      // Permettre le lancement si au moins 2 joueurs sont la (pas besoin d'attendre maxPlayers)
       if(btnL)btnL.disabled=(pCount<2||selCats.length===0);
-      const waitTxt=document.querySelector('#s-wait p');
-      const _mp=roomData.maxPlayers||maxPlayers||2;
-      if(waitTxt)waitTxt.textContent=`${pCount}/${_mp} joueur${pCount>1?'s':''} connecté${pCount>1?'s':''}`;
     }
     // game started
     if(d.status==='playing'&&questions.length===0&&myRole!=='host'&&d.questions){
@@ -3314,6 +3383,10 @@ function leaveRoom(){
 function restartAll(){
   questions=[];current=0;myScore=0;myCorrect=0;myWrong=0;currentStreak=0;bestStreak=0;allAnswered=false;
   roomData={};roomCode='';myRole='';maxPlayers=2;
+  // Réinitialiser les deux sélecteurs de joueurs
+  document.querySelectorAll('#maxplayers-row .pill, #maxplayers-row-lobby .pill').forEach(x=>{
+    x.classList.toggle('on', parseInt(x.dataset.v)===2);
+  });
   const rs=document.getElementById('r-solo');const rd=document.getElementById('r-duel');
   if(rs)rs.classList.add('hidden');if(rd)rd.classList.add('hidden');
   if(roomListener){roomListener();roomListener=null;}
@@ -3667,7 +3740,7 @@ function generateScoreCard(){
     ctx.fillText(rankData.rank.icon+' '+rankData.rank.name,400,358);
     // Footer
     ctx.font='18px Arial';ctx.fillStyle='rgba(255,255,255,0.25)';
-    ctx.fillText('by Lamelo225 🇨🇮  ·  Quiz Otaku v5.5',400,440);
+    ctx.fillText('by Lamelo225 🇨🇮  ·  Quiz Otaku v5.6.1',400,440);
 
     // Convertir en base64 et afficher dans un modal (compatible WebView Android)
     var dataURL=canvas.toDataURL('image/png');
@@ -4516,7 +4589,7 @@ function sendSuggestion(){
   var msg='Yo Lamelo 👋\n'
     +'Voici quelques suggestions que tu pourrais apporter au jeu si possible :\n\n'
     +val+'\n\n'
-    +'— '+pseudo+' (Quiz Otaku v5.5)';
+    +'— '+pseudo+' (Quiz Otaku v5.6.1)';
   window.open('https://wa.me/2250701726342?text='+encodeURIComponent(msg),'_blank');
   txt.value='';
   closeSidebar();
