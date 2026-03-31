@@ -7,6 +7,78 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#05050e">
 <style>
+
+/* ══ MODE COMPÉTITION / TOURNOI ════════════════════════════ */
+
+/* ── Bracket ─────────────────────────────────────────────── */
+.bracket-wrap{overflow-x:auto;padding:8px 0 12px;-webkit-overflow-scrolling:touch;}
+.bracket{display:flex;gap:20px;align-items:flex-start;min-width:max-content;padding:4px;}
+.bracket-round{display:flex;flex-direction:column;gap:10px;min-width:130px;}
+.bracket-round-title{font-family:'Bangers',cursive;font-size:.7rem;letter-spacing:2px;
+  color:rgba(255,255,255,.3);text-align:center;margin-bottom:6px;text-transform:uppercase;}
+.bracket-match{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.08);
+  border-radius:10px;overflow:hidden;transition:border-color .2s;}
+.bracket-match.active{border-color:var(--gold);box-shadow:0 0 14px rgba(255,214,10,.15);}
+.bracket-match.done{border-color:rgba(48,209,88,.3);}
+.bracket-player{display:flex;align-items:center;gap:7px;padding:7px 10px;font-size:.75rem;font-weight:700;}
+.bracket-player:first-child{border-bottom:1px solid rgba(255,255,255,.05);}
+.bracket-player.winner{background:rgba(48,209,88,.1);color:#30d158;}
+.bracket-player.loser{opacity:.4;}
+.bracket-player.bye{opacity:.3;font-style:italic;}
+.bracket-av{font-size:.9rem;flex-shrink:0;}
+.bracket-score{margin-left:auto;font-family:'Bangers',cursive;font-size:.95rem;color:var(--gold);}
+.bracket-connector{width:20px;display:flex;align-items:center;justify-content:center;
+  align-self:stretch;opacity:.2;}
+
+/* ── Lobby tournoi ────────────────────────────────────────── */
+.tourn-slot{display:flex;align-items:center;gap:10px;padding:9px 12px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:11px;margin-bottom:6px;transition:all .25s;}
+.tourn-slot.filled{border-color:rgba(255,214,10,.25);background:rgba(255,214,10,.04);}
+.tourn-slot.host-s{border-color:rgba(255,59,48,.3);}
+.tourn-slot-av{font-size:1.2rem;width:32px;text-align:center;}
+.tourn-slot-name{font-weight:700;font-size:.84rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tourn-slot-badge{font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:8px;letter-spacing:1px;}
+.tourn-waiting-slot{display:flex;align-items:center;gap:10px;padding:9px 12px;
+  background:rgba(255,255,255,.02);border:1px dashed rgba(255,255,255,.08);
+  border-radius:11px;margin-bottom:6px;color:rgba(255,255,255,.25);font-size:.78rem;}
+
+/* ── Match en cours ───────────────────────────────────────── */
+.tourn-hud{background:linear-gradient(135deg,rgba(255,100,0,.1),rgba(255,200,0,.08));
+  border:1.5px solid rgba(255,150,0,.3);border-radius:14px;padding:12px 14px;
+  margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.tourn-hud-info{font-family:'Bangers',cursive;font-size:.85rem;letter-spacing:2px;color:var(--gold);}
+.tourn-hud-players{display:flex;align-items:center;gap:8px;font-size:.75rem;font-weight:700;}
+.tourn-vs{font-family:'Bangers',cursive;font-size:1rem;color:var(--red);}
+
+/* ── AFK Warning ─────────────────────────────────────────── */
+.afk-warning{position:fixed;top:60px;left:50%;transform:translateX(-50%);
+  background:rgba(255,59,48,.9);color:#fff;border-radius:12px;padding:10px 18px;
+  font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;
+  z-index:800;display:none;animation:slideDown .3s ease;text-align:center;
+  box-shadow:0 4px 20px rgba(255,59,48,.4);}
+
+/* ── Notification tournoi ─────────────────────────────────── */
+.tourn-notif{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:linear-gradient(135deg,#1a1a2e,#0f0f1e);
+  border:2px solid var(--gold);border-radius:20px;padding:24px 28px;
+  text-align:center;z-index:900;display:none;
+  box-shadow:0 0 40px rgba(255,214,10,.2);min-width:240px;
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1);}
+.tourn-notif-title{font-family:'Bangers',cursive;font-size:2rem;letter-spacing:3px;}
+.tourn-notif-sub{font-size:.82rem;color:rgba(255,255,255,.6);margin-top:6px;line-height:1.5;}
+
+/* ── Podium final ─────────────────────────────────────────── */
+.podium-wrap{display:flex;align-items:flex-end;justify-content:center;gap:10px;margin:16px 0;}
+.podium-col{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.podium-av{font-size:1.8rem;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.15);}
+.podium-name{font-weight:800;font-size:.75rem;max-width:70px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.podium-score{font-family:'Bangers',cursive;font-size:.9rem;color:var(--gold);}
+.podium-block{border-radius:8px 8px 0 0;width:70px;display:flex;align-items:center;justify-content:center;}
+.podium-1{height:65px;background:linear-gradient(180deg,rgba(255,214,10,.25),rgba(255,214,10,.1));border:1px solid rgba(255,214,10,.3);}
+.podium-2{height:48px;background:linear-gradient(180deg,rgba(192,192,192,.2),rgba(192,192,192,.08));border:1px solid rgba(192,192,192,.25);}
+.podium-3{height:34px;background:linear-gradient(180deg,rgba(205,127,50,.2),rgba(205,127,50,.08));border:1px solid rgba(205,127,50,.25);}
+
 /* ══ NOTIFICATION CENTER ══════════════════════════════════ */
 .notif-bell-btn{
   position:relative;background:rgba(255,255,255,.06);
@@ -1082,8 +1154,8 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 
   <div class="version-box">
     <div class="v-label">VERSION DU JEU</div>
-    <div class="v-num">5.5 🎌</div>
-    <div style="font-size:.65rem;color:rgba(255,255,255,.25);margin-top:3px">500+ questions · 8 modes · Multijoueur 2-20</div>
+    <div class="v-num">5.6.2 🎌</div>
+    <div style="font-size:.65rem;color:rgba(255,255,255,.25);margin-top:3px">500+ questions · 9 modes · Multijoueur 2-20</div>
   </div>
 
   <div class="sidebar-section">
@@ -1117,7 +1189,7 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 <div id="app">
 <header class="hdr">
   <div class="hdr-left">
-    <div class="hdr-badge" style="display:inline-flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="font-size:8px"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855-.143.268-.276.56-.395.872.705.157 1.472.257 2.282.287V1.077zM4.249 3.539c.142-.384.304-.744.481-1.078a6.7 6.7 0 0 1 .597-.933A7.01 7.01 0 0 0 3.051 3.05c.362.184.763.349 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9.124 9.124 0 0 1-1.565-.667A6.964 6.964 0 0 0 1.018 7.5h2.49zm1.4-2.741a12.344 12.344 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332zM8.5 5.09V7.5h2.99a12.342 12.342 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.612 13.612 0 0 1 7.5 10.91V8.5H4.51zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741H8.5zm-3.282 3.696c.12.312.252.604.395.872.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a6.696 6.696 0 0 1-.598-.933 8.853 8.853 0 0 1-.481-1.079 8.38 8.38 0 0 0-1.198.49 7.01 7.01 0 0 0 2.276 1.522zm-1.383-2.964A13.36 13.36 0 0 1 3.508 8.5h-2.49a6.963 6.963 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667zm6.728 2.964a7.009 7.009 0 0 0 2.275-1.521 8.376 8.376 0 0 0-1.197-.49 8.853 8.853 0 0 1-.481 1.078 6.688 6.688 0 0 1-.597.933zM8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855.143-.268.276-.56.395-.872A12.63 12.63 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.963 6.963 0 0 0 14.982 8.5h-2.49a13.36 13.36 0 0 1-.437 3.008zM14.982 7.5a6.963 6.963 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008h2.49zM11.27 2.461c.177.334.339.694.482 1.078a8.368 8.368 0 0 0 1.196-.49 7.01 7.01 0 0 0-2.275-1.52c.218.283.418.597.597.932zm-.488 1.343a7.765 7.765 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z"/></svg> V5.5</div>
+    <div class="hdr-badge" style="display:inline-flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="font-size:8px"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855-.143.268-.276.56-.395.872.705.157 1.472.257 2.282.287V1.077zM4.249 3.539c.142-.384.304-.744.481-1.078a6.7 6.7 0 0 1 .597-.933A7.01 7.01 0 0 0 3.051 3.05c.362.184.763.349 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9.124 9.124 0 0 1-1.565-.667A6.964 6.964 0 0 0 1.018 7.5h2.49zm1.4-2.741a12.344 12.344 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332zM8.5 5.09V7.5h2.99a12.342 12.342 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.612 13.612 0 0 1 7.5 10.91V8.5H4.51zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741H8.5zm-3.282 3.696c.12.312.252.604.395.872.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a6.696 6.696 0 0 1-.598-.933 8.853 8.853 0 0 1-.481-1.079 8.38 8.38 0 0 0-1.198.49 7.01 7.01 0 0 0 2.276 1.522zm-1.383-2.964A13.36 13.36 0 0 1 3.508 8.5h-2.49a6.963 6.963 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667zm6.728 2.964a7.009 7.009 0 0 0 2.275-1.521 8.376 8.376 0 0 0-1.197-.49 8.853 8.853 0 0 1-.481 1.078 6.688 6.688 0 0 1-.597.933zM8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855.143-.268.276-.56.395-.872A12.63 12.63 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.963 6.963 0 0 0 14.982 8.5h-2.49a13.36 13.36 0 0 1-.437 3.008zM14.982 7.5a6.963 6.963 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008h2.49zM11.27 2.461c.177.334.339.694.482 1.078a8.368 8.368 0 0 0 1.196-.49 7.01 7.01 0 0 0-2.275-1.52c.218.283.418.597.597.932zm-.488 1.343a7.765 7.765 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z"/></svg> V5.6.2</div>
     <div class="hdr-title">QUIZ<br>OTAKU</div>
     <div class="hdr-flags" style="display:flex;align-items:center;gap:6px;margin-top:4px">
       <span style="font-size:1rem">🇯🇵</span>
@@ -1229,6 +1301,20 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
       <div class="mcard-name">MODE HISTOIRE</div>
       <div class="mcard-desc">Chapitres progressifs · Missions</div>
       <span class="mcard-tag" style="background:rgba(16,185,129,.15);color:#10b981">AVENTURE</span>
+    </div>
+    <div class="mcard online-only" style="--mc:#ff9f0a;grid-column:span 2" onclick="checkOnlineThenRun(openTournamentLobby)">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="mcard-icon" style="width:48px;height:48px;flex-shrink:0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5z"/></svg>
+        </div>
+        <div style="flex:1">
+          <div class="mcard-name" style="font-size:1.3rem">COMPÉTITION</div>
+          <div class="mcard-desc">Tournoi · Élimination · Anti-AFK</div>
+          <span class="mcard-tag" style="background:rgba(255,159,10,.15);color:#ff9f0a;margin-top:6px">🏆 TOURNOI</span>
+        </div>
+      </div>
+      <span class="online-badge">🌐 EN LIGNE</span>
+      <span class="offline-lock-icon">🔒</span>
     </div>
   </div>
 </div>
@@ -1914,6 +2000,175 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
   </div>
 </div>
 
+
+<!-- ════════════════════════════════════════════════════════
+     SCREEN : LOBBY TOURNOI
+════════════════════════════════════════════════════════ -->
+<div id="s-tournament-lobby" class="screen hidden">
+  <button class="back-btn" onclick="leaveTournamentLobby()">← Accueil</button>
+
+  <div style="text-align:center;margin-bottom:14px">
+    <div style="font-family:'Bangers',cursive;font-size:2rem;letter-spacing:4px;background:linear-gradient(135deg,#ff9f0a,#ff6b00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">🏆 COMPÉTITION</div>
+    <div style="font-size:.72rem;color:rgba(255,255,255,.4);letter-spacing:2px">TOURNOI À ÉLIMINATION DIRECTE</div>
+  </div>
+
+  <!-- Code salle + partage -->
+  <div class="room-box" style="margin-bottom:12px">
+    <div class="room-lbl">CODE TOURNOI</div>
+    <div class="room-code" id="tourn-code" onclick="copyTournCode()">------</div>
+    <div class="room-hint">👆 Clique pour copier</div>
+    <div class="room-share-btns" style="margin-top:8px">
+      <button class="room-share-btn wa" onclick="shareTournamentWhatsApp()">💬 ENVOYER WA</button>
+      <button class="room-share-btn cp" onclick="copyTournLink()">🔗 LIEN</button>
+    </div>
+  </div>
+
+  <!-- Config (hôte uniquement) -->
+  <div id="tourn-host-cfg">
+    <div class="sec" style="margin-bottom:10px">
+      <h3>⚙️ CONFIGURATION</h3>
+      <div class="sec-title">JOUEURS</div>
+      <div class="pill-row" id="tourn-size-row">
+        <button class="pill on" data-v="4">4</button>
+        <button class="pill" data-v="8">8</button>
+        <button class="pill" data-v="16">16</button>
+      </div>
+      <div class="sec-title">QUESTIONS PAR MATCH</div>
+      <div class="pill-row" id="tourn-qnum-row">
+        <button class="pill on" data-v="5">5</button>
+        <button class="pill" data-v="8">8</button>
+        <button class="pill" data-v="10">10</button>
+      </div>
+      <div class="sec-title">TEMPS PAR QUESTION</div>
+      <div class="pill-row" id="tourn-timer-row">
+        <button class="pill" data-v="10">10s</button>
+        <button class="pill on" data-v="15">15s</button>
+        <button class="pill" data-v="20">20s</button>
+      </div>
+      <div class="sec-title">CATÉGORIES</div>
+      <div class="cat-grid" id="tourn-cats"></div>
+    </div>
+  </div>
+
+  <!-- Jauge joueurs -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+    <div style="font-family:'Bangers',cursive;font-size:.9rem;letter-spacing:2px;color:rgba(255,255,255,.5)">JOUEURS</div>
+    <div style="font-family:'Bangers',cursive;font-size:1rem;color:var(--gold)"><span id="tourn-player-count">1</span> / <span id="tourn-player-max">4</span></div>
+  </div>
+  <div style="height:6px;background:rgba(255,255,255,.07);border-radius:6px;margin-bottom:12px;overflow:hidden">
+    <div id="tourn-gauge" style="height:100%;width:25%;background:linear-gradient(90deg,#ff9f0a,#ff6b00);border-radius:6px;transition:width .4s ease"></div>
+  </div>
+
+  <!-- Liste joueurs -->
+  <div id="tourn-players-list" style="margin-bottom:12px"></div>
+
+  <!-- Boutons -->
+  <div id="tourn-host-btns">
+    <button class="btn btn-full" id="tourn-start-btn" onclick="startTournament()"
+      style="background:linear-gradient(135deg,#ff9f0a,#ff6b00);box-shadow:0 4px 20px rgba(255,159,10,.3);margin-top:0"
+      disabled>
+      🏆 LANCER LE TOURNOI
+    </button>
+    <div id="tourn-waiting-msg" style="text-align:center;font-size:.72rem;color:rgba(255,255,255,.35);margin-top:8px">
+      En attente de joueurs<span class="dots"></span>
+    </div>
+  </div>
+  <div id="tourn-guest-msg" class="hidden" style="text-align:center;padding:16px;color:rgba(255,255,255,.4)">
+    <div style="font-size:1.8rem;animation:float 2s ease infinite">⏳</div>
+    <div style="font-family:'Bangers',cursive;font-size:.95rem;letter-spacing:2px;margin-top:6px;color:var(--gold)">EN ATTENTE DE L'HÔTE<span class="dots"></span></div>
+  </div>
+
+  <!-- Rejoindre tournoi existant -->
+  <div class="sec" style="margin-top:10px" id="tourn-join-sec">
+    <h3>🔗 REJOINDRE UN TOURNOI</h3>
+    <input class="inp code-inp" id="tourn-join-code" placeholder="CODE" maxlength="6" style="letter-spacing:8px">
+    <button class="btn btn-blue btn-full" onclick="joinTournament()">🚀 REJOINDRE</button>
+    <div id="tourn-join-err" class="errbox hidden"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SCREEN : BRACKET TOURNOI
+════════════════════════════════════════════════════════ -->
+<div id="s-tournament-bracket" class="screen hidden">
+  <button class="back-btn" onclick="go('home')" style="opacity:.5">← Quitter</button>
+
+  <!-- Header -->
+  <div style="text-align:center;margin-bottom:10px">
+    <div style="font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:3px;color:#ff9f0a">🏆 TOURNOI EN COURS</div>
+    <div id="tourn-bracket-phase" style="font-size:.72rem;color:rgba(255,255,255,.4);letter-spacing:2px">PHASE INITIALE</div>
+  </div>
+
+  <!-- HUD match actuel -->
+  <div class="tourn-hud" id="tourn-match-hud">
+    <div>
+      <div class="tourn-hud-info" id="tourn-match-label">MATCH EN COURS</div>
+      <div id="tourn-match-players" class="tourn-hud-players" style="margin-top:4px">
+        <span id="tourn-p1-av">👤</span>
+        <span id="tourn-p1-name" style="color:var(--p1)">Joueur 1</span>
+        <span class="tourn-vs">VS</span>
+        <span id="tourn-p2-name" style="color:var(--p2)">Joueur 2</span>
+        <span id="tourn-p2-av">👤</span>
+      </div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:.65rem;color:rgba(255,255,255,.35)">JOUEURS RESTANTS</div>
+      <div style="font-family:'Bangers',cursive;font-size:1.4rem;color:var(--gold)" id="tourn-remain-count">?</div>
+    </div>
+  </div>
+
+  <!-- Bracket visuel -->
+  <div style="font-family:'Bangers',cursive;font-size:.72rem;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:6px">TABLEAU</div>
+  <div class="bracket-wrap">
+    <div class="bracket" id="tourn-bracket"></div>
+  </div>
+
+  <!-- Bouton rejoindre match si c'est notre tour -->
+  <div id="tourn-play-btn-wrap" style="display:none;margin-top:12px">
+    <button class="btn btn-full" onclick="enterTournamentMatch()"
+      style="background:linear-gradient(135deg,#ff9f0a,#ff6b00);font-size:1.3rem;animation:glow-pulse 1.5s infinite">
+      ⚔️ JOUER MON MATCH !
+    </button>
+    <div style="text-align:center;font-size:.7rem;color:rgba(255,255,255,.35);margin-top:6px">
+      Tu as <span id="tourn-match-countdown" style="color:var(--gold);font-weight:800">60</span>s pour rejoindre
+    </div>
+  </div>
+
+  <!-- Statut si éliminé ou spectateur -->
+  <div id="tourn-spectator-msg" style="display:none;text-align:center;padding:14px;background:rgba(255,59,48,.08);border:1px solid rgba(255,59,48,.2);border-radius:12px;margin-top:10px">
+    <div style="font-size:1.5rem">😔</div>
+    <div style="font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;color:var(--red);margin-top:4px" id="tourn-spectator-txt">ÉLIMINÉ</div>
+    <div style="font-size:.72rem;color:rgba(255,255,255,.4);margin-top:4px">Tu peux regarder la suite du tournoi</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SCREEN : RÉSULTATS TOURNOI
+════════════════════════════════════════════════════════ -->
+<div id="s-tournament-results" class="screen hidden" style="text-align:center">
+  <div style="font-family:'Bangers',cursive;font-size:2.2rem;letter-spacing:4px;background:linear-gradient(135deg,#ff9f0a,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px">🏆 TOURNOI TERMINÉ</div>
+  <div style="font-size:.72rem;color:rgba(255,255,255,.35);letter-spacing:2px;margin-bottom:16px" id="tourn-final-sub">Félicitations au vainqueur !</div>
+
+  <!-- Podium -->
+  <div class="podium-wrap" id="tourn-podium"></div>
+
+  <!-- Classement complet -->
+  <div style="font-family:'Bangers',cursive;font-size:.78rem;letter-spacing:3px;color:rgba(255,255,255,.25);margin:14px 0 8px">CLASSEMENT FINAL</div>
+  <div id="tourn-final-ranking" style="margin-bottom:16px"></div>
+
+  <button class="btn btn-gold btn-full" onclick="go('home')">🏠 ACCUEIL</button>
+  <button class="btn btn-ghost btn-full" style="margin-top:8px" onclick="shareTournamentResult()">💬 PARTAGER</button>
+</div>
+
+<!-- AFK warning overlay -->
+<div class="afk-warning" id="afk-warning">⚠️ RÉPONDS ! <span id="afk-count">2</span> absences et tu es exclu !</div>
+
+<!-- Tournoi notification -->
+<div class="tourn-notif" id="tourn-notif">
+  <div class="tourn-notif-title" id="tourn-notif-title">🏆</div>
+  <div class="tourn-notif-sub" id="tourn-notif-sub"></div>
+</div>
+
 </div><!-- end app -->
 
 <!-- FIREBASE -->
@@ -2381,7 +2636,7 @@ function dbOn(p,cb){return window._fb.onValue(dbR(p),cb);}
 
 // Screens
 function go(name){
-  ['home','lobby','wait','loading','cd','game','results','leaderboard','profile','story','friends','weekly','badges','community','players'].forEach(s=>{
+  ['home','lobby','wait','loading','cd','game','results','leaderboard','profile','story','friends','weekly','badges','community','players','tournament-lobby','tournament-bracket','tournament-results'].forEach(s=>{
     const el=document.getElementById('s-'+s);
     if(el)el.classList.add('hidden');
   });
@@ -3721,7 +3976,7 @@ function generateScoreCard(){
     ctx.strokeStyle='rgba(245,168,0,0.12)';ctx.lineWidth=1;ctx.strokeRect(18,18,764,414);
     // Title
     ctx.font='bold 36px Arial Black, Arial';ctx.fillStyle='#f5a800';ctx.textAlign='center';
-    ctx.fillText('🎌 QUIZ OTAKU V5.5 🎌',400,62);
+    ctx.fillText('🎌 QUIZ OTAKU V5.6.2.2 🎌',400,62);
     ctx.fillStyle='rgba(245,168,0,0.3)';ctx.fillRect(100,75,600,2);
     // Player name
     ctx.font='bold 52px Arial';ctx.fillStyle='#ffffff';
@@ -3807,7 +4062,7 @@ function shareScoreCardWA(){
   var pseudo=myName||'Joueur';
   var pct=Math.round((myCorrect/Math.max(questions.length,1))*100);
   var rankData=getRank(loadXP().xp);
-  var msg='QUIZ OTAKU V5.5\n'
+  var msg='QUIZ OTAKU V5.6.2.2\n'
     +rankData.rank.icon+' '+pseudo+' — '+myScore+' pts ('+pct+'%)\n'
     +'Streak : '+bestStreak+' | Rang : '+rankData.rank.name+'\n'
     +'Viens me battre !'
@@ -6121,6 +6376,980 @@ document.addEventListener('DOMContentLoaded',function(){
     if(fbOK()&&navigator.onLine) listenPlayerInvites();
   }, 3000);
 },false);
+
+// ══════════════════════════════════════════════════════════════
+//  MODE COMPÉTITION — TOURNOI À ÉLIMINATION DIRECTE
+//  Firebase path: tournaments/{code}/
+//  Anti-AFK + Anti-RageQuit intégrés
+// ══════════════════════════════════════════════════════════════
+
+// ── État global tournoi ────────────────────────────────────────
+var _tourn = {
+  code: '',
+  role: '',          // 'host' | 'guest'
+  data: {},
+  listener: null,
+  size: 4,           // 4 | 8 | 16
+  qNum: 5,
+  timerSec: 15,
+  cats: [],
+  myAfkCount: 0,     // absences consécutives
+  maxAfk: 3,         // exclusion après 3 absences
+  matchCountdown: null,
+  matchCountdownSec: 60,
+  inMatch: false,    // je joue un match actuellement
+  myMatchScore: 0,
+  myMatchCorrect: 0,
+  eliminated: false,
+  rageQuitPenalty: false,
+  currentRound: 0,
+  myOpponentId: '',
+};
+
+var FB_TOURN = 'tournaments';
+
+// ── Ouvrir le lobby tournoi ────────────────────────────────────
+function openTournamentLobby(){
+  if(!fbOK()||!navigator.onLine){showSF('📡 Internet requis','var(--red)');return;}
+  var p = loadProfile();
+  if(!p||!p.pseudo){showSF('⚠️ Crée ton profil d\'abord !','var(--red)');go('profile');return;}
+  // Reset état
+  _tourn.code='';_tourn.role='';_tourn.data={};
+  _tourn.myAfkCount=0;_tourn.eliminated=false;_tourn.inMatch=false;
+  clearTournamentListener();
+  // Afficher écran lobby
+  go('tournament-lobby');
+  buildTournCatGrid();
+  setupTournPills();
+  // Rétablir section join visible
+  document.getElementById('tourn-join-sec').style.display='block';
+  document.getElementById('tourn-host-cfg').style.display='block';
+  document.getElementById('tourn-host-btns').style.display='block';
+  document.getElementById('tourn-guest-msg').classList.add('hidden');
+  document.getElementById('tourn-start-btn').disabled=true;
+  document.getElementById('tourn-players-list').innerHTML='';
+  document.getElementById('tourn-code').textContent='------';
+  // Auto-créer un tournoi (l'hôte peut aussi rejoindre via code)
+  createTournament();
+}
+
+function setupTournPills(){
+  ['tourn-size-row','tourn-qnum-row','tourn-timer-row'].forEach(function(rowId){
+    var row = document.getElementById(rowId);
+    if(!row) return;
+    row.querySelectorAll('.pill').forEach(function(b){
+      b.onclick = function(){
+        row.querySelectorAll('.pill').forEach(function(x){x.classList.remove('on');});
+        b.classList.add('on');
+        if(rowId==='tourn-size-row') _tourn.size=parseInt(b.dataset.v)||4;
+        if(rowId==='tourn-qnum-row') _tourn.qNum=parseInt(b.dataset.v)||5;
+        if(rowId==='tourn-timer-row') _tourn.timerSec=parseInt(b.dataset.v)||15;
+        // Mettre à jour Firebase si hôte
+        if(_tourn.role==='host'&&_tourn.code){
+          dbU(FB_TOURN+'/'+_tourn.code+'/config',{
+            size:_tourn.size,qNum:_tourn.qNum,timerSec:_tourn.timerSec
+          }).catch(function(){});
+        }
+      };
+    });
+  });
+}
+
+function buildTournCatGrid(){
+  var grid = document.getElementById('tourn-cats');
+  if(!grid||typeof CATS==='undefined') return;
+  grid.innerHTML='';
+  _tourn.cats = ['shonen'];
+  CATS.forEach(function(cat){
+    var c = document.createElement('div');
+    c.className = 'cat-card'+(cat.id==='shonen'?' sel':'');
+    c.style.setProperty('--cc',cat.color);
+    c.innerHTML='<span class="cat-emoji">'+cat.emoji+'</span>'
+      +'<div class="cat-name">'+cat.name+'</div>'
+      +'<div class="cat-ck">✓</div>';
+    c.onclick = function(){
+      if(c.classList.contains('sel')){
+        if(_tourn.cats.length<=1)return;
+        _tourn.cats.splice(_tourn.cats.indexOf(cat.id),1);
+        c.classList.remove('sel');
+      }else{
+        _tourn.cats.push(cat.id);
+        c.classList.add('sel');
+      }
+      if(_tourn.role==='host'&&_tourn.code){
+        dbU(FB_TOURN+'/'+_tourn.code+'/config',{cats:_tourn.cats}).catch(function(){});
+      }
+    };
+    grid.appendChild(c);
+  });
+}
+
+// ── Créer un tournoi ───────────────────────────────────────────
+async function createTournament(){
+  var p = loadProfile();
+  myName = (p&&p.pseudo)||myName||'Joueur';
+  var code = Math.random().toString(36).slice(2,8).toUpperCase();
+  _tourn.code = code;
+  _tourn.role = 'host';
+  var myAv = (p&&p.avatar)||'⚡';
+
+  var data = {
+    code: code,
+    status: 'waiting',   // waiting | starting | playing | finished
+    hostId: myId,
+    config: {size:_tourn.size,qNum:_tourn.qNum,timerSec:_tourn.timerSec,cats:_tourn.cats},
+    players: {},
+    bracket: null,
+    currentRound: 0,
+    currentMatches: {},
+    matchResults: {},
+    created: Date.now()
+  };
+  data.players[myId] = {name:myName,avatar:myAv,score:0,seed:0,status:'waiting',joinedAt:Date.now()};
+
+  try{
+    await dbS(FB_TOURN+'/'+code, data);
+    document.getElementById('tourn-code').textContent = code;
+    listenTournament(code);
+    showSF('🏆 Tournoi créé !','#ff9f0a');
+  }catch(e){
+    showSF('❌ Erreur création','var(--red)');
+  }
+}
+
+// ── Rejoindre un tournoi ───────────────────────────────────────
+async function joinTournament(){
+  var codeInp = document.getElementById('tourn-join-code');
+  var errEl = document.getElementById('tourn-join-err');
+  var code = (codeInp?codeInp.value.trim().toUpperCase():'');
+  if(!code||code.length<4){
+    if(errEl){errEl.textContent='Entre un code valide !';errEl.classList.remove('hidden');}
+    return;
+  }
+  if(errEl) errEl.classList.add('hidden');
+
+  // Si j'ai déjà créé un tournoi, l'abandonner
+  if(_tourn.code&&_tourn.role==='host'){
+    await dbS(FB_TOURN+'/'+_tourn.code, null).catch(function(){});
+    clearTournamentListener();
+  }
+
+  try{
+    var snap = await dbG(FB_TOURN+'/'+code);
+    if(!snap.exists()){
+      if(errEl){errEl.textContent='Tournoi introuvable !';errEl.classList.remove('hidden');}
+      return;
+    }
+    var d = snap.val();
+    if(d.status!=='waiting'){
+      if(errEl){errEl.textContent='Tournoi déjà commencé !';errEl.classList.remove('hidden');}
+      return;
+    }
+    var pCount = Object.keys(d.players||{}).length;
+    var maxSize = (d.config&&d.config.size)||4;
+    if(pCount>=maxSize){
+      if(errEl){errEl.textContent='Tournoi complet !';errEl.classList.remove('hidden');}
+      return;
+    }
+
+    var p = loadProfile();
+    myName = (p&&p.pseudo)||myName||'Joueur';
+    var myAv = (p&&p.avatar)||'⚡';
+
+    await dbU(FB_TOURN+'/'+code+'/players/'+myId,{
+      name:myName,avatar:myAv,score:0,seed:0,status:'waiting',joinedAt:Date.now()
+    });
+
+    _tourn.code = code;
+    _tourn.role = 'guest';
+    _tourn.size = maxSize;
+    if(d.config){_tourn.qNum=d.config.qNum||5;_tourn.timerSec=d.config.timerSec||15;_tourn.cats=d.config.cats||['shonen'];}
+
+    document.getElementById('tourn-code').textContent = code;
+    document.getElementById('tourn-host-cfg').style.display='none';
+    document.getElementById('tourn-host-btns').style.display='none';
+    document.getElementById('tourn-guest-msg').classList.remove('hidden');
+    document.getElementById('tourn-join-sec').style.display='none';
+
+    listenTournament(code);
+    showSF('✅ Rejoint le tournoi !','#ff9f0a');
+  }catch(e){
+    if(errEl){errEl.textContent='Erreur: '+e.message;errEl.classList.remove('hidden');}
+  }
+}
+
+// ── Écouter les mises à jour du tournoi ───────────────────────
+function listenTournament(code){
+  clearTournamentListener();
+  _tourn.listener = dbOn(FB_TOURN+'/'+code, function(snap){
+    if(!snap.exists()) return;
+    var d = snap.val();
+    _tourn.data = d;
+
+    // Sync config depuis Firebase (pour les guests)
+    if(d.config){
+      _tourn.size = d.config.size||4;
+      _tourn.qNum = d.config.qNum||5;
+      _tourn.timerSec = d.config.timerSec||15;
+      _tourn.cats = d.config.cats||['shonen'];
+    }
+
+    renderTournLobbyPlayers(d);
+
+    // Vérifier si on peut lancer (hôte)
+    if(_tourn.role==='host'){
+      var pCount = Object.keys(d.players||{}).length;
+      var startBtn = document.getElementById('tourn-start-btn');
+      var waitMsg = document.getElementById('tourn-waiting-msg');
+      if(startBtn) startBtn.disabled = (pCount < _tourn.size);
+      if(waitMsg) waitMsg.textContent = pCount+'/'+_tourn.size+' joueurs connectés';
+      updateTournGauge(pCount, _tourn.size);
+    }
+
+    // Statut changed
+    if(d.status==='starting'){
+      showTournNotif('🏆 TOURNOI','Prépare-toi ! Ça commence dans 3s...',2500);
+    } else if(d.status==='playing'){
+      handleTournamentPlaying(d);
+    } else if(d.status==='finished'){
+      showTournamentResults(d);
+    }
+  });
+}
+
+function clearTournamentListener(){
+  if(_tourn.listener){try{_tourn.listener();}catch(e){} _tourn.listener=null;}
+}
+
+// ── Render lobby players ───────────────────────────────────────
+function renderTournLobbyPlayers(d){
+  var list = document.getElementById('tourn-players-list');
+  if(!list) return;
+  var players = d.players||{};
+  var pArr = Object.entries(players).sort(function(a,b){return a[1].joinedAt-b[1].joinedAt;});
+  var maxSize = (d.config&&d.config.size)||_tourn.size;
+  list.innerHTML='';
+
+  pArr.forEach(function(entry,i){
+    var uid=entry[0],p=entry[1];
+    var isMe=uid===myId;
+    var isHost=uid===d.hostId;
+    var av=p.avatar||'⚡';
+    var avHtml=av.startsWith('data:')?'<img src="'+av+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover">':av;
+    var slot=document.createElement('div');
+    slot.className='tourn-slot filled'+(isHost?' host-s':'');
+    slot.innerHTML='<div class="tourn-slot-av">'+avHtml+'</div>'
+      +'<div class="tourn-slot-name">'+(isMe?'<strong>'+p.name+'</strong>':p.name)+'</div>'
+      +(isHost?'<span class="tourn-slot-badge" style="background:rgba(255,59,48,.15);color:var(--red)">HÔTE</span>':'')
+      +(isMe&&!isHost?'<span class="tourn-slot-badge" style="background:rgba(10,132,255,.15);color:var(--blue)">TOI</span>':'');
+    list.appendChild(slot);
+  });
+
+  // Slots vides
+  for(var i=pArr.length;i<maxSize;i++){
+    var empty=document.createElement('div');
+    empty.className='tourn-waiting-slot';
+    empty.innerHTML='<div style="font-size:1rem;opacity:.3">👤</div><div>En attente<span class="dots"></span></div>';
+    list.appendChild(empty);
+  }
+
+  // Compteurs
+  var countEl=document.getElementById('tourn-player-count');
+  var maxEl=document.getElementById('tourn-player-max');
+  if(countEl) countEl.textContent=pArr.length;
+  if(maxEl) maxEl.textContent=maxSize;
+}
+
+function updateTournGauge(count, max){
+  var gauge=document.getElementById('tourn-gauge');
+  if(gauge) gauge.style.width=Math.min(100,Math.round(count/max*100))+'%';
+}
+
+// ── Lancer le tournoi (hôte) ────────────────────────────────
+async function startTournament(){
+  if(_tourn.role!=='host'||!_tourn.code) return;
+  var d = _tourn.data;
+  var players = d.players||{};
+  var pArr = Object.keys(players);
+  if(pArr.length<_tourn.size){showSF('⚠️ Pas assez de joueurs !','var(--red)');return;}
+
+  // Générer le bracket
+  var seededPlayers = pArr.map(function(uid,i){return {uid:uid,seed:i};});
+  shuffleArray(seededPlayers);
+  var bracket = generateBracket(seededPlayers);
+
+  // Préparer questions pour le premier round
+  var questions = pickQ(_tourn.cats, _tourn.qNum);
+  var qsToSave = questions.map(function(q){return {q:q.q,cat:q.cat,ops:q.ops,ok:q.ok};});
+
+  await dbU(FB_TOURN+'/'+_tourn.code,{
+    status:'starting',
+    bracket: bracket,
+    currentRound: 0,
+    currentQuestions: qsToSave,
+    currentMatches: bracket[0]||{},
+    matchResults: {},
+    startedAt: Date.now()
+  });
+
+  setTimeout(async function(){
+    await dbU(FB_TOURN+'/'+_tourn.code,{status:'playing'});
+  }, 3000);
+}
+
+function shuffleArray(arr){
+  for(var i=arr.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;
+  }
+  return arr;
+}
+
+// ── Générer le bracket ─────────────────────────────────────────
+function generateBracket(players){
+  // Retourne un tableau de rounds, chaque round = tableau de matchs
+  // [{id:'m0',p1:{uid,name,...},p2:{uid,name,...},winner:null,scores:{}}]
+  var bracket = [];
+  var current = players.slice();
+  var round = 0;
+  while(current.length>1){
+    var matches = {};
+    var next = [];
+    for(var i=0;i<current.length;i+=2){
+      var p1=current[i];
+      var p2=current[i+1]||null;
+      var matchId='r'+round+'m'+Math.floor(i/2);
+      if(p2){
+        var p1data=(_tourn.data.players&&_tourn.data.players[p1.uid])||{};
+        var p2data=(_tourn.data.players&&_tourn.data.players[p2.uid])||{};
+        matches[matchId]={
+          id:matchId,round:round,
+          p1:{uid:p1.uid,name:p1data.name||'?',avatar:p1data.avatar||'⚡'},
+          p2:{uid:p2.uid,name:p2data.name||'?',avatar:p2data.avatar||'⚡'},
+          winner:null,scores:{},status:'pending'
+        };
+        next.push({uid:'winner_of_'+matchId});
+      }else{
+        // Bye
+        matches[matchId]={id:matchId,round:round,p1:{uid:p1.uid},p2:null,winner:p1.uid,scores:{},status:'bye'};
+        next.push(p1);
+      }
+    }
+    bracket.push(matches);
+    current=next;
+    round++;
+    if(round>6) break;// sécurité
+  }
+  return bracket;
+}
+
+// ── Gérer le tournoi en cours ──────────────────────────────────
+function handleTournamentPlaying(d){
+  var currentMatches = d.currentMatches||{};
+  var myMatch = findMyMatch(currentMatches);
+
+  // Afficher bracket screen
+  if(!document.getElementById('s-tournament-bracket').classList.contains('hidden')||
+     document.getElementById('s-tournament-lobby').classList.contains('hidden')===false){
+    go('tournament-bracket');
+  }
+
+  renderTournBracket(d);
+  updateTournPhaseLabel(d);
+
+  // Compter restants
+  var remainCount = countRemainingPlayers(d);
+  var remainEl = document.getElementById('tourn-remain-count');
+  if(remainEl) remainEl.textContent=remainCount;
+
+  // Mon match
+  var playBtn = document.getElementById('tourn-play-btn-wrap');
+  var spectMsg = document.getElementById('tourn-spectator-msg');
+
+  if(_tourn.eliminated){
+    if(playBtn) playBtn.style.display='none';
+    if(spectMsg){spectMsg.style.display='block';document.getElementById('tourn-spectator-txt').textContent='ÉLIMINÉ';}
+    return;
+  }
+
+  if(myMatch&&myMatch.status==='pending'&&!_tourn.inMatch){
+    // C'est mon tour de jouer
+    if(playBtn) playBtn.style.display='block';
+    if(spectMsg) spectMsg.style.display='none';
+    startMatchCountdown(myMatch);
+    // Qui est mon adversaire
+    _tourn.myOpponentId = (myMatch.p1.uid===myId?myMatch.p2.uid:myMatch.p1.uid);
+    updateTournMatchHud(d, myMatch);
+  } else if(!myMatch){
+    if(playBtn) playBtn.style.display='none';
+    if(spectMsg){spectMsg.style.display='block';document.getElementById('tourn-spectator-txt').textContent='EN ATTENTE DE TON PROCHAIN MATCH';}
+  }
+}
+
+function findMyMatch(matches){
+  return Object.values(matches).find(function(m){
+    return m.status==='pending'&&(m.p1&&m.p1.uid===myId||(m.p2&&m.p2.uid===myId));
+  })||null;
+}
+
+function updateTournMatchHud(d, match){
+  var p1 = match.p1||{};
+  var p2 = match.p2||{};
+  var label = document.getElementById('tourn-match-label');
+  var p1n = document.getElementById('tourn-p1-name');
+  var p1a = document.getElementById('tourn-p1-av');
+  var p2n = document.getElementById('tourn-p2-name');
+  var p2a = document.getElementById('tourn-p2-av');
+  if(label) label.textContent='TON MATCH — ROUND '+((_tourn.data.currentRound||0)+1);
+  if(p1n) p1n.textContent=p1.name||'?';
+  if(p1a) p1a.textContent=p1.avatar||'👤';
+  if(p2n) p2n.textContent=p2?p2.name:'BYE';
+  if(p2a) p2a.textContent=p2?(p2.avatar||'👤'):'';
+}
+
+function updateTournPhaseLabel(d){
+  var round = d.currentRound||0;
+  var total = (d.bracket&&d.bracket.length)||1;
+  var phases = ['PHASE INITIALE','QUARTS DE FINALE','DEMI-FINALES','FINALE','GRANDE FINALE'];
+  var remaining = total-1-round;
+  var label = document.getElementById('tourn-bracket-phase');
+  if(label) label.textContent=phases[remaining]||('ROUND '+(round+1));
+}
+
+function countRemainingPlayers(d){
+  var matches = d.currentMatches||{};
+  var uids = new Set();
+  Object.values(matches).forEach(function(m){
+    if(m.status!=='done'){
+      if(m.p1&&m.p1.uid) uids.add(m.p1.uid);
+      if(m.p2&&m.p2.uid) uids.add(m.p2.uid);
+    }
+  });
+  return uids.size||0;
+}
+
+// ── Countdown pour rejoindre le match ─────────────────────────
+function startMatchCountdown(match){
+  clearInterval(_tourn.matchCountdown);
+  _tourn.matchCountdownSec=60;
+  var el=document.getElementById('tourn-match-countdown');
+  _tourn.matchCountdown=setInterval(function(){
+    _tourn.matchCountdownSec--;
+    if(el) el.textContent=_tourn.matchCountdownSec;
+    if(_tourn.matchCountdownSec<=0){
+      clearInterval(_tourn.matchCountdown);
+      // AFK — pas rejoint à temps
+      handleAfkTournament(match);
+    }
+  },1000);
+}
+
+// ── Entrer dans le match ───────────────────────────────────────
+function enterTournamentMatch(){
+  clearInterval(_tourn.matchCountdown);
+  _tourn.inMatch=true;
+  _tourn.myAfkCount=0;
+  _tourn.myMatchScore=0;
+  _tourn.myMatchCorrect=0;
+
+  var d=_tourn.data;
+  var myMatch=findMyMatch(d.currentMatches||{});
+  if(!myMatch){showSF('❌ Match introuvable','var(--red)');return;}
+
+  // Marquer match comme "en cours" pour moi
+  dbU(FB_TOURN+'/'+_tourn.code+'/currentMatches/'+myMatch.id+'/status','in_progress').catch(function(){});
+
+  // Préparer les questions
+  var savedQs = d.currentQuestions||[];
+  if(savedQs.length>0){
+    // Reconstituer les questions
+    questions=savedQs.map(function(q){
+      return {q:q.q,cat:q.cat,ops:q.ops,ok:q.ok,ex:'',matchId:myMatch.id};
+    });
+  }else{
+    questions=pickQ(_tourn.cats,_tourn.qNum);
+  }
+
+  current=0;myScore=0;myCorrect=0;myWrong=0;currentStreak=0;
+  isDuel=false;gameMode='tournament';
+  window._tournMatchId=myMatch.id;
+  window._tournMatch=myMatch;
+
+  // Lancer le jeu
+  go('loading');
+  setTimeout(async function(){
+    await doCountdown();
+    go('game');
+    renderQ();
+    // Setup anti-AFK timer spécifique tournoi
+    setupTournamentGameHooks();
+  },400);
+}
+
+// ── Hooks pendant le match tournoi ────────────────────────────
+function setupTournamentGameHooks(){
+  // Override du timer pour anti-AFK
+  // On surveille si le joueur répond à chaque question
+  window._tournQuestionStartTime=Date.now();
+}
+
+// ── Anti-AFK : appelé quand le timer expire sans réponse ──────
+function onTournamentQuestionTimeout(){
+  if(gameMode!=='tournament') return;
+  _tourn.myAfkCount++;
+  var afkWarn=document.getElementById('afk-warning');
+  var afkCount=document.getElementById('afk-count');
+  if(afkWarn&&afkCount){
+    var remaining=_tourn.maxAfk-_tourn.myAfkCount;
+    afkCount.textContent=remaining;
+    afkWarn.style.display='block';
+    setTimeout(function(){afkWarn.style.display='none';},2500);
+  }
+  if(_tourn.myAfkCount>=_tourn.maxAfk){
+    // EXCLU pour AFK
+    excludeFromTournament('afk');
+  }
+}
+
+function excludeFromTournament(reason){
+  _tourn.eliminated=true;
+  _tourn.inMatch=false;
+  // Marquer comme exclu dans Firebase
+  if(_tourn.code&&window._tournMatchId){
+    var matchId=window._tournMatchId;
+    var myMatch=window._tournMatch||{};
+    var winnerId=(myMatch.p1&&myMatch.p1.uid===myId)?
+      (myMatch.p2&&myMatch.p2.uid):
+      (myMatch.p1&&myMatch.p1.uid);
+    dbU(FB_TOURN+'/'+_tourn.code+'/currentMatches/'+matchId,{
+      winner:winnerId,
+      status:'done',
+      ['scores/'+myId]:_tourn.myMatchScore,
+      excludedPlayer:myId,
+      excludeReason:reason
+    }).catch(function(){});
+  }
+  // Retourner au bracket
+  go('tournament-bracket');
+  var spectMsg=document.getElementById('tourn-spectator-msg');
+  var spectTxt=document.getElementById('tourn-spectator-txt');
+  if(spectMsg) spectMsg.style.display='block';
+  if(spectTxt) spectTxt.textContent=reason==='afk'?'EXCLU POUR INACTIVITÉ':'PÉNALITÉ RAGE QUIT';
+  var label=reason==='afk'?'⚠️ EXCLU - AFK':'⚠️ RAGE QUIT DÉTECTÉ';
+  var sub=reason==='afk'?'Tu n\'as pas répondu '+_tourn.maxAfk+' fois de suite':'Tu as quitté pendant un match';
+  showTournNotif(label,sub,3000);
+  if(reason==='rq'){
+    // Pénalité rage quit : -100 points dans le leaderboard
+    _tourn.rageQuitPenalty=true;
+    var s=loadStats();
+    addNotif('system','⚠️ Pénalité Rage Quit','Tu as quitté un match de tournoi','⚠️',{});
+  }
+  showSF(reason==='afk'?'⚠️ Exclu pour inactivité':'⚠️ Pénalité Rage Quit','var(--red)');
+}
+
+function handleAfkTournament(match){
+  excludeFromTournament('afk');
+}
+
+// ── Anti-Rage Quit : appelé si on quitte pendant un match tourn ─
+function detectTournamentRageQuit(){
+  if(gameMode==='tournament'&&_tourn.inMatch&&!_tourn.eliminated){
+    excludeFromTournament('rq');
+    return true;
+  }
+  return false;
+}
+
+// ── Fin de match tournoi ───────────────────────────────────────
+async function finishTournamentMatch(){
+  if(!_tourn.inMatch||!window._tournMatchId) return;
+  _tourn.inMatch=false;
+  _tourn.myAfkCount=0;
+  var matchId=window._tournMatchId;
+  var myMatch=window._tournMatch||{};
+
+  // Envoyer mon score
+  await dbU(FB_TOURN+'/'+_tourn.code+'/currentMatches/'+matchId+'/scores/'+myId, myScore).catch(function(){});
+
+  // Attendre que l'adversaire finisse (poll 500ms, max 30s)
+  var waited=0;
+  var checkResult=setInterval(async function(){
+    waited+=500;
+    try{
+      var snap=await dbG(FB_TOURN+'/'+_tourn.code+'/currentMatches/'+matchId+'/scores');
+      if(!snap.exists()) return;
+      var scores=snap.val();
+      var oppId=_tourn.myOpponentId;
+      if(scores[oppId]!==undefined||waited>=30000){
+        clearInterval(checkResult);
+        resolveMatch(matchId,myMatch,scores,oppId);
+      }
+    }catch(e){clearInterval(checkResult);}
+  },500);
+}
+
+async function resolveMatch(matchId,match,scores,oppId){
+  var myScoreVal=scores[myId]||0;
+  var oppScoreVal=scores[oppId]||0;
+  var iWon=myScoreVal>oppScoreVal||(oppScoreVal===0&&myScoreVal===0&&match.p1&&match.p1.uid===myId);
+  var winnerId=iWon?myId:oppId;
+  var loserName='';
+  if(!iWon){
+    var oppData=(_tourn.data.players&&_tourn.data.players[oppId])||{};
+    loserName=((_tourn.data.players&&_tourn.data.players[myId])||{}).name||'Toi';
+  }
+
+  // Notif résultat
+  if(iWon){
+    showTournNotif('🎉 QUALIFIÉ !','Tu passes au tour suivant !',2500);
+    showSF('✅ Victoire ! Tu es qualifié !','var(--green)');
+  }else{
+    _tourn.eliminated=true;
+    showTournNotif('😔 ÉLIMINÉ','Meilleur score pour la prochaine fois',2500);
+    showSF('❌ Éliminé — '+oppScoreVal+' vs '+myScoreVal,'var(--red)');
+  }
+
+  // L'hôte résout le match dans Firebase
+  if(_tourn.role==='host'&&myScoreVal>=oppScoreVal){
+    await dbU(FB_TOURN+'/'+_tourn.code+'/currentMatches/'+matchId,{
+      winner:winnerId,status:'done',scores:scores
+    }).catch(function(){});
+    // Vérifier si tous les matchs du round sont terminés
+    setTimeout(function(){checkRoundComplete();},1000);
+  } else if(_tourn.role==='guest'){
+    await dbU(FB_TOURN+'/'+_tourn.code+'/currentMatches/'+matchId,{
+      winner:winnerId,status:'done',scores:scores
+    }).catch(function(){});
+  }
+
+  // Retourner au bracket
+  setTimeout(function(){go('tournament-bracket');},1500);
+}
+
+// ── Vérifier si le round est terminé (hôte) ───────────────────
+async function checkRoundComplete(){
+  if(_tourn.role!=='host') return;
+  try{
+    var snap=await dbG(FB_TOURN+'/'+_tourn.code+'/currentMatches');
+    if(!snap.exists()) return;
+    var matches=snap.val();
+    var allDone=Object.values(matches).every(function(m){return m.status==='done'||m.status==='bye';});
+    if(allDone) advanceToNextRound(matches);
+  }catch(e){}
+}
+
+async function advanceToNextRound(doneMatches){
+  // Récupérer les gagnants
+  var winners=Object.values(doneMatches).map(function(m){return m.winner;}).filter(Boolean);
+
+  if(winners.length<=1){
+    // FINALE TERMINÉE
+    await finishTournament(winners[0]);
+    return;
+  }
+
+  var nextRound=(_tourn.data.currentRound||0)+1;
+  var d=_tourn.data;
+
+  // Construire les prochains matchs
+  var nextMatches={};
+  for(var i=0;i<winners.length;i+=2){
+    var w1=winners[i];
+    var w2=winners[i+1]||null;
+    var matchId='r'+nextRound+'m'+Math.floor(i/2);
+    var p1data=(d.players&&d.players[w1])||{name:'?',avatar:'⚡'};
+    if(w2){
+      var p2data=(d.players&&d.players[w2])||{name:'?',avatar:'⚡'};
+      nextMatches[matchId]={
+        id:matchId,round:nextRound,
+        p1:{uid:w1,name:p1data.name,avatar:p1data.avatar},
+        p2:{uid:w2,name:p2data.name,avatar:p2data.avatar},
+        winner:null,scores:{},status:'pending'
+      };
+    }else{
+      nextMatches[matchId]={id:matchId,round:nextRound,p1:{uid:w1,name:p1data.name,avatar:p1data.avatar},p2:null,winner:w1,scores:{},status:'bye'};
+    }
+  }
+
+  // Nouvelles questions pour ce round
+  var newQs=pickQ(_tourn.cats,_tourn.qNum);
+  var qsToSave=newQs.map(function(q){return {q:q.q,cat:q.cat,ops:q.ops,ok:q.ok};});
+
+  await dbU(FB_TOURN+'/'+_tourn.code,{
+    currentRound:nextRound,
+    currentMatches:nextMatches,
+    currentQuestions:qsToSave,
+    status:'playing'
+  });
+
+  showTournNotif('⚔️ ROUND '+(nextRound+1),'Les matchs suivants commencent !',2000);
+}
+
+async function finishTournament(winnerUid){
+  var d=_tourn.data;
+  var winnerData=(d.players&&d.players[winnerUid])||{name:'Champion',avatar:'👑'};
+
+  // Construire classement final
+  var ranking=buildFinalRanking(d);
+
+  await dbU(FB_TOURN+'/'+_tourn.code,{
+    status:'finished',
+    winner:winnerUid,
+    finalRanking:ranking,
+    finishedAt:Date.now()
+  });
+
+  // XP et pièces pour le gagnant
+  if(winnerUid===myId){
+    addXP(300);
+    var prof=loadProfile();
+    if(prof){prof.coins=(prof.coins||0)+500;localStorage.setItem('oq_profile',JSON.stringify(prof));}
+    showTournNotif('🏆 CHAMPION !','Tu as gagné le tournoi ! +300 XP, +500 pièces',4000);
+    addNotif('system','🏆 CHAMPION DU TOURNOI !','Tu as remporté le tournoi Quiz Otaku !','🏆',{});
+  }
+}
+
+function buildFinalRanking(d){
+  var players=d.players||{};
+  // Simplifier : hôte = 1er si winner, autres par ordre de sortie
+  var ranking=Object.entries(players).map(function(e){
+    return {uid:e[0],name:e[1].name||'?',avatar:e[1].avatar||'⚡',score:e[1].score||0};
+  });
+  ranking.sort(function(a,b){return (b.score||0)-(a.score||0);});
+  return ranking;
+}
+
+// ── Afficher résultats finaux ──────────────────────────────────
+function showTournamentResults(d){
+  go('tournament-results');
+  var winner=d.winner;
+  var ranking=d.finalRanking||buildFinalRanking(d);
+  var winnerData=(d.players&&d.players[winner])||{name:'Champion',avatar:'👑'};
+
+  var subEl=document.getElementById('tourn-final-sub');
+  if(subEl) subEl.textContent='🎉 '+winnerData.name+' est le Champion !';
+
+  // Podium
+  var podium=document.getElementById('tourn-podium');
+  if(podium){
+    podium.innerHTML='';
+    var top3=ranking.slice(0,3);
+    var order=[1,0,2];// 2e, 1er, 3e visuellement
+    var medals=['🥇','🥈','🥉'];
+    var heights=['podium-1','podium-2','podium-3'];
+    order.forEach(function(idx){
+      var p=top3[idx];
+      if(!p) return;
+      var av=p.avatar||'⚡';
+      var avHtml=av.startsWith('data:')?'<img src="'+av+'" style="width:52px;height:52px;border-radius:50%;object-fit:cover">':av;
+      var col=document.createElement('div');
+      col.className='podium-col';
+      col.innerHTML='<div style="font-size:1.4rem">'+medals[idx]+'</div>'
+        +'<div class="podium-av">'+avHtml+'</div>'
+        +'<div class="podium-name">'+escapeCommHtml(p.name)+'</div>'
+        +'<div class="podium-score">'+p.score+' pts</div>'
+        +'<div class="podium-block '+heights[idx]+'"></div>';
+      podium.appendChild(col);
+    });
+  }
+
+  // Classement complet
+  var rankEl=document.getElementById('tourn-final-ranking');
+  if(rankEl){
+    rankEl.innerHTML='';
+    ranking.forEach(function(p,i){
+      var av=p.avatar||'⚡';
+      var avHtml=av.startsWith('data:')?'<img src="'+av+'" style="width:32px;height:32px;border-radius:50%;object-fit:cover">':av;
+      var isMe=p.uid===myId;
+      var row=document.createElement('div');
+      row.style.cssText='display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;margin-bottom:6px'+(isMe?';border-color:rgba(255,214,10,.3);background:rgba(255,214,10,.05)':'');
+      row.innerHTML='<div style="font-family:Bangers,cursive;font-size:1rem;width:24px;text-align:center;color:rgba(255,255,255,.4)">'+(i+1)+'</div>'
+        +'<div style="font-size:1rem">'+avHtml+'</div>'
+        +'<div style="flex:1;font-weight:700;font-size:.85rem">'+(isMe?'<strong>'+escapeCommHtml(p.name)+'</strong>':escapeCommHtml(p.name))+'</div>'
+        +'<div style="font-family:Bangers,cursive;color:var(--gold)">'+p.score+' pts</div>';
+      rankEl.appendChild(row);
+    });
+  }
+}
+
+// ── Bracket visuel ─────────────────────────────────────────────
+function renderTournBracket(d){
+  var bracket=document.getElementById('tourn-bracket');
+  if(!bracket) return;
+  bracket.innerHTML='';
+  var rounds=d.bracket||[];
+  var currentMatches=d.currentMatches||{};
+
+  // Combiner bracket historique + matchs actuels
+  var allRounds=[];
+  for(var r=0;r<rounds.length;r++){
+    if(r<(d.currentRound||0)){
+      allRounds.push(rounds[r]||{});
+    }
+  }
+  allRounds.push(currentMatches);// round actuel
+
+  var phaseNames=['Initial','1/4','1/2','Finale'];
+
+  allRounds.forEach(function(roundMatches,ri){
+    var col=document.createElement('div');
+    col.className='bracket-round';
+    var title=document.createElement('div');
+    title.className='bracket-round-title';
+    title.textContent=phaseNames[ri]||('R'+(ri+1));
+    col.appendChild(title);
+
+    Object.values(roundMatches).forEach(function(m){
+      var box=document.createElement('div');
+      box.className='bracket-match'+(m.status==='pending'?' active':(m.status==='done'?' done':''));
+      var p1=m.p1||{};var p2=m.p2||{};
+      var p1win=m.winner===p1.uid;var p2win=m.winner===p2.uid;
+      var p1av=p1.avatar||'⚡';var p2av=(p2&&p2.avatar)||'⚡';
+      var p1score=(m.scores&&m.scores[p1.uid]!==undefined)?m.scores[p1.uid]:'';
+      var p2score=(m.scores&&p2&&m.scores[p2.uid]!==undefined)?m.scores[p2.uid]:'';
+
+      var p1Html=document.createElement('div');
+      p1Html.className='bracket-player'+(m.winner&&!p1win?' loser':'')+(p1win?' winner':'');
+      p1Html.innerHTML='<span class="bracket-av">'+p1av+'</span>'
+        +'<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.7rem">'+escapeCommHtml(p1.name||'?')+'</span>'
+        +(p1score!==''?'<span class="bracket-score">'+p1score+'</span>':'');
+
+      var p2Html=document.createElement('div');
+      if(p2){
+        p2Html.className='bracket-player'+(m.winner&&!p2win?' loser':'')+(p2win?' winner':'');
+        p2Html.innerHTML='<span class="bracket-av">'+p2av+'</span>'
+          +'<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.7rem">'+escapeCommHtml(p2.name||'?')+'</span>'
+          +(p2score!==''?'<span class="bracket-score">'+p2score+'</span>':'');
+      }else{
+        p2Html.className='bracket-player bye';
+        p2Html.innerHTML='<span style="font-size:.68rem">BYE</span>';
+      }
+
+      box.appendChild(p1Html);
+      box.appendChild(p2Html);
+      col.appendChild(box);
+    });
+
+    bracket.appendChild(col);
+  });
+}
+
+// ── Notification tournoi ───────────────────────────────────────
+var _tournNotifTimer=null;
+function showTournNotif(title,sub,duration){
+  var el=document.getElementById('tourn-notif');
+  var t=document.getElementById('tourn-notif-title');
+  var s=document.getElementById('tourn-notif-sub');
+  if(!el) return;
+  if(t) t.textContent=title;
+  if(s) s.textContent=sub;
+  el.style.display='block';
+  clearTimeout(_tournNotifTimer);
+  _tournNotifTimer=setTimeout(function(){el.style.display='none';},duration||2500);
+}
+
+// ── Partage tournoi ────────────────────────────────────────────
+function shareTournamentWhatsApp(){
+  if(!_tourn.code) return;
+  var p=loadProfile()||{};
+  var link=(typeof GAME_LINK!=='undefined'&&GAME_LINK.startsWith('http'))?GAME_LINK:'';
+  var msg='🏆 QUIZ OTAKU — TOURNOI ⚔️\n'
+    +(p.pseudo||myName||'Un joueur')+' t\'invite à un tournoi !\n\n'
+    +'🎮 Code : *'+_tourn.code+'*\n'
+    +(link?'👉 '+link+'?tourn='+_tourn.code+'\n':'')
+    +'⚡ Rejoins vite, le tournoi démarre bientôt !';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+function copyTournLink(){
+  var link=(typeof GAME_LINK!=='undefined'&&GAME_LINK.startsWith('http'))?
+    GAME_LINK+'?tourn='+_tourn.code : _tourn.code;
+  try{navigator.clipboard.writeText(link);showSF('🔗 Lien copié !','var(--gold)');}
+  catch(e){showSF('Code : '+_tourn.code,'var(--gold)');}
+}
+
+function copyTournCode(){
+  try{navigator.clipboard.writeText(_tourn.code);showSF('📋 Code copié !','var(--gold)');}
+  catch(e){}
+}
+
+function leaveTournamentLobby(){
+  if(_tourn.code&&_tourn.role==='host'){
+    dbS(FB_TOURN+'/'+_tourn.code,null).catch(function(){});
+  }else if(_tourn.code&&_tourn.role==='guest'){
+    dbS(FB_TOURN+'/'+_tourn.code+'/players/'+myId,null).catch(function(){});
+  }
+  clearTournamentListener();
+  _tourn.code='';_tourn.role='';
+  go('home');
+}
+
+function shareTournamentResult(){
+  var d=_tourn.data;
+  var ranking=d.finalRanking||[];
+  var winner=ranking[0]||{name:'?'};
+  var myPos=ranking.findIndex(function(p){return p.uid===myId;})+1;
+  var msg='🏆 QUIZ OTAKU — TOURNOI TERMINÉ !\n'
+    +'Champion : '+winner.name+' 👑\n'
+    +(myPos>0?'Ma position : #'+myPos+'\n':'')
+    +'Viens jouer toi aussi !\n'
+    +(typeof GAME_LINK!=='undefined'&&GAME_LINK.startsWith('http')?'👉 '+GAME_LINK:'');
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+// ── Intégration avec le système de jeu existant ───────────────
+// Override de checkStoryComplete pour intercepter fin de match tournoi
+var _origCheckStoryComplete=null;
+if(typeof checkStoryComplete!=='undefined') _origCheckStoryComplete=checkStoryComplete;
+
+// Hook sur la fin de partie
+document.addEventListener('DOMContentLoaded',function(){
+  // Lire ?tourn= dans l'URL
+  try{
+    var params=new URLSearchParams(window.location.search);
+    var tournParam=params.get('tourn');
+    if(tournParam&&tournParam.length>3){
+      setTimeout(function(){
+        if(fbOK()&&navigator.onLine){
+          document.getElementById('tourn-join-code').value=tournParam.toUpperCase();
+          openTournamentLobby();
+          // Auto-rejoindre après ouverture
+          setTimeout(joinTournament,800);
+        }
+      },1500);
+    }
+  }catch(e){}
+},false);
+
+// Override pour détecter rage quit en tournoi
+var _origOpenQuitModal=window.openQuitModal;
+window.openQuitModal=function(){
+  if(gameMode==='tournament'&&_tourn.inMatch){
+    // Avertir avant
+    if(!confirm('⚠️ Quitter un match de tournoi = RAGE QUIT\nTu seras éliminé et pénalisé !\n\nContinuer ?')){
+      return;
+    }
+    excludeFromTournament('rq');
+    go('tournament-bracket');
+    return;
+  }
+  if(_origOpenQuitModal) _origOpenQuitModal.apply(this,arguments);
+};
+
+// Intégrer dans la fin de partie pour le mode tournoi
+var _origRestartAll=window.restartAll;
+window.restartAll=function(){
+  if(gameMode==='tournament'){
+    // Enregistrer score du match
+    finishTournamentMatch();
+    return;
+  }
+  if(_origRestartAll) _origRestartAll.apply(this,arguments);
+};
+
+// Détecter fin de questions en mode tournoi
+// On accroche sur showResults (qui est appelé en fin de partie)
+// Le gameMode='tournament' nous permet de distinguer
 
 </script>
 </body>
