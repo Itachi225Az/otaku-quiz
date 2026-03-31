@@ -1089,6 +1089,11 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 
   <div class="sidebar-section">
     <h4>🎮 JEU</h4>
+    <div class="sidebar-item" onclick="checkOnlineThenRun(showJoinTournModal);closeSidebar()">
+      <span class="si-icon" style="color:#ff9f0a">🏆</span>
+      <span class="si-label">Rejoindre un Tournoi</span>
+      <span class="si-badge" style="background:rgba(255,159,10,.15);color:#ff9f0a">CODE</span>
+    </div>
     <div class="sidebar-item" onclick="checkOnlineThenRun(openCommunity);closeSidebar()">
       <span class="si-icon">💬</span>
       <span class="si-label">Communauté</span>
@@ -1245,6 +1250,18 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
   <div style="font-family:'Bangers',cursive;font-size:.78rem;letter-spacing:4px;color:rgba(255,255,255,.25);text-align:center;margin:16px 0 10px;display:flex;align-items:center;gap:10px;justify-content:center"><span style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1))"></span>CHOISIR UN MODE<span style="flex:1;height:1px;background:linear-gradient(270deg,transparent,rgba(255,255,255,.1))"></span></div>
 
   <!-- BOUTON COMMUNAUTÉ -->
+  <!-- Bannière rejoindre tournoi (si code dans URL) -->
+  <div id="home-join-tourn-banner" style="display:none;background:linear-gradient(135deg,rgba(255,159,10,.15),rgba(255,100,0,.1));border:1.5px solid rgba(255,159,10,.4);border-radius:16px;padding:14px 16px;margin:0 0 10px;cursor:pointer;animation:glow-pulse 2s infinite" onclick="quickJoinTournFromBanner()">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:2rem">🏆</div>
+      <div style="flex:1">
+        <div style="font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:#ff9f0a">INVITATION TOURNOI</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);margin-top:2px">Code : <strong id="home-tourn-code-display" style="color:#ff9f0a;letter-spacing:2px">------</strong></div>
+      </div>
+      <div style="background:linear-gradient(135deg,#ff9f0a,#ff6b00);border:none;border-radius:10px;padding:8px 14px;color:#fff;font-family:'Bangers',cursive;font-size:.9rem;letter-spacing:1.5px">REJOINDRE →</div>
+    </div>
+  </div>
+
   <div onclick="checkOnlineThenRun(openCommunity)" style="background:linear-gradient(135deg,rgba(191,90,242,.15),rgba(10,132,255,.12));border:1.5px solid rgba(191,90,242,.3);border-radius:18px;padding:14px 18px;margin:0 0 12px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
     <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,rgba(191,90,242,.25),rgba(10,132,255,.2));display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(191,90,242,.3);font-size:1.5rem">💬</div>
     <div style="flex:1">
@@ -2167,6 +2184,26 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 <div class="tourn-notif" id="tourn-notif">
   <div class="tourn-notif-title" id="tourn-notif-title">🏆</div>
   <div class="tourn-notif-sub" id="tourn-notif-sub"></div>
+</div>
+
+
+<!-- Modal rejoindre tournoi depuis accueil -->
+<div id="join-tourn-modal" style="position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:700;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px)">
+  <div style="background:linear-gradient(145deg,#1a1a2e,#0f0f1e);border:1.5px solid rgba(255,159,10,.35);border-radius:22px;padding:26px 20px;max-width:340px;width:100%;text-align:center;animation:popIn .4s cubic-bezier(.34,1.56,.64,1)">
+    <div style="font-size:2.5rem;margin-bottom:8px">🏆</div>
+    <div style="font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:3px;color:#ff9f0a;margin-bottom:6px">REJOINDRE UN TOURNOI</div>
+    <div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:18px;line-height:1.5">Entre le code reçu par WhatsApp<br>pour rejoindre la compétition</div>
+    <input id="home-join-tourn-input" class="inp code-inp" placeholder="CODE" maxlength="6"
+      style="font-size:1.8rem;letter-spacing:10px;text-align:center;margin-bottom:12px"
+      oninput="this.value=this.value.toUpperCase()">
+    <div id="home-join-tourn-err" class="errbox hidden" style="margin-bottom:10px"></div>
+    <button onclick="joinTournFromHome()" style="width:100%;padding:14px;background:linear-gradient(135deg,#ff9f0a,#ff6b00);border:none;border-radius:12px;color:#fff;font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:2px;cursor:pointer;box-shadow:0 4px 20px rgba(255,159,10,.35);margin-bottom:8px">
+      🚀 REJOINDRE
+    </button>
+    <button onclick="document.getElementById('join-tourn-modal').style.display='none'" style="width:100%;padding:10px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.5);font-family:'Bangers',cursive;font-size:.95rem;letter-spacing:2px;cursor:pointer">
+      ANNULER
+    </button>
+  </div>
 </div>
 
 </div><!-- end app -->
@@ -7254,10 +7291,17 @@ function shareTournamentWhatsApp(){
   var p=loadProfile()||{};
   var link=(typeof GAME_LINK!=='undefined'&&GAME_LINK.startsWith('http'))?GAME_LINK:'';
   var msg='🏆 QUIZ OTAKU — TOURNOI ⚔️\n'
-    +(p.pseudo||myName||'Un joueur')+' t\'invite à un tournoi !\n\n'
-    +'🎮 Code : *'+_tourn.code+'*\n'
-    +(link?'👉 '+link+'?tourn='+_tourn.code+'\n':'')
-    +'⚡ Rejoins vite, le tournoi démarre bientôt !';
+    +(p.pseudo||myName||'Un joueur')+' t\'invite à rejoindre son tournoi !\n\n'
+    +'━━━━━━━━━━━━━━━\n'
+    +'🎮 CODE : *'+_tourn.code+'*\n'
+    +'━━━━━━━━━━━━━━━\n\n'
+    +'📱 *COMMENT REJOINDRE :*\n'
+    +'1️⃣ Ouvre Quiz Otaku\n'
+    +'2️⃣ Va sur *COMPÉTITION* (en bas de la liste des modes)\n'
+    +'3️⃣ Entre le code *'+_tourn.code+'* dans la section\n    \"Rejoindre un tournoi\"\n'
+    +'4️⃣ Clique *REJOINDRE* 🚀\n\n'
+    +(link?'🔗 Ou clique directement : '+link+'?tourn='+_tourn.code+'\n\n':'')
+    +'⚡ Vite, le tournoi démarre bientôt !';
   window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 }
 
@@ -7350,6 +7394,107 @@ window.restartAll=function(){
 // Détecter fin de questions en mode tournoi
 // On accroche sur showResults (qui est appelé en fin de partie)
 // Le gameMode='tournament' nous permet de distinguer
+
+// ─── REJOINDRE TOURNOI DEPUIS ACCUEIL ────────────────────────
+function showJoinTournModal(){
+  var modal = document.getElementById('join-tourn-modal');
+  var inp = document.getElementById('home-join-tourn-input');
+  var err = document.getElementById('home-join-tourn-err');
+  if(modal) modal.style.display='flex';
+  if(inp){inp.value='';inp.focus();}
+  if(err) err.classList.add('hidden');
+}
+
+async function joinTournFromHome(){
+  var inp = document.getElementById('home-join-tourn-input');
+  var err = document.getElementById('home-join-tourn-err');
+  var code = inp?inp.value.trim().toUpperCase():'';
+  if(!code||code.length<4){
+    if(err){err.textContent='Entre un code valide (6 lettres) !';err.classList.remove('hidden');}
+    return;
+  }
+  if(err) err.classList.add('hidden');
+
+  // Vérifier que le tournoi existe
+  try{
+    var snap = await dbG(FB_TOURN+'/'+code);
+    if(!snap.exists()){
+      if(err){err.textContent='❌ Tournoi introuvable ! Vérifie le code.';err.classList.remove('hidden');}
+      return;
+    }
+    var d = snap.val();
+    if(d.status==='finished'){
+      if(err){err.textContent='❌ Ce tournoi est déjà terminé.';err.classList.remove('hidden');}
+      return;
+    }
+    if(d.status!=='waiting'){
+      if(err){err.textContent='❌ Le tournoi a déjà commencé !';err.classList.remove('hidden');}
+      return;
+    }
+    var pCount = Object.keys(d.players||{}).length;
+    var maxSize = (d.config&&d.config.size)||4;
+    if(pCount>=maxSize){
+      if(err){err.textContent='❌ Le tournoi est complet !';err.classList.remove('hidden');}
+      return;
+    }
+  }catch(e){
+    if(err){err.textContent='❌ Erreur réseau. Réessaie.';err.classList.remove('hidden');}
+    return;
+  }
+
+  // Fermer modal et ouvrir le lobby avec ce code
+  document.getElementById('join-tourn-modal').style.display='none';
+  openTournamentLobby();
+
+  // Pré-remplir le code et rejoindre automatiquement
+  setTimeout(function(){
+    var codeInp = document.getElementById('tourn-join-code');
+    if(codeInp){codeInp.value=code;}
+    joinTournament();
+  }, 700);
+}
+
+function quickJoinTournFromBanner(){
+  var codeEl = document.getElementById('home-tourn-code-display');
+  var code = codeEl?codeEl.textContent.trim():'';
+  if(!code||code==='------') return;
+  var inp = document.getElementById('home-join-tourn-input');
+  if(inp) inp.value=code;
+  showJoinTournModal();
+}
+
+// Améliorer parseRoomURL pour afficher la bannière d'invitation
+var _origParseRoomURL = typeof parseRoomURL==='function'?parseRoomURL:null;
+function _enhancedParseRoomURL(){
+  try{
+    var params=new URLSearchParams(window.location.search);
+    // Code tournoi dans l'URL ?tourn=CODE
+    var tournCode=params.get('tourn');
+    if(tournCode&&tournCode.length>=4){
+      var banner=document.getElementById('home-join-tourn-banner');
+      var codeDisp=document.getElementById('home-tourn-code-display');
+      if(banner){banner.style.display='block';}
+      if(codeDisp){codeDisp.textContent=tournCode.toUpperCase();}
+      // Auto-ouvrir si ?tourn=CODE et Firebase prêt
+      if(fbOK()&&navigator.onLine){
+        setTimeout(function(){
+          openTournamentLobby();
+          setTimeout(function(){
+            var ci=document.getElementById('tourn-join-code');
+            if(ci)ci.value=tournCode.toUpperCase();
+            joinTournament();
+          },700);
+        },1500);
+      }
+    }
+    // Appeler l'original pour le join salle duel
+    if(_origParseRoomURL) _origParseRoomURL();
+  }catch(e){}
+}
+// Remplacer parseRoomURL
+if(typeof parseRoomURL!=='undefined'){
+  parseRoomURL = _enhancedParseRoomURL;
+}
 
 </script>
 </body>
