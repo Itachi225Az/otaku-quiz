@@ -834,8 +834,8 @@ body[data-theme="abidjan"] .daily-banner{border-color:rgba(0,154,68,.35);}
    ══════════════════════════════════ */
 #hdr-profile{display:none;}
 #hdr-profile.visible{display:flex!important;}
-/* Masquer le bouton ⚙️ quand profil visible */
-body.has-profile .settings-btn#hdr-settings-btn{display:none;}
+/* ⚙️ Bouton paramètres TOUJOURS visible — BUG FIX v5.7 */
+body.has-profile .settings-btn#hdr-settings-btn{display:flex!important;}
 
 /* ══════════════════════════════════
    V5.1 CSS
@@ -852,12 +852,18 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 .av-img-preview{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);display:none;}
 
 /* Badge popup */
-@keyframes badgeIn{0%{transform:translateY(80px) scale(.7);opacity:0}60%{transform:translateY(-10px) scale(1.05);opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
-@keyframes badgeOut{to{transform:translateY(80px) scale(.7);opacity:0}}
-#badge-popup{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1a1a2e,#0f0f1e);border:2px solid var(--gold);border-radius:16px;padding:16px 22px;text-align:center;z-index:500;display:none;animation:badgeIn .5s cubic-bezier(.34,1.56,.64,1) both;min-width:220px;box-shadow:0 8px 32px rgba(245,168,0,.3);}
-.bdg-icon{font-size:2.8rem;display:block;margin-bottom:5px;}
-.bdg-title{font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:3px;color:var(--gold);}
-.bdg-desc{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:4px;}
+@keyframes badgeIn{0%{transform:translateX(-50%) translateY(80px) scale(.7);opacity:0}60%{transform:translateX(-50%) translateY(-12px) scale(1.06);opacity:1}100%{transform:translateX(-50%) translateY(0) scale(1);opacity:1}}
+@keyframes badgeOut{to{transform:translateX(-50%) translateY(80px) scale(.7);opacity:0}}
+@keyframes badgeShine{0%,100%{box-shadow:0 8px 32px rgba(245,168,0,.3),0 0 0 0 rgba(255,214,10,.4)}50%{box-shadow:0 8px 48px rgba(245,168,0,.6),0 0 0 8px rgba(255,214,10,.0)}}
+@keyframes badgeIconBounce{0%,100%{transform:scale(1) rotate(0deg)}30%{transform:scale(1.25) rotate(-8deg)}60%{transform:scale(1.15) rotate(5deg)}}
+@keyframes badgeParticle{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0)}}
+@keyframes spin{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+#badge-popup{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1a1200,#0f0f1e);border:2px solid var(--gold);border-radius:20px;padding:20px 28px;text-align:center;z-index:500;display:none;min-width:260px;box-shadow:0 8px 40px rgba(245,168,0,.4),0 0 80px rgba(255,214,10,.1);}
+.bdg-icon{font-size:3rem;display:block;margin-bottom:6px;animation:badgeIconBounce .8s ease both;}
+.bdg-unlocked-label{font-size:.58rem;letter-spacing:3px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-bottom:4px;}
+.bdg-title{font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:3px;color:var(--gold);}
+.bdg-desc{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:5px;line-height:1.4;}
+.bdg-bar{height:3px;background:linear-gradient(90deg,var(--gold),var(--orange));border-radius:3px;margin-top:10px;animation:shimmer 1.5s infinite;background-size:200% 100%;}
 
 /* Friends screen */
 .friend-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:10px;margin-bottom:6px;}
@@ -1244,8 +1250,34 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 
   <div class="version-box">
     <div class="v-label">VERSION DU JEU</div>
-    <div class="v-num">5.6.3 🎌</div>
-    <div style="font-size:.65rem;color:rgba(255,255,255,.25);margin-top:3px">500+ questions · 9 modes · Multijoueur 2-20</div>
+    <div class="v-num">5.7.0 🎌</div>
+    <div style="font-size:.65rem;color:rgba(255,255,255,.25);margin-top:3px">600+ questions · 9 modes · Multijoueur 2-20</div>
+  </div>
+
+  <!-- 👑 SECTION ADMIN — visible seulement pour les admins -->
+  <div class="sidebar-section" id="sb-admin-section" style="display:none;border:1.5px solid rgba(255,214,10,.2);border-radius:12px;margin:8px;background:rgba(255,214,10,.04)">
+    <h4 style="color:var(--gold)">👑 ADMINISTRATION</h4>
+    <div class="sidebar-item" onclick="openAdminPanel();closeSidebar()" style="color:var(--gold)">
+      <span class="si-icon">👑</span>
+      <span class="si-label">Panneau Admin</span>
+      <span class="si-badge" style="background:rgba(255,214,10,.2);color:var(--gold)">ADMIN</span>
+    </div>
+    <div class="sidebar-item" onclick="openAdminQuestions();closeSidebar()">
+      <span class="si-icon">✍️</span>
+      <span class="si-label">Créer des questions</span>
+    </div>
+    <div class="sidebar-item" onclick="openAdminTournament();closeSidebar()">
+      <span class="si-icon">🏆</span>
+      <span class="si-label">Gérer les tournois</span>
+    </div>
+    <div class="sidebar-item" onclick="openAdminPlayers();closeSidebar()">
+      <span class="si-icon">👥</span>
+      <span class="si-label">Gérer les joueurs</span>
+    </div>
+    <div class="sidebar-item" onclick="openAdminBroadcast();closeSidebar()">
+      <span class="si-icon">📢</span>
+      <span class="si-label">Notif globale</span>
+    </div>
   </div>
 
   <div class="sidebar-section">
@@ -1820,11 +1852,23 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
   <button class="btn btn-ghost btn-full" style="margin-top:10px" onclick="go('home')">🏠 ACCUEIL</button>
 </div>
 
-<!-- ════ BADGE POPUP ════ -->
+<!-- ════ BADGE POPUP — v5.7 Amélioré ════ -->
 <div id="badge-popup">
-  <span class="bdg-icon" id="bdg-icon">🏅</span>
-  <div class="bdg-title" id="bdg-title">BADGE DÉBLOQUÉ !</div>
+  <div id="bdg-particles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:20px"></div>
+  <!-- Rayons décoratifs -->
+  <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:20px;opacity:.15">
+    <div style="position:absolute;top:50%;left:50%;width:200%;padding-top:200%;transform:translate(-50%,-50%);background:conic-gradient(from 0deg,transparent 0deg,rgba(255,214,10,.3) 10deg,transparent 20deg,transparent 30deg,rgba(255,214,10,.3) 40deg,transparent 50deg,transparent 60deg,rgba(255,214,10,.3) 70deg,transparent 80deg,transparent 90deg,rgba(255,214,10,.3) 100deg,transparent 110deg,transparent 120deg,rgba(255,214,10,.3) 130deg,transparent 140deg,transparent 150deg,rgba(255,214,10,.3) 160deg,transparent 170deg,transparent 180deg,rgba(255,214,10,.3) 190deg,transparent 200deg,transparent 210deg,rgba(255,214,10,.3) 220deg,transparent 230deg,transparent 240deg,rgba(255,214,10,.3) 250deg,transparent 260deg,transparent 270deg,rgba(255,214,10,.3) 280deg,transparent 290deg,transparent 300deg,rgba(255,214,10,.3) 310deg,transparent 320deg,transparent 330deg,rgba(255,214,10,.3) 340deg,transparent 350deg,transparent 360deg);animation:spin 8s linear infinite"></div>
+  </div>
+  <div class="bdg-unlocked-label" style="display:flex;align-items:center;justify-content:center;gap:6px">
+    <span style="animation:pulse 1s ease infinite">🎉</span>
+    BADGE DÉBLOQUÉ !
+    <span style="animation:pulse 1s ease .3s infinite">🎉</span>
+  </div>
+  <span class="bdg-icon" id="bdg-icon" style="display:block;font-size:3.5rem;margin:10px auto;animation:badgeIconBounce .6s ease 0.2s 3"></span>
+  <div class="bdg-title" id="bdg-title" style="font-size:1.3rem"></div>
   <div class="bdg-desc" id="bdg-desc"></div>
+  <div class="bdg-bar"></div>
+  <div id="bdg-coins-reward" style="display:none;margin-top:8px;font-family:Bangers,cursive;font-size:1rem;letter-spacing:2px;color:var(--gold);background:rgba(255,214,10,.1);border:1px solid rgba(255,214,10,.25);border-radius:10px;padding:5px 14px;display:inline-block">+10 🪙 PIÈCES</div>
 </div>
 
 <!-- ════ MODAL QUITTER ════ -->
@@ -2195,22 +2239,25 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 <div id="s-tournament-bracket" class="screen hidden">
   <button class="back-btn" onclick="go('home')" style="opacity:.5">← Quitter</button>
 
-  <!-- Header -->
-  <div style="text-align:center;margin-bottom:10px">
-    <div style="font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:3px;color:#ff9f0a">🏆 TOURNOI EN COURS</div>
-    <div id="tourn-bracket-phase" style="font-size:.72rem;color:rgba(255,255,255,.4);letter-spacing:2px">PHASE INITIALE</div>
+  <!-- Header amélioré v5.7 -->
+  <div style="text-align:center;margin-bottom:12px">
+    <div style="font-family:'Bangers',cursive;font-size:1.7rem;letter-spacing:3px;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">🏆 TOURNOI EN COURS</div>
+    <div id="tourn-bracket-phase" style="font-size:.78rem;color:var(--gold);letter-spacing:3px;margin-top:2px;font-family:'Bangers',cursive">PHASE INITIALE</div>
   </div>
+
+  <!-- Fil d'Ariane des phases -->
+  <div id="tourn-phase-trail" style="display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:12px;flex-wrap:wrap"></div>
 
   <!-- HUD match actuel -->
   <div class="tourn-hud" id="tourn-match-hud">
     <div>
       <div class="tourn-hud-info" id="tourn-match-label">MATCH EN COURS</div>
       <div id="tourn-match-players" class="tourn-hud-players" style="margin-top:4px">
-        <span id="tourn-p1-av">👤</span>
+        <span id="tourn-p1-av" style="font-size:1.3rem">👤</span>
         <span id="tourn-p1-name" style="color:var(--p1)">Joueur 1</span>
         <span class="tourn-vs">VS</span>
         <span id="tourn-p2-name" style="color:var(--p2)">Joueur 2</span>
-        <span id="tourn-p2-av">👤</span>
+        <span id="tourn-p2-av" style="font-size:1.3rem">👤</span>
       </div>
     </div>
     <div style="text-align:right">
@@ -2220,12 +2267,12 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
   </div>
 
   <!-- Bracket visuel -->
-  <div style="font-family:'Bangers',cursive;font-size:.72rem;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:6px">TABLEAU</div>
+  <div style="font-family:'Bangers',cursive;font-size:.72rem;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:6px">TABLEAU — ARBRE DE TOURNOI</div>
   <div class="bracket-wrap">
-    <div class="bracket" id="tourn-bracket"></div>
+    <div class="bracket" id="tourn-bracket" style="align-items:stretch"></div>
   </div>
 
-  <!-- Bouton rejoindre match si c'est notre tour -->
+  <!-- Bouton rejoindre match -->
   <div id="tourn-play-btn-wrap" style="display:none;margin-top:12px">
     <button class="btn btn-full" onclick="enterTournamentMatch()"
       style="background:linear-gradient(135deg,#ff9f0a,#ff6b00);font-size:1.3rem;animation:glow-pulse 1.5s infinite">
@@ -2236,7 +2283,7 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
     </div>
   </div>
 
-  <!-- Statut si éliminé ou spectateur -->
+  <!-- Statut éliminé/spectateur -->
   <div id="tourn-spectator-msg" style="display:none;text-align:center;padding:14px;background:rgba(255,59,48,.08);border:1px solid rgba(255,59,48,.2);border-radius:12px;margin-top:10px">
     <div style="font-size:1.5rem">😔</div>
     <div style="font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;color:var(--red);margin-top:4px" id="tourn-spectator-txt">ÉLIMINÉ</div>
@@ -2381,6 +2428,188 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 </div>
 
 </div><!-- end app -->
+
+<!-- ════════════════════════════════════════════════════════════
+     👑 PANNEAU ADMIN — v5.7
+     ════════════════════════════════════════════════════════════ -->
+<div id="admin-panel-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:600;overflow-y:auto;padding:0 0 40px">
+  <!-- Header Admin -->
+  <div style="background:linear-gradient(135deg,#1a1400,#0f0f1e);border-bottom:2px solid rgba(255,214,10,.3);padding:18px 18px 14px;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:12px">
+    <span style="font-size:1.8rem">👑</span>
+    <div style="flex:1">
+      <div style="font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:3px;color:var(--gold)">PANNEAU ADMIN</div>
+      <div style="font-size:.65rem;color:rgba(255,255,255,.35);letter-spacing:2px" id="admin-logged-as">Quiz Otaku v5.7</div>
+    </div>
+    <button onclick="closeAdminPanel()" style="background:rgba(255,59,48,.15);border:1.5px solid rgba(255,59,48,.3);color:var(--red);border-radius:10px;padding:8px 14px;font-family:'Bangers',cursive;font-size:.9rem;letter-spacing:1px;cursor:pointer">✕ FERMER</button>
+  </div>
+
+  <div style="max-width:700px;margin:0 auto;padding:16px">
+
+    <!-- Onglets -->
+    <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="admin-tab active" onclick="adminTab('stats')" id="atab-stats">📊 Stats</button>
+      <button class="admin-tab" onclick="adminTab('questions')" id="atab-questions">✍️ Questions</button>
+      <button class="admin-tab" onclick="adminTab('tournament')" id="atab-tournament">🏆 Tournoi</button>
+      <button class="admin-tab" onclick="adminTab('players')" id="atab-players">👥 Joueurs</button>
+      <button class="admin-tab" onclick="adminTab('broadcast')" id="atab-broadcast">📢 Diffusion</button>
+    </div>
+
+    <!-- ─── Onglet STATS ─── -->
+    <div id="apanel-stats" class="apanel">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+        <div style="background:rgba(10,132,255,.1);border:1px solid rgba(10,132,255,.25);border-radius:14px;padding:14px;text-align:center">
+          <div style="font-family:'Bangers',cursive;font-size:1.8rem;color:var(--blue)" id="adm-stat-players">—</div>
+          <div style="font-size:.62rem;color:rgba(255,255,255,.4);letter-spacing:1px">JOUEURS</div>
+        </div>
+        <div style="background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.25);border-radius:14px;padding:14px;text-align:center">
+          <div style="font-family:'Bangers',cursive;font-size:1.8rem;color:var(--green)" id="adm-stat-matchs">—</div>
+          <div style="font-size:.62rem;color:rgba(255,255,255,.4);letter-spacing:1px">QUESTIONS</div>
+        </div>
+        <div style="background:rgba(255,214,10,.1);border:1px solid rgba(255,214,10,.25);border-radius:14px;padding:14px;text-align:center">
+          <div style="font-family:'Bangers',cursive;font-size:1.8rem;color:var(--gold)" id="adm-stat-custom">—</div>
+          <div style="font-size:.62rem;color:rgba(255,255,255,.4);letter-spacing:1px">Q. CUSTOM</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px">
+        <div style="font-family:'Bangers',cursive;font-size:.8rem;letter-spacing:2px;color:rgba(255,255,255,.4);margin-bottom:10px">JOUEURS BANNIS</div>
+        <div id="adm-banned-list" style="font-size:.78rem;color:rgba(255,255,255,.5)">Aucun joueur banni</div>
+      </div>
+    </div>
+
+    <!-- ─── Onglet QUESTIONS ─── -->
+    <div id="apanel-questions" class="apanel" style="display:none">
+      <div style="font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;color:var(--gold);margin-bottom:12px">✍️ CRÉER UNE QUESTION</div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin-bottom:16px">
+        <div style="margin-bottom:8px"><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">QUESTION *</label>
+          <textarea id="adm-q-text" class="inp" rows="2" placeholder="Ex: Quel est le vrai nom de Naruto Uzumaki ?" style="resize:vertical"></textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <div><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">RÉPONSE A *</label>
+            <input id="adm-op0" class="inp" placeholder="Option A"></div>
+          <div><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">RÉPONSE B *</label>
+            <input id="adm-op1" class="inp" placeholder="Option B"></div>
+          <div><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">RÉPONSE C *</label>
+            <input id="adm-op2" class="inp" placeholder="Option C"></div>
+          <div><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">RÉPONSE D *</label>
+            <input id="adm-op3" class="inp" placeholder="Option D"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+          <div><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">BONNE RÉPONSE</label>
+            <select id="adm-ok" class="inp" style="cursor:pointer">
+              <option value="0">A</option><option value="1">B</option>
+              <option value="2">C</option><option value="3">D</option>
+            </select></div>
+          <div><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">CATÉGORIE</label>
+            <select id="adm-cat" class="inp" style="cursor:pointer">
+              <option value="Shōnen">Shōnen</option><option value="Mangaka">Mangaka</option>
+              <option value="Anime">Anime</option><option value="Naruto">Naruto</option>
+              <option value="Dragon Ball">Dragon Ball</option><option value="One Piece">One Piece</option>
+              <option value="Shōjo">Shōjo</option><option value="Seinen">Seinen</option>
+              <option value="Japon">Culture Japonaise</option><option value="Côte d'Ivoire">Côte d'Ivoire</option>
+              <option value="BD Africaine">BD Africaine</option><option value="Custom">Custom</option>
+            </select></div>
+          <div><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">DIFFICULTÉ</label>
+            <select id="adm-diff" class="inp" style="cursor:pointer">
+              <option value="facile">Facile</option><option value="moyen">Moyen</option>
+              <option value="difficile">Difficile</option><option value="expert">Expert</option>
+            </select></div>
+        </div>
+        <div style="margin-bottom:12px"><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">EXPLICATION (optionnel)</label>
+          <input id="adm-q-explain" class="inp" placeholder="Explication de la bonne réponse..."></div>
+        <div id="adm-q-err" style="display:none;background:rgba(255,59,48,.12);border:1px solid rgba(255,59,48,.3);border-radius:8px;padding:8px 12px;font-size:.78rem;color:var(--red);margin-bottom:8px"></div>
+        <div style="display:flex;gap:8px">
+          <button onclick="adminSaveQuestion()" style="flex:1;padding:12px;background:linear-gradient(135deg,var(--gold),var(--orange));border:none;border-radius:10px;color:#000;font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;cursor:pointer">💾 SAUVEGARDER</button>
+          <button onclick="adminClearQuestionForm()" style="padding:12px 16px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.5);font-family:'Bangers',cursive;font-size:.9rem;cursor:pointer">VIDER</button>
+        </div>
+      </div>
+
+      <!-- Liste questions custom -->
+      <div style="font-family:'Bangers',cursive;font-size:.85rem;letter-spacing:2px;color:rgba(255,255,255,.4);margin-bottom:8px">📋 QUESTIONS CRÉÉES (<span id="adm-custom-count">0</span>)</div>
+      <div id="adm-q-list" style="max-height:320px;overflow-y:auto"></div>
+    </div>
+
+    <!-- ─── Onglet TOURNOI ─── -->
+    <div id="apanel-tournament" class="apanel" style="display:none">
+      <div style="font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;color:var(--gold);margin-bottom:12px">🏆 CRÉER UN TOURNOI</div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin-bottom:16px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <div><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">NOM DU TOURNOI</label>
+            <input id="adm-t-name" class="inp" placeholder="Ex: Tournoi Shōnen #1"></div>
+          <div><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">NB JOUEURS</label>
+            <select id="adm-t-size" class="inp" style="cursor:pointer">
+              <option value="4">4 joueurs</option><option value="8">8 joueurs</option>
+              <option value="16">16 joueurs</option></select></div>
+        </div>
+        <div style="margin-bottom:8px"><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">CATÉGORIE</label>
+          <select id="adm-t-cat" class="inp" style="cursor:pointer">
+            <option value="all">Toutes catégories</option><option value="Shōnen">Shōnen</option>
+            <option value="Naruto">Naruto</option><option value="Dragon Ball">Dragon Ball</option>
+            <option value="One Piece">One Piece</option><option value="Custom">Questions Custom uniquement</option>
+          </select></div>
+        <div style="margin-bottom:12px"><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">QUESTIONS PAR MATCH</label>
+          <select id="adm-t-qnum" class="inp" style="cursor:pointer">
+            <option value="5">5 questions</option><option value="10" selected>10 questions</option>
+            <option value="15">15 questions</option></select></div>
+        <button onclick="adminCreateTournament()" style="width:100%;padding:12px;background:linear-gradient(135deg,var(--gold),var(--orange));border:none;border-radius:10px;color:#000;font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;cursor:pointer">🚀 CRÉER ET LANCER</button>
+      </div>
+      <div style="font-family:'Bangers',cursive;font-size:.85rem;letter-spacing:2px;color:rgba(255,255,255,.4);margin-bottom:8px">TOURNOIS ACTIFS</div>
+      <div id="adm-tourn-list"><div style="text-align:center;color:rgba(255,255,255,.25);padding:20px;font-size:.78rem">Aucun tournoi actif</div></div>
+    </div>
+
+    <!-- ─── Onglet JOUEURS ─── -->
+    <div id="apanel-players" class="apanel" style="display:none">
+      <div style="margin-bottom:12px;display:flex;gap:8px">
+        <input id="adm-search-player" class="inp" placeholder="🔍 Rechercher un joueur..." oninput="adminFilterPlayers()" style="flex:1">
+        <button onclick="adminLoadPlayers()" style="padding:10px 14px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;color:rgba(255,255,255,.7);cursor:pointer">🔄</button>
+      </div>
+      <div id="adm-players-list"><div style="text-align:center;color:rgba(255,255,255,.25);padding:20px;font-size:.78rem">Clique sur 🔄 pour charger les joueurs</div></div>
+    </div>
+
+    <!-- ─── Onglet DIFFUSION ─── -->
+    <div id="apanel-broadcast" class="apanel" style="display:none">
+      <div style="font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;color:var(--gold);margin-bottom:12px">📢 NOTIFICATION GLOBALE</div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px">
+        <div style="margin-bottom:8px"><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">TITRE</label>
+          <input id="adm-bc-title" class="inp" placeholder="Ex: 🔥 Nouveau tournoi disponible !"></div>
+        <div style="margin-bottom:12px"><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">MESSAGE</label>
+          <textarea id="adm-bc-msg" class="inp" rows="3" placeholder="Message à envoyer à tous les joueurs..." style="resize:vertical"></textarea></div>
+        <div style="margin-bottom:12px"><label style="font-size:.7rem;letter-spacing:1px;color:rgba(255,255,255,.4);display:block;margin-bottom:4px">TYPE</label>
+          <select id="adm-bc-type" class="inp" style="cursor:pointer">
+            <option value="📢">📢 Info générale</option><option value="🔥">🔥 Urgence</option>
+            <option value="🏆">🏆 Tournoi</option><option value="🎁">🎁 Récompense</option>
+          </select></div>
+        <button onclick="adminSendBroadcast()" style="width:100%;padding:12px;background:linear-gradient(135deg,var(--blue),var(--purple));border:none;border-radius:10px;color:#fff;font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;cursor:pointer">📡 ENVOYER À TOUS</button>
+        <div id="adm-bc-feedback" style="display:none;margin-top:10px;text-align:center;font-size:.78rem;color:var(--green)"></div>
+      </div>
+    </div>
+
+  </div><!-- /max-width -->
+</div><!-- /admin-panel-overlay -->
+
+<!-- ────────────────────────────────────────────────────────────
+     CSS Admin Panel
+     ──────────────────────────────────────────────────────────── -->
+<style>
+.admin-tab{padding:8px 14px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.5);font-family:'Bangers',cursive;font-size:.88rem;letter-spacing:1.5px;cursor:pointer;transition:all .2s;}
+.admin-tab:hover{background:rgba(255,255,255,.1);color:#fff;}
+.admin-tab.active{background:linear-gradient(135deg,rgba(255,214,10,.2),rgba(255,159,10,.15));border-color:rgba(255,214,10,.5);color:var(--gold);}
+.apanel{animation:fadeUp .3s ease both;}
+.adm-q-row{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:10px 12px;margin-bottom:7px;display:flex;align-items:flex-start;gap:10px;}
+.adm-q-row:hover{background:rgba(255,255,255,.07);}
+.adm-p-row{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:10px 12px;margin-bottom:7px;display:flex;align-items:center;gap:10px;}
+.adm-p-row:hover{background:rgba(255,255,255,.07);}
+.adm-action-btn{padding:5px 10px;border-radius:7px;font-size:.65rem;font-weight:700;cursor:pointer;border:1px solid;transition:all .2s;letter-spacing:.5px;}
+.adm-ban-btn{background:rgba(255,59,48,.1);border-color:rgba(255,59,48,.3);color:var(--red);}
+.adm-ban-btn:hover{background:rgba(255,59,48,.2);}
+.adm-del-btn{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.5);}
+.adm-del-btn:hover{background:rgba(255,255,255,.12);}
+.adm-edit-btn{background:rgba(10,132,255,.1);border-color:rgba(10,132,255,.3);color:var(--blue);}
+.adm-edit-btn:hover{background:rgba(10,132,255,.2);}
+.diff-badge{display:inline-block;padding:1px 7px;border-radius:8px;font-size:.6rem;font-weight:700;letter-spacing:.5px;}
+.diff-facile{background:rgba(48,209,88,.15);color:#30d158;}
+.diff-moyen{background:rgba(255,214,10,.15);color:var(--gold);}
+.diff-difficile{background:rgba(255,159,10,.15);color:var(--orange);}
+.diff-expert{background:rgba(255,59,48,.15);color:var(--red);}
+</style>
 
 <!-- FIREBASE -->
 <script type="module">
@@ -2957,9 +3186,15 @@ async function loadLeaderboard(){
       const isMe=p.id===myId;
       const row=document.createElement('div');
       row.className='lb-row'+(isMe?' me':'');
+      row.dataset.lbUid = p.id||'';
       const rank=i<3?`<span class="lb-rank ${rankColors[i]}">${rankEmojis[i]}</span>`:`<span class="lb-rank" style="color:rgba(255,255,255,.4)">#${i+1}</span>`;
-      row.innerHTML=`${rank}<div class="lb-avatar">${AVATARS[i%AVATARS.length]}</div>
-        <div class="lb-info"><div class="lb-name">${p.name||'Joueur'}${isMe?'<span class="lb-you">MOI</span>':''}</div>
+      // Avatar réel du joueur (v5.7)
+      const av = p.avatar||AVATARS[i%AVATARS.length];
+      const avHtml = av.startsWith('data:')
+        ? `<img src="${av}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.15)">`
+        : `<span style="font-size:1.5rem">${av}</span>`;
+      row.innerHTML=`${rank}<div class="lb-avatar" style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.06);overflow:hidden;flex-shrink:0">${avHtml}</div>
+        <div class="lb-info"><div class="lb-name" data-lb-uid="${p.id||''}">${p.name||'Joueur'}${isMe?'<span class="lb-you">MOI</span>':''}</div>
         <div class="lb-detail">${p.played||0} parties · ${p.correct||0} correctes</div></div>
         <div class="lb-score">${p.best||0}<span style="font-size:.6rem;color:rgba(255,255,255,.3)"> pts</span></div>`;
       lb.appendChild(row);
@@ -2995,7 +3230,11 @@ async function saveLeaderboardEntry(){
   if(!fbOK()||!navigator.onLine)return;
   var s=loadStats();
   try{
-    await dbU('leaderboard/'+myId,{name:nm,best:s.best,played:s.played,correct:s.correct,updated:Date.now()});
+    // v5.7 — sauvegarder aussi l'avatar pour l'afficher dans le classement
+    var av = (p&&p.avatar)||'⚡';
+    // Si base64, on ne sauvegarde que les emoji/petites valeurs pour Firebase
+    var avToSave = av.startsWith('data:') ? (p&&p.avatarEmoji||'⚡') : av;
+    await dbU('leaderboard/'+myId,{name:nm,best:s.best,played:s.played,correct:s.correct,avatar:avToSave,updated:Date.now()});
     localStorage.removeItem('oq_pending_sync');
   }catch(e){}
 }
@@ -4415,7 +4654,8 @@ function updateHeaderProfile(){
     if(ps)ps.textContent=p.pseudo||'Joueur';
     if(co)co.textContent=p.coins||0;
   }
-  if(settBtn)settBtn.style.display='none';
+  // BUG FIX v5.7 — Le bouton ⚙️ reste TOUJOURS visible
+  if(settBtn)settBtn.style.display='';
   document.body.classList.add('has-profile');
 }
 
@@ -4527,32 +4767,123 @@ function showBadgePopup(id){
   var def=ALL_BADGES.find(function(b){return b.id===id;})||{icon:'🏅',name:'BADGE',desc:'Badge débloqué !'};
   var pop=document.getElementById('badge-popup');if(!pop)return;
   document.getElementById('bdg-icon').textContent=def.icon;
-  document.getElementById('bdg-title').textContent='🏅 '+def.name;
-  document.getElementById('bdg-desc').textContent=def.desc;
-  pop.style.display='block';pop.style.animation='none';
-  void pop.offsetWidth;pop.style.animation='badgeIn .5s cubic-bezier(.34,1.56,.64,1) both';
-  try{if(navigator.vibrate)navigator.vibrate([50,30,50,30,80]);}catch(e){}
+  document.getElementById('bdg-title').textContent=def.name;
+  document.getElementById('bdg-desc').textContent=def.desc||'';
+
+  // Récompense pièces au débloquage
+  var coinsEl = document.getElementById('bdg-coins-reward');
+  if(coinsEl){
+    coinsEl.style.display='inline-block';
+    var profC = loadProfile()||{};
+    profC.coins = (profC.coins||0) + 10;
+    localStorage.setItem('oq_profile', JSON.stringify(profC));
+    updateHomeStats && updateHomeStats();
+  }
+
+  pop.style.display='block';
+  pop.style.position='fixed';
+  pop.style.animation='none';
+  void pop.offsetWidth;
+  pop.style.animation='badgeIn .55s cubic-bezier(.34,1.56,.64,1) both, badgeShine 1.5s ease 0.6s infinite';
+  _spawnBadgeParticles(pop);
+  try{if(navigator.vibrate)navigator.vibrate([50,30,50,30,80,30,120]);}catch(e){}
+  // Son de badge
+  try{
+    var ctx=new(window.AudioContext||window.webkitAudioContext)();
+    [523,659,784,1047].forEach(function(freq,i){
+      var osc=ctx.createOscillator();var gain=ctx.createGain();
+      osc.connect(gain);gain.connect(ctx.destination);
+      osc.frequency.value=freq;osc.type='sine';
+      gain.gain.setValueAtTime(.18,ctx.currentTime+i*.12);
+      gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.12+.3);
+      osc.start(ctx.currentTime+i*.12);osc.stop(ctx.currentTime+i*.12+.35);
+    });
+    setTimeout(function(){try{ctx.close();}catch(e){}},2000);
+  }catch(e){}
+  // Aussi ajouter une notif dans le centre de notifs
+  addNotif('badge', '🏅 Badge débloqué : '+def.name, def.desc||'', def.icon, {badgeId:id});
   setTimeout(function(){
     pop.style.animation='badgeOut .4s ease forwards';
-    setTimeout(function(){pop.style.display='none';},450);
-  },3000);
+    setTimeout(function(){pop.style.display='none';if(coinsEl)coinsEl.style.display='none';},450);
+  },4000);
+}
+
+function _spawnBadgeParticles(anchor){
+  var colors=['#ffd60a','#ff9f0a','#fff','#ff453a','#30d158'];
+  for(var i=0;i<12;i++){
+    var p=document.createElement('div');
+    var angle=Math.random()*Math.PI*2;
+    var dist=50+Math.random()*60;
+    p.style.cssText='position:fixed;pointer-events:none;z-index:501;width:7px;height:7px;border-radius:50%;'
+      +'background:'+colors[Math.floor(Math.random()*colors.length)]+';'
+      +'left:'+( (window.innerWidth/2) - 4 )+'px;'
+      +'bottom:'+(110+Math.random()*20)+'px;'
+      +'--tx:'+(Math.cos(angle)*dist)+'px;--ty:'+(-(Math.sin(angle)*dist+30))+'px;'
+      +'animation:badgeParticle .8s ease-out '+(Math.random()*.2)+'s both;';
+    document.body.appendChild(p);
+    setTimeout(function(el){el.remove();},1200,p);
+  }
 }
 
 function renderBadgesScreen(){
   var p=loadProfile()||{badges:{}};
   var list=document.getElementById('badges-list');if(!list)return;
   list.innerHTML='';
-  var earned=Object.keys(p.badges||{}).length;
-  list.innerHTML+='<div style="text-align:center;margin-bottom:12px;font-family:Bangers,cursive;font-size:.85rem;letter-spacing:2px;color:var(--gold)">'+earned+' / '+ALL_BADGES.length+' BADGES</div>';
-  ALL_BADGES.forEach(function(b){
+  var earned=p.badges?Object.keys(p.badges).length:0;
+  var total=ALL_BADGES.length;
+  var pct=Math.round((earned/total)*100);
+
+  // Header avec barre de progression
+  list.innerHTML='<div style="text-align:center;margin-bottom:16px">'
+    +'<div style="font-family:Bangers,cursive;font-size:1.3rem;letter-spacing:3px;color:var(--gold);margin-bottom:6px">'+earned+' / '+total+' BADGES</div>'
+    +'<div style="background:rgba(255,255,255,.07);border-radius:10px;height:8px;overflow:hidden;margin:0 20px 4px">'
+      +'<div style="height:100%;background:linear-gradient(90deg,var(--gold),var(--orange));border-radius:10px;width:'+pct+'%;transition:width 1s cubic-bezier(.34,1.56,.64,1)"></div>'
+    +'</div>'
+    +'<div style="font-size:.65rem;color:rgba(255,255,255,.3);letter-spacing:1px">'+pct+'% COMPLÉTÉ</div>'
+    +'</div>';
+
+  // Grille de badges
+  var grid=document.createElement('div');
+  grid.style.cssText='display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px';
+
+  ALL_BADGES.forEach(function(b,idx){
     var have=p.badges&&p.badges[b.id];
-    var div=document.createElement('div');div.className='badge-item'+(have?'':' locked');
-    div.innerHTML='<div class="bi-icon">'+(have?b.icon:'🔒')+'</div>'
-      +'<div class="bi-info"><div class="bi-name">'+(have?b.name:'???')+'</div>'
-      +'<div class="bi-desc">'+b.desc+'</div></div>'
-      +'<div class="bi-check">'+(have?'✅':'')+'</div>';
-    list.appendChild(div);
+    var ts=have?new Date(p.badges[b.id]).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'2-digit'}):null;
+
+    var card=document.createElement('div');
+    card.style.cssText='background:'+(have
+      ? 'linear-gradient(145deg,rgba(255,214,10,.1),rgba(255,159,10,.06))'
+      : 'rgba(255,255,255,.03)')
+      +';border:1.5px solid '+(have?'rgba(255,214,10,.3)':'rgba(255,255,255,.07)')
+      +';border-radius:16px;padding:14px 12px;text-align:center;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:'+(have?'pointer':'default')+';';
+    if(have){
+      card.onmouseenter=function(){this.style.transform='translateY(-3px) scale(1.02)';this.style.boxShadow='0 8px 24px rgba(255,214,10,.2)';};
+      card.onmouseleave=function(){this.style.transform='';this.style.boxShadow='';};
+    }
+
+    // Reflet brillant sur les badges débloqués
+    if(have){
+      card.innerHTML+='<div style="position:absolute;top:-30px;left:-30px;width:80px;height:80px;background:radial-gradient(circle,rgba(255,214,10,.12),transparent);pointer-events:none"></div>';
+    }
+
+    // Icône avec animation si débloqué
+    var iconWrap=document.createElement('div');
+    iconWrap.style.cssText='font-size:2.2rem;margin-bottom:8px;display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;margin:0 auto 8px;'
+      +(have
+        ? 'background:rgba(255,214,10,.12);border:2px solid rgba(255,214,10,.25);filter:drop-shadow(0 2px 8px rgba(255,214,10,.4));animation:badgeIconBounce 3s ease-in-out '+(idx*.2)+'s infinite;'
+        : 'background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.08);filter:grayscale(1) opacity(.3);');
+    iconWrap.textContent=have?b.icon:'🔒';
+
+    card.appendChild(iconWrap);
+    card.innerHTML+='<div style="font-family:Bangers,cursive;font-size:.9rem;letter-spacing:2px;color:'+(have?'var(--gold)':'rgba(255,255,255,.3)')+'">'+( have?b.name:'???')+'</div>'
+      +'<div style="font-size:.62rem;color:rgba(255,255,255,'+(have?'.5':'.2')+');margin-top:3px;line-height:1.4">'+(have?b.desc:'Débloque ce badge !')+'</div>'
+      +(ts?'<div style="font-size:.55rem;color:rgba(255,255,255,.25);margin-top:5px;letter-spacing:.5px">Obtenu le '+ts+'</div>':'')
+      +(have?'<div style="position:absolute;top:8px;right:8px;font-size:.7rem">✅</div>':'');
+
+    grid.appendChild(card);
   });
+
+  list.appendChild(grid);
 }
 
 // ─── AMIS ───────────────────────────────────────────────────
@@ -4564,7 +4895,10 @@ function saveFriends(f){try{localStorage.setItem('oq_friends',JSON.stringify(f))
 async function updatePresence(){
   if(!fbOK()||!myId)return;
   var p=loadProfile();var name=p?p.pseudo:(myName||'Joueur');
-  try{await dbU('presence/'+myId,{name:name,lastSeen:Date.now(),online:true});}catch(e){}
+  // v5.7 — inclure avatar dans la présence
+  var av = (p&&p.avatar)||'⚡';
+  var avSave = av.startsWith('data:') ? (p&&p.avatarEmoji||'⚡') : av;
+  try{await dbU('presence/'+myId,{name:name,avatar:avSave,lastSeen:Date.now(),online:true});}catch(e){}
 }
 function startPresenceHeartbeat(){
   updatePresence();setInterval(updatePresence,30000);
@@ -4671,19 +5005,11 @@ function renderFriendsList(){
   friends.forEach(function(f,i){
     var pres=getPresenceLabel(f.lastSeen,f.online);
     var row=document.createElement('div');row.className='friend-row';row.style.cssText='flex-wrap:wrap;gap:8px';
-    row.innerHTML='<div style="position:relative;flex-shrink:0">'
-      +'<div style="font-size:1.6rem;line-height:1">'+PRESET_AVATARS[i%PRESET_AVATARS.length]+'</div>'
-      +'<div style="position:absolute;bottom:-1px;right:-1px;width:11px;height:11px;border-radius:50%;border:2px solid var(--panel);background:'+(pres.cls==='online'?'#1db954':'#555')+'"></div>'
-      +'</div>'
-      +'<div class="fr-info" style="flex:1;min-width:100px">'
-        +'<div class="fr-name">'+f.pseudo+'</div>'
-        +'<div class="fr-presence '+pres.cls+'">'+pres.txt+'</div>'
-        +'<div class="fr-detail">🏆 '+f.best+' pts &nbsp;·&nbsp; 🎮 '+(f.played||'?')+' parties</div>'
-      +'</div>'
-      +'<div style="display:flex;gap:6px;flex-shrink:0">'
-        +'<button class="fr-challenge" onclick="challengeFriend(\''+f.pseudo+'\',\''+f.id+'\')">⚔️ DÉFIER</button>'
-        +'<button style="background:rgba(230,51,41,.15);border:1px solid rgba(230,51,41,.2);border-radius:8px;padding:6px 8px;cursor:pointer;font-size:.9rem" onclick="removeFriend('+i+')">🗑️</button>'
-      +'</div>';
+    var fav = f.avatar || PRESET_AVATARS[i%PRESET_AVATARS.length];
+    var favHtml = fav.startsWith('data:')
+      ? '<img src="'+fav+'" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.15)">'
+      : '<span style="font-size:1.6rem;line-height:1">'+fav+'</span>';
+    row.innerHTML='<div style="position:relative;flex-shrink:0;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;overflow:hidden">'      +favHtml      +'<div style="position:absolute;bottom:-1px;right:-1px;width:11px;height:11px;border-radius:50%;border:2px solid var(--panel);background:'+(pres.cls==='online'?'#1db954':'#555')+'"></div>'      +'</div>'      +'<div class="fr-info" style="flex:1;min-width:100px">'        +'<div class="fr-name">'+f.pseudo+getBadgesHtml(f.id,{size:'.6rem'})+'</div>'        +'<div class="fr-presence '+pres.cls+'">'+pres.txt+'</div>'        +'<div class="fr-detail">🏆 '+f.best+' pts &nbsp;·&nbsp; 🎮 '+(f.played||'?')+' parties</div>'      +'</div>'      +'<div style="display:flex;gap:6px;flex-shrink:0">'        +'<button class="fr-challenge" onclick="challengeFriend(''+f.pseudo+'',''+f.id+'')">⚔️ DÉFIER</button>'        +'<button style="background:rgba(230,51,41,.15);border:1px solid rgba(230,51,41,.2);border-radius:8px;padding:6px 8px;cursor:pointer;font-size:.9rem" onclick="removeFriend('+i+')">🗑️</button>'      +'</div>';
     list.appendChild(row);
   });
 }
@@ -4880,9 +5206,15 @@ async function loadWeeklyLB(){
     entries.forEach(function(p,i){
       var isMe=p.id===myId;
       var row=document.createElement('div');row.className='lb-row'+(isMe?' me':'');
+      row.dataset.lbUid = p.id||'';
+      // Avatar réel (v5.7)
+      var av = p.avatar || PRESET_AVATARS[i%PRESET_AVATARS.length];
+      var avHtml = av.startsWith('data:')
+        ? '<img src="'+av+'" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.15)">'
+        : '<span style="font-size:1.5rem">'+av+'</span>';
       row.innerHTML=(i<3?'<span class="lb-rank '+(i===0?'gold':i===1?'silver':'bronze')+'">'+rankEmojis[i]+'</span>':'<span class="lb-rank" style="color:rgba(255,255,255,.4)">#'+(i+1)+'</span>')
-        +'<div class="lb-avatar">'+PRESET_AVATARS[i%PRESET_AVATARS.length]+'</div>'
-        +'<div class="lb-info"><div class="lb-name">'+p.name+(isMe?'<span class="lb-you">MOI</span>':'')+'</div><div class="lb-detail">'+p.correct+' correctes</div></div>'
+        +'<div class="lb-avatar" style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.06);overflow:hidden;flex-shrink:0">'+avHtml+'</div>'
+        +'<div class="lb-info"><div class="lb-name" data-lb-uid="'+(p.id||'')+'">'+p.name+(isMe?'<span class="lb-you">MOI</span>':'')+'</div><div class="lb-detail">'+p.correct+' correctes</div></div>'
         +'<div class="lb-score">'+p.score+'<span style="font-size:.6rem;color:rgba(255,255,255,.3)"> pts</span></div>';
       list.appendChild(row);
       if(i===2){checkBadge('weekly_top3','🏆 TOP 3 HEBDO','Entré dans le top 3 hebdomadaire !');}
@@ -4896,7 +5228,10 @@ async function saveWeeklyScore(){
   try{
     var existing=await dbG('events/weekly/'+wk+'/'+myId);
     if(!existing.exists()||existing.val().score<myScore){
-      await dbS('events/weekly/'+wk+'/'+myId,{name:myName||'Joueur',score:myScore,correct:myCorrect,ts:Date.now()});
+      var _wkP = loadProfile();
+      var _wkAv = (_wkP&&_wkP.avatar)||'⚡';
+      if(_wkAv.startsWith('data:')) _wkAv = (_wkP&&_wkP.avatarEmoji)||'⚡';
+      await dbS('events/weekly/'+wk+'/'+myId,{name:myName||'Joueur',score:myScore,correct:myCorrect,avatar:_wkAv,ts:Date.now()});
     }
   }catch(e){}
 }
@@ -6171,6 +6506,14 @@ function saveNotifs(){
 
 function addNotif(type, text, subtext, avatar, data){
   loadNotifs();
+  // ── ANTI-DOUBLONS v5.7 ──────────────────────────────────────
+  // Bloquer les invitations d'amitié / DM en double (même expéditeur)
+  if((type==='friend_invite'||type==='dm_invite') && data && data.fromId){
+    var existing = _notifs.find(function(x){
+      return x.type===type && x.data && x.data.fromId===data.fromId;
+    });
+    if(existing){ return existing; } // déjà présente → ignorer
+  }
   var n = {
     id: 'n_'+Date.now()+'_'+Math.random().toString(36).slice(2,5),
     type: type,  // 'dm_invite' | 'friend_invite' | 'daily' | 'new_player' | 'system'
@@ -6253,9 +6596,13 @@ function renderNotifList(){
     var item = document.createElement('div');
     item.className = 'notif-item' + (n.read ? '' : ' unread');
     var av = n.avatar||'🔔';
-    var avHtml = (av && av.startsWith('data:'))
-      ? '<img src="'+av+'">'
-      : av;
+    // Avatar toujours dans un cercle stylé (v5.7)
+    var avHtml;
+    if(av && av.startsWith('data:')){
+      avHtml = '<img src="'+av+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+    } else {
+      avHtml = '<span style="font-size:1.3rem;line-height:1">'+av+'</span>';
+    }
     var timeStr = formatNotifTime(n.ts);
     var icon = {
       'dm_invite':'💬','friend_invite':'🤝','daily':'🎯',
@@ -6765,7 +7112,9 @@ async function joinTournament(){
 
     var p = loadProfile();
     myName = (p&&p.pseudo)||myName||'Joueur';
+    // v5.7 — avatar tournoi: emoji si base64 (trop lourd pour Firebase)
     var myAv = (p&&p.avatar)||'⚡';
+    if(myAv.startsWith('data:')) myAv = (p&&p.avatarEmoji)||'⚡';
 
     await dbU(FB_TOURN+'/'+code+'/players/'+myId,{
       name:myName,avatar:myAv,score:0,seed:0,status:'waiting',joinedAt:Date.now()
@@ -7011,22 +7360,74 @@ function updateTournMatchHud(d, match){
   var p1a = document.getElementById('tourn-p1-av');
   var p2n = document.getElementById('tourn-p2-name');
   var p2a = document.getElementById('tourn-p2-av');
-  if(label) label.textContent='TON MATCH — ROUND '+((_tourn.data.currentRound||0)+1);
-  if(p1n) p1n.textContent=p1.name||'?';
-  if(p1a) p1a.textContent=p1.avatar||'👤';
-  if(p2n) p2n.textContent=p2?p2.name:'BYE';
-  if(p2a) p2a.textContent=p2?(p2.avatar||'👤'):'';
+  var currentRound = d.currentRound||0;
+  var totalRounds = (d.bracket&&d.bracket.length)||1;
+
+  // Nom de phase dynamique (v5.7)
+  var phases = {0:'GRANDE FINALE',1:'DEMI-FINALES',2:'QUARTS DE FINALE',3:'1/8 DE FINALE'};
+  var remaining = totalRounds - 1 - currentRound;
+  var phaseName = phases[remaining]||('ROUND '+(currentRound+1));
+  if(label) label.textContent = '⚔️ '+phaseName;
+
+  // Avatar P1
+  if(p1a){
+    var av1 = p1.avatar||'👤';
+    if(av1.startsWith('data:'))
+      p1a.innerHTML = '<img src="'+av1+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--p1)">';
+    else
+      p1a.textContent = av1;
+  }
+  if(p1n) p1n.textContent = p1.name||'?';
+
+  // Avatar P2
+  if(p2a){
+    var av2 = p2?(p2.avatar||'👤'):'';
+    if(av2.startsWith('data:'))
+      p2a.innerHTML = '<img src="'+av2+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--p2)">';
+    else
+      p2a.textContent = av2;
+  }
+  if(p2n) p2n.textContent = p2?p2.name:'BYE';
 }
 
 function updateTournPhaseLabel(d){
   var round = d.currentRound||0;
   var total = (d.bracket&&d.bracket.length)||1;
-  var phases = ['PHASE INITIALE','QUARTS DE FINALE','DEMI-FINALES','FINALE','GRANDE FINALE'];
-  var remaining = total-1-round;
-  var label = document.getElementById('tourn-bracket-phase');
-  if(label) label.textContent=phases[remaining]||('ROUND '+(round+1));
-}
 
+  function phaseName(roundsLeft){
+    if(roundsLeft===0) return '🏆 FINALE';
+    if(roundsLeft===1) return '⚔️ DEMI-FINALES';
+    if(roundsLeft===2) return '💥 QUARTS DE FINALE';
+    if(roundsLeft===3) return '🔥 1/8 DE FINALE';
+    return '🎯 ROUND '+(round+1);
+  }
+
+  var remaining = total - 1 - round;
+  var label = document.getElementById('tourn-bracket-phase');
+  if(label) label.textContent = phaseName(remaining);
+
+  // Fil d'Ariane — toutes les phases v5.7
+  var trail = document.getElementById('tourn-phase-trail');
+  if(trail){
+    trail.innerHTML = '';
+    var phases = [];
+    for(var r=0;r<total;r++) phases.push({name:phaseName(total-1-r),done:r<round,active:r===round});
+    phases.forEach(function(ph,i){
+      var pill = document.createElement('div');
+      pill.style.cssText = 'font-family:Bangers,cursive;font-size:.6rem;letter-spacing:1px;padding:3px 10px;border-radius:12px;'
+        +(ph.active ? 'background:rgba(255,214,10,.2);border:1.5px solid rgba(255,214,10,.5);color:var(--gold);'
+          : ph.done ? 'background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.2);color:#30d158;opacity:.65;'
+          : 'background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.3);');
+      pill.textContent = ph.name;
+      trail.appendChild(pill);
+      if(i < phases.length-1){
+        var a=document.createElement('span');
+        a.style.cssText='color:rgba(255,255,255,.2);font-size:.7rem;align-self:center';
+        a.textContent='›';trail.appendChild(a);
+      }
+    });
+  }
+}
 function countRemainingPlayers(d){
   var matches = d.currentMatches||{};
   var uids = new Set();
@@ -7385,65 +7786,9 @@ function showTournamentResults(d){
 
 // ── Bracket visuel ─────────────────────────────────────────────
 function renderTournBracket(d){
-  var bracket=document.getElementById('tourn-bracket');
-  if(!bracket) return;
-  bracket.innerHTML='';
-  var rounds=d.bracket||[];
-  var currentMatches=d.currentMatches||{};
-
-  // Combiner bracket historique + matchs actuels
-  var allRounds=[];
-  for(var r=0;r<rounds.length;r++){
-    if(r<(d.currentRound||0)){
-      allRounds.push(rounds[r]||{});
-    }
-  }
-  allRounds.push(currentMatches);// round actuel
-
-  var phaseNames=['Initial','1/4','1/2','Finale'];
-
-  allRounds.forEach(function(roundMatches,ri){
-    var col=document.createElement('div');
-    col.className='bracket-round';
-    var title=document.createElement('div');
-    title.className='bracket-round-title';
-    title.textContent=phaseNames[ri]||('R'+(ri+1));
-    col.appendChild(title);
-
-    Object.values(roundMatches).forEach(function(m){
-      var box=document.createElement('div');
-      box.className='bracket-match'+(m.status==='pending'?' active':(m.status==='done'?' done':''));
-      var p1=m.p1||{};var p2=m.p2||{};
-      var p1win=m.winner===p1.uid;var p2win=m.winner===p2.uid;
-      var p1av=p1.avatar||'⚡';var p2av=(p2&&p2.avatar)||'⚡';
-      var p1score=(m.scores&&m.scores[p1.uid]!==undefined)?m.scores[p1.uid]:'';
-      var p2score=(m.scores&&p2&&m.scores[p2.uid]!==undefined)?m.scores[p2.uid]:'';
-
-      var p1Html=document.createElement('div');
-      p1Html.className='bracket-player'+(m.winner&&!p1win?' loser':'')+(p1win?' winner':'');
-      p1Html.innerHTML='<span class="bracket-av">'+p1av+'</span>'
-        +'<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.7rem">'+escapeCommHtml(p1.name||'?')+'</span>'
-        +(p1score!==''?'<span class="bracket-score">'+p1score+'</span>':'');
-
-      var p2Html=document.createElement('div');
-      if(p2){
-        p2Html.className='bracket-player'+(m.winner&&!p2win?' loser':'')+(p2win?' winner':'');
-        p2Html.innerHTML='<span class="bracket-av">'+p2av+'</span>'
-          +'<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.7rem">'+escapeCommHtml(p2.name||'?')+'</span>'
-          +(p2score!==''?'<span class="bracket-score">'+p2score+'</span>':'');
-      }else{
-        p2Html.className='bracket-player bye';
-        p2Html.innerHTML='<span style="font-size:.68rem">BYE</span>';
-      }
-
-      box.appendChild(p1Html);
-      box.appendChild(p2Html);
-      col.appendChild(box);
-    });
-
-    bracket.appendChild(col);
-  });
-}
+  var bracketEl=document.getElementById('tourn-bracket');
+  if(!bracketEl) return;
+  bracketEl.innerHTML='';
 
 // ── Notification tournoi ───────────────────────────────────────
 var _tournNotifTimer=null;
@@ -7826,7 +8171,7 @@ function renderMyProfile(){
   var wrEl = document.getElementById('myprof-winrate');
   if(wrEl) wrEl.style.color = wr>=60?'var(--green)':wr>=40?'var(--gold)':'var(--red)';
 
-  // Badges
+  // Badges — avec icônes et noms corrects (BUG FIX v5.7)
   var badgesRow = document.getElementById('myprof-badges-row');
   if(badgesRow){
     var badges = p.badges||{};
@@ -7836,10 +8181,14 @@ function renderMyProfile(){
     }else{
       badgesRow.innerHTML='';
       badgeKeys.forEach(function(k){
+        var def = ALL_BADGES.find(function(b){return b.id===k;}) || {icon:'🏅',name:k,desc:''};
         var b=document.createElement('div');
-        b.style.cssText='background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:8px 12px;font-size:.78rem;font-weight:700;text-align:center;min-width:70px';
-        b.innerHTML='<div style="font-size:1.4rem;margin-bottom:3px">'+k+'</div>'
-          +'<div style="font-size:.58rem;color:rgba(255,255,255,.35);letter-spacing:1px">'+k+'</div>';
+        b.style.cssText='background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 12px;font-size:.78rem;font-weight:700;text-align:center;min-width:80px;cursor:pointer;transition:transform .2s,box-shadow .2s;';
+        b.title=def.desc||def.name;
+        b.innerHTML='<div style="font-size:1.8rem;margin-bottom:4px;filter:drop-shadow(0 2px 6px rgba(255,214,10,.3))">'+def.icon+'</div>'
+          +'<div style="font-size:.62rem;color:var(--gold);letter-spacing:1px;text-transform:uppercase">'+def.name+'</div>';
+        b.onmouseenter=function(){this.style.transform='scale(1.08)';this.style.boxShadow='0 4px 18px rgba(255,214,10,.2)';};
+        b.onmouseleave=function(){this.style.transform='';this.style.boxShadow='';};
         badgesRow.appendChild(b);
       });
     }
@@ -7963,14 +8312,520 @@ window.endGame = function(){
   recordMatchResult(isWin, myScore, gameMode);
 };
 
-// ─── Init au démarrage ─────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────
+//  ADMIN PANEL — v5.7
+// ──────────────────────────────────────────────────────────────
+
+// ─── Afficher le lien Admin dans la sidebar si admin ──────────
+function _showAdminSidebarIfNeeded(){
+  var p = loadProfile();
+  var sec = document.getElementById('sb-admin-section');
+  if(sec && p && isAdmin(p.id)){
+    sec.style.display = 'block';
+    var logEl = document.getElementById('admin-logged-as');
+    if(logEl) logEl.textContent = '👑 Connecté en tant que '+p.pseudo;
+  }
+}
+
+function openAdminPanel(){
+  var p = loadProfile();
+  if(!p || !isAdmin(p.id)){ alert('⛔ Accès refusé'); return; }
+  document.getElementById('admin-panel-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  adminTab('stats');
+}
+
+function closeAdminPanel(){
+  document.getElementById('admin-panel-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function openAdminQuestions(){ openAdminPanel(); adminTab('questions'); }
+function openAdminTournament(){ openAdminPanel(); adminTab('tournament'); }
+function openAdminPlayers(){ openAdminPanel(); adminTab('players'); }
+function openAdminBroadcast(){ openAdminPanel(); adminTab('broadcast'); }
+
+// ─── Onglets ─────────────────────────────────────────────────
+function adminTab(tab){
+  ['stats','questions','tournament','players','broadcast'].forEach(function(t){
+    var panel = document.getElementById('apanel-'+t);
+    var btn = document.getElementById('atab-'+t);
+    if(panel) panel.style.display = (t===tab)?'block':'none';
+    if(btn) btn.classList.toggle('active', t===tab);
+  });
+  if(tab==='stats') adminRefreshStats();
+  if(tab==='questions') adminRefreshQuestions();
+  if(tab==='players') adminLoadPlayers();
+  if(tab==='tournament') adminRefreshTournaments();
+}
+
+// ─── STATS ───────────────────────────────────────────────────
+function adminRefreshStats(){
+  var custom = loadAdminQuestions();
+  var banned = loadBannedPlayers();
+  setEl('adm-stat-players', '—');
+  setEl('adm-stat-matchs', QB.length + custom.length);
+  setEl('adm-stat-custom', custom.length);
+  // Liste bannis
+  var banEl = document.getElementById('adm-banned-list');
+  if(banEl){
+    if(banned.length===0){ banEl.innerHTML='<div style="color:rgba(255,255,255,.3);font-size:.75rem">Aucun joueur banni</div>'; }
+    else{
+      banEl.innerHTML = banned.map(function(b){
+        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)">'
+          +'<div><div style="font-weight:700;font-size:.82rem">'+b.pseudo+'</div>'
+          +'<div style="font-size:.62rem;color:rgba(255,255,255,.35)">'+b.id+'</div></div>'
+          +'<button class="adm-action-btn adm-edit-btn" onclick="adminUnban(\''+b.id+'\')">✓ Débannir</button>'
+          +'</div>';
+      }).join('');
+    }
+  }
+  // Firebase stats si disponible
+  if(window._fb && window._fb.ok && window._fb.db){
+    try{
+      window._fb.db.ref('/players').once('value').then(function(snap){
+        var count = snap.numChildren ? snap.numChildren() : Object.keys(snap.val()||{}).length;
+        setEl('adm-stat-players', count);
+      });
+    }catch(e){}
+  }
+}
+
+// ─── QUESTIONS CUSTOM ────────────────────────────────────────
+function loadAdminQuestions(){
+  try{ return JSON.parse(localStorage.getItem('oq_admin_questions')||'[]'); }
+  catch(e){ return []; }
+}
+function saveAdminQuestions(arr){
+  try{ localStorage.setItem('oq_admin_questions', JSON.stringify(arr)); }catch(e){}
+}
+
+function adminSaveQuestion(){
+  var errEl = document.getElementById('adm-q-err');
+  errEl.style.display = 'none';
+  var q = (document.getElementById('adm-q-text').value||'').trim();
+  var ops = [0,1,2,3].map(function(i){ return (document.getElementById('adm-op'+i).value||'').trim(); });
+  var ok = parseInt(document.getElementById('adm-ok').value)||0;
+  var cat = document.getElementById('adm-cat').value;
+  var diff = document.getElementById('adm-diff').value;
+  var ex = (document.getElementById('adm-q-explain').value||'').trim();
+
+  if(!q){ errEl.textContent='⚠️ La question est obligatoire.'; errEl.style.display='block'; return; }
+  if(ops.some(function(o){return !o;})){  errEl.textContent='⚠️ Les 4 réponses sont obligatoires.'; errEl.style.display='block'; return; }
+
+  var arr = loadAdminQuestions();
+  var editId = document.getElementById('adm-q-text').dataset.editId;
+  var entry = { id: editId||('cq_'+Date.now()), q:q, ops:ops, ok:ok, cat:cat, diff:diff, ex:ex, custom:true, ts:Date.now() };
+  if(editId){
+    var idx = arr.findIndex(function(x){return x.id===editId;});
+    if(idx>=0) arr[idx] = entry; else arr.push(entry);
+    delete document.getElementById('adm-q-text').dataset.editId;
+  } else {
+    arr.push(entry);
+    // Injecter dans QB pour être utilisée en jeu immédiatement
+    QB.push({ q:entry.q, ops:entry.ops, ok:entry.ok, cat:entry.cat, ex:entry.ex, custom:true });
+  }
+  saveAdminQuestions(arr);
+  adminClearQuestionForm();
+  adminRefreshQuestions();
+  showSF('✅ Question sauvegardée !','var(--green)');
+}
+
+function adminClearQuestionForm(){
+  ['adm-q-text','adm-op0','adm-op1','adm-op2','adm-op3','adm-q-explain'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){ el.value=''; delete el.dataset.editId; }
+  });
+  document.getElementById('adm-q-err').style.display='none';
+  document.getElementById('adm-ok').value='0';
+}
+
+function adminRefreshQuestions(){
+  var arr = loadAdminQuestions();
+  setEl('adm-custom-count', arr.length);
+  var list = document.getElementById('adm-q-list');
+  if(!list) return;
+  if(arr.length===0){
+    list.innerHTML='<div style="text-align:center;color:rgba(255,255,255,.25);padding:20px;font-size:.78rem">Aucune question créée pour l\'instant</div>';
+    return;
+  }
+  list.innerHTML = arr.slice().reverse().map(function(q){
+    var diffClass = 'diff-'+(q.diff||'moyen');
+    return '<div class="adm-q-row">'
+      +'<div style="flex:1;min-width:0">'
+        +'<div style="font-weight:700;font-size:.8rem;margin-bottom:4px">'+q.q+'</div>'
+        +'<div style="font-size:.65rem;color:rgba(255,255,255,.35)">'+q.ops.map(function(o,i){return (i===q.ok?'<b style="color:var(--green)">✓ '+o+'</b>':o);}).join(' · ')+'</div>'
+        +'<div style="margin-top:4px;display:flex;gap:5px;align-items:center">'
+          +'<span style="font-size:.6rem;background:rgba(191,90,242,.15);color:#bf5af2;border-radius:6px;padding:1px 7px">'+q.cat+'</span>'
+          +'<span class="diff-badge '+diffClass+'">'+q.diff+'</span>'
+        +'</div>'
+      +'</div>'
+      +'<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">'
+        +'<button class="adm-action-btn adm-edit-btn" onclick="adminEditQuestion(\''+q.id+'\')">✏️ Modifier</button>'
+        +'<button class="adm-action-btn adm-del-btn" onclick="adminDeleteQuestion(\''+q.id+'\')">🗑️ Sup.</button>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function adminEditQuestion(id){
+  var arr = loadAdminQuestions();
+  var q = arr.find(function(x){return x.id===id;});
+  if(!q) return;
+  document.getElementById('adm-q-text').value = q.q;
+  document.getElementById('adm-q-text').dataset.editId = id;
+  [0,1,2,3].forEach(function(i){ document.getElementById('adm-op'+i).value = q.ops[i]||''; });
+  document.getElementById('adm-ok').value = q.ok||0;
+  document.getElementById('adm-cat').value = q.cat||'Shōnen';
+  document.getElementById('adm-diff').value = q.diff||'moyen';
+  document.getElementById('adm-q-explain').value = q.ex||'';
+  document.getElementById('adm-q-text').scrollIntoView({behavior:'smooth'});
+}
+
+function adminDeleteQuestion(id){
+  if(!confirm('Supprimer cette question ?')) return;
+  var arr = loadAdminQuestions().filter(function(x){return x.id!==id;});
+  saveAdminQuestions(arr);
+  // Retirer aussi de QB
+  var idx = QB.findIndex(function(q){return q.custom && q.id===id;});
+  if(idx>=0) QB.splice(idx,1);
+  adminRefreshQuestions();
+  showSF('🗑️ Question supprimée','var(--red)');
+}
+
+// ─── TOURNOIS ADMIN ──────────────────────────────────────────
+function loadAdminTournaments(){
+  try{ return JSON.parse(localStorage.getItem('oq_admin_tourns')||'[]'); }catch(e){return[];}
+}
+function saveAdminTournaments(arr){
+  try{ localStorage.setItem('oq_admin_tourns', JSON.stringify(arr)); }catch(e){}
+}
+
+function adminCreateTournament(){
+  var name = (document.getElementById('adm-t-name').value||'').trim() || 'Tournoi Otaku';
+  var size = parseInt(document.getElementById('adm-t-size').value)||8;
+  var cat = document.getElementById('adm-t-cat').value;
+  var qnum = parseInt(document.getElementById('adm-t-qnum').value)||10;
+  var tourn = {
+    id: 'at_'+Date.now(),
+    name: name,
+    size: size,
+    cat: cat,
+    qnum: qnum,
+    status: 'open',  // open | running | finished
+    players: [],
+    rounds: [],
+    createdBy: (loadProfile()||{}).id||'admin',
+    ts: Date.now()
+  };
+  var arr = loadAdminTournaments();
+  arr.push(tourn);
+  saveAdminTournaments(arr);
+  // Publier sur Firebase si disponible
+  _adminPublishTournament(tourn);
+  adminRefreshTournaments();
+  showSF('🏆 Tournoi "'+name+'" créé !','var(--gold)');
+}
+
+function _adminPublishTournament(tourn){
+  if(!window._fb||!window._fb.ok||!window._fb.db) return;
+  try{
+    window._fb.db.ref('/admin_tournaments/'+tourn.id).set(tourn);
+  }catch(e){}
+}
+
+function adminRefreshTournaments(){
+  var arr = loadAdminTournaments();
+  var el = document.getElementById('adm-tourn-list');
+  if(!el) return;
+  if(arr.length===0){
+    el.innerHTML='<div style="text-align:center;color:rgba(255,255,255,.25);padding:20px;font-size:.78rem">Aucun tournoi actif</div>';
+    return;
+  }
+  el.innerHTML = arr.slice().reverse().map(function(t){
+    var statusColor = t.status==='open'?'var(--green)':t.status==='running'?'var(--gold)':'rgba(255,255,255,.3)';
+    var statusLabel = t.status==='open'?'🟢 Ouvert':t.status==='running'?'⚡ En cours':'✅ Terminé';
+    return '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;margin-bottom:8px">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'
+        +'<div style="font-family:Bangers,cursive;font-size:1rem;letter-spacing:2px;color:var(--gold)">'+t.name+'</div>'
+        +'<span style="font-size:.65rem;color:'+statusColor+'">'+statusLabel+'</span>'
+      +'</div>'
+      +'<div style="font-size:.68rem;color:rgba(255,255,255,.4);margin-bottom:8px">'+t.size+' joueurs · '+t.cat+' · '+t.qnum+' questions/match</div>'
+      +'<div style="display:flex;gap:6px">'
+        +(t.status==='open'?'<button class="adm-action-btn adm-edit-btn" onclick="adminStartTournament(\''+t.id+'\')">▶ Lancer</button>':'')
+        +'<button class="adm-action-btn adm-del-btn" onclick="adminDeleteTournament(\''+t.id+'\')">🗑️ Suppr.</button>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function adminStartTournament(id){
+  var arr = loadAdminTournaments();
+  var t = arr.find(function(x){return x.id===id;});
+  if(!t) return;
+  t.status = 'running';
+  t.startedAt = Date.now();
+  saveAdminTournaments(arr);
+  _adminPublishTournament(t);
+  adminRefreshTournaments();
+  showSF('⚡ Tournoi lancé !','var(--gold)');
+}
+
+function adminDeleteTournament(id){
+  if(!confirm('Supprimer ce tournoi ?')) return;
+  saveAdminTournaments(loadAdminTournaments().filter(function(x){return x.id!==id;}));
+  adminRefreshTournaments();
+}
+
+// ─── GESTION JOUEURS ─────────────────────────────────────────
+function loadBannedPlayers(){
+  try{ return JSON.parse(localStorage.getItem('oq_banned')||'[]'); }catch(e){return[];}
+}
+function saveBannedPlayers(arr){
+  try{ localStorage.setItem('oq_banned', JSON.stringify(arr)); }catch(e){}
+}
+
+var _adminPlayersList = [];
+function adminLoadPlayers(){
+  var el = document.getElementById('adm-players-list');
+  if(!el) return;
+  // Charger depuis Firebase si disponible
+  if(window._fb && window._fb.ok && window._fb.db){
+    el.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,.4);padding:20px;font-size:.78rem">⏳ Chargement...</div>';
+    try{
+      window._fb.db.ref('/players').once('value').then(function(snap){
+        var players = [];
+        snap.forEach(function(child){ players.push(child.val()); });
+        _adminPlayersList = players;
+        adminRenderPlayers(players);
+      });
+    }catch(e){ el.innerHTML='<div style="color:rgba(255,59,48,.7);font-size:.78rem;padding:12px">Erreur chargement Firebase</div>'; }
+  } else {
+    // Mode offline : montrer le profil local
+    var p = loadProfile();
+    var players = p ? [p] : [];
+    _adminPlayersList = players;
+    adminRenderPlayers(players);
+  }
+}
+
+function adminRenderPlayers(players){
+  var el = document.getElementById('adm-players-list');
+  if(!el) return;
+  var banned = loadBannedPlayers().map(function(b){return b.id;});
+  if(players.length===0){ el.innerHTML='<div style="text-align:center;color:rgba(255,255,255,.25);padding:20px;font-size:.78rem">Aucun joueur trouvé</div>'; return; }
+  el.innerHTML = players.map(function(p){
+    var isBanned = banned.indexOf(p.id)>=0;
+    var av = p.avatar||'⚡';
+    var avHtml = av.startsWith('data:')
+      ? '<img src="'+av+'" style="width:32px;height:32px;border-radius:50%;object-fit:cover">'
+      : '<span style="font-size:1.3rem">'+av+'</span>';
+    return '<div class="adm-p-row" style="'+(isBanned?'opacity:.5;':'')+'}'
+      +'<div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0">'+avHtml+'</div>'
+      +'<div style="flex:1;min-width:0">'
+        +'<div style="font-weight:700;font-size:.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(p.pseudo||'Joueur')+getBadgesHtml(p.id,{size:'.65rem'})+'</div>'
+        +'<div style="font-size:.62rem;color:rgba(255,255,255,.35)">'+(p.id||'')+(isBanned?' · <span style="color:var(--red)">🚫 BANNI</span>':'')+'</div>'
+      +'</div>'
+      +'<div style="display:flex;gap:5px;flex-shrink:0">'
+        +(isBanned
+          ? '<button class="adm-action-btn adm-edit-btn" onclick="adminUnban(\''+p.id+'\')">✓ Débannir</button>'
+          : '<button class="adm-action-btn adm-ban-btn" onclick="adminBan(\''+p.id+'\',\''+escHtml(p.pseudo||'Joueur')+'\')">🚫 Bannir</button>')
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function adminFilterPlayers(){
+  var q = (document.getElementById('adm-search-player').value||'').toLowerCase();
+  if(!q){ adminRenderPlayers(_adminPlayersList); return; }
+  adminRenderPlayers(_adminPlayersList.filter(function(p){
+    return (p.pseudo||'').toLowerCase().includes(q)||(p.id||'').includes(q);
+  }));
+}
+
+function adminBan(uid, pseudo){
+  if(!confirm('Bannir "'+pseudo+'" ? Ce joueur ne pourra plus jouer.')) return;
+  var arr = loadBannedPlayers();
+  if(!arr.find(function(b){return b.id===uid;})) arr.push({id:uid,pseudo:pseudo,ts:Date.now()});
+  saveBannedPlayers(arr);
+  if(window._fb&&window._fb.ok&&window._fb.db){ try{window._fb.db.ref('/banned/'+uid).set({ts:Date.now(),by:(loadProfile()||{}).id});}catch(e){} }
+  adminLoadPlayers();
+  adminRefreshStats();
+  showSF('🚫 '+pseudo+' banni','var(--red)');
+}
+
+function adminUnban(uid){
+  saveBannedPlayers(loadBannedPlayers().filter(function(b){return b.id!==uid;}));
+  if(window._fb&&window._fb.ok&&window._fb.db){ try{window._fb.db.ref('/banned/'+uid).remove();}catch(e){} }
+  adminLoadPlayers();
+  adminRefreshStats();
+  showSF('✅ Joueur débanni','var(--green)');
+}
+
+function escHtml(s){ return (s||'').replace(/'/g,"&#39;").replace(/"/g,'&quot;'); }
+
+// ─── DIFFUSION GLOBALE ───────────────────────────────────────
+function adminSendBroadcast(){
+  var title = (document.getElementById('adm-bc-title').value||'').trim();
+  var msg = (document.getElementById('adm-bc-msg').value||'').trim();
+  var type = document.getElementById('adm-bc-type').value||'📢';
+  if(!title||!msg){ alert('⚠️ Titre et message obligatoires.'); return; }
+  var notifData = { id:'bc_'+Date.now(), type:'broadcast', title:title, msg:msg, icon:type, ts:Date.now(), by:(loadProfile()||{}).id };
+  // Publier sur Firebase pour tous les joueurs
+  if(window._fb&&window._fb.ok&&window._fb.db){
+    try{ window._fb.db.ref('/broadcasts/'+notifData.id).set(notifData); }catch(e){}
+  }
+  // Notif locale aussi
+  addNotif('system', type+' '+title, msg, type, {});
+  var fb = document.getElementById('adm-bc-feedback');
+  if(fb){ fb.textContent='✅ Notification envoyée à tous les joueurs !'; fb.style.display='block'; setTimeout(function(){fb.style.display='none';},3000); }
+  document.getElementById('adm-bc-title').value='';
+  document.getElementById('adm-bc-msg').value='';
+}
+
+// ─── ECOUTER LES BROADCASTS FIREBASE ─────────────────────────
+function _listenBroadcasts(){
+  if(!window._fb||!window._fb.ok||!window._fb.db) return;
+  var p = loadProfile(); if(!p) return;
+  var lastTs = parseInt(localStorage.getItem('oq_last_bc_ts')||'0');
+  try{
+    window._fb.db.ref('/broadcasts').orderByChild('ts').startAt(lastTs+1).on('child_added', function(snap){
+      var bc = snap.val();
+      if(!bc) return;
+      // Ne pas afficher les notifs qu'on a soi-même envoyées
+      if(bc.by === p.id) return;
+      addNotif('system', (bc.icon||'📢')+' '+bc.title, bc.msg, bc.icon||'📢', {});
+      localStorage.setItem('oq_last_bc_ts', bc.ts);
+    });
+  }catch(e){}
+}
+
+// ─── INJECTER LES QUESTIONS CUSTOM DANS QB AU DÉMARRAGE ─────
+function _injectCustomQuestionsIntoQB(){
+  var custom = loadAdminQuestions();
+  custom.forEach(function(cq){
+    if(!QB.find(function(q){return q.custom && q.q===cq.q;})){
+      QB.push({q:cq.q, ops:cq.ops, ok:cq.ok, cat:cq.cat, ex:cq.ex, custom:true, id:cq.id});
+    }
+  });
+}
+
+// ──────────────────────────────────────────────────────────────
+//  ANTI-RAGE QUIT — v5.7
+// ──────────────────────────────────────────────────────────────
+var _rageQuitWarningShown = false;
+var _inActiveMatch = false; // true quand une partie multijoueur est en cours
+
+// Override go() pour détecter le quit en plein match
+var _origGo = window.go;
+window.go = function(screen){
+  // Si on quitte pendant un match multijoueur actif
+  if(_inActiveMatch && screen !== 'game' && screen !== 'results'){
+    if(!_rageQuitWarningShown){
+      _rageQuitWarningShown = true;
+      showRageQuitWarning(screen);
+      return; // bloquer la navigation
+    }
+  }
+  _rageQuitWarningShown = false;
+  if(_origGo) _origGo.apply(this, arguments);
+};
+
+function showRageQuitWarning(targetScreen){
+  var overlay = document.createElement('div');
+  overlay.id = 'rq-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(10px)';
+  overlay.innerHTML = '<div style="background:linear-gradient(145deg,#1a0a0a,#0f0f1e);border:2px solid rgba(255,59,48,.5);border-radius:22px;padding:28px 24px;max-width:320px;width:100%;text-align:center;animation:popIn .4s cubic-bezier(.34,1.56,.64,1)">'
+    +'<div style="font-size:3rem;margin-bottom:8px">🚫</div>'
+    +'<div style="font-family:Bangers,cursive;font-size:1.6rem;letter-spacing:3px;color:var(--red);margin-bottom:8px">RAGE QUIT ?</div>'
+    +'<div style="font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:20px">Si tu quittes maintenant, tu recevras une <b style="color:var(--red)">DÉFAITE automatique</b> et l\'adversaire gagne. Tu risques aussi un blocage temporaire si tu répètes ce comportement.</div>'
+    +'<div style="display:flex;flex-direction:column;gap:8px">'
+      +'<button onclick="confirmRageQuit(\''+targetScreen+'\')" style="padding:12px;background:rgba(255,59,48,.15);border:1.5px solid rgba(255,59,48,.4);border-radius:12px;color:var(--red);font-family:Bangers,cursive;font-size:1rem;letter-spacing:2px;cursor:pointer">⚠️ QUITTER (DÉFAITE)</button>'
+      +'<button onclick="cancelRageQuit()" style="padding:12px;background:linear-gradient(135deg,var(--gold),var(--orange));border:none;border-radius:12px;color:#000;font-family:Bangers,cursive;font-size:1rem;letter-spacing:2px;cursor:pointer">🎮 CONTINUER LE MATCH</button>'
+    +'</div>'
+    +'</div>';
+  document.body.appendChild(overlay);
+}
+
+function cancelRageQuit(){
+  var el = document.getElementById('rq-overlay');
+  if(el) el.remove();
+  _rageQuitWarningShown = false;
+}
+
+function confirmRageQuit(targetScreen){
+  var el = document.getElementById('rq-overlay');
+  if(el) el.remove();
+  _rageQuitWarningShown = false;
+  _inActiveMatch = false;
+  // Enregistrer comme défaite
+  recordMatchResult(false, 0, gameMode||'duel');
+  // Incrémenter compteur rage quit
+  var rqCount = parseInt(localStorage.getItem('oq_rq_count')||'0') + 1;
+  localStorage.setItem('oq_rq_count', rqCount);
+  // Bloquer temporairement si abus (3+ rage quits)
+  if(rqCount >= 3){
+    var blockUntil = Date.now() + 15*60*1000; // 15 min
+    localStorage.setItem('oq_rq_block_until', blockUntil);
+    localStorage.setItem('oq_rq_count', '0');
+    showSF('⏳ Blocage 15 min : trop de rage quits !','var(--red)');
+  } else {
+    showSF('😤 Tu as quitté le match → DÉFAITE automatique','var(--red)');
+  }
+  // Signal Firebase que l'adversaire gagne
+  if(window._fb&&window._fb.ok&&window._fb.db&&typeof roomId!=='undefined'&&roomId){
+    try{ window._fb.db.ref('/rooms/'+roomId+'/ragequit').set({by:(loadProfile()||{}).id||'?',ts:Date.now()}); }catch(e){}
+  }
+  if(_origGo) _origGo(targetScreen);
+}
+
+// Vérifier si le joueur est bloqué avant de lancer un match
+function checkRageQuitBlock(){
+  var blockUntil = parseInt(localStorage.getItem('oq_rq_block_until')||'0');
+  if(Date.now() < blockUntil){
+    var minLeft = Math.ceil((blockUntil - Date.now())/60000);
+    alert('⏳ Tu es temporairement bloqué pendant encore '+minLeft+' minute(s) en raison d\'abandons répétés.');
+    return true;
+  }
+  return false;
+}
+
+// Marquer le match comme actif/inactif (hooks dans les fonctions existantes)
+var _origStartDuel = window.startDuel;
+if(typeof startDuel !== 'undefined'){
+  window.startDuel = function(){
+    if(checkRageQuitBlock()) return;
+    _inActiveMatch = true;
+    if(_origStartDuel) _origStartDuel.apply(this, arguments);
+  };
+}
+// Désactiver le flag à la fin du match
+var _origEndGameRQ = window.endGame;
+window.endGame = function(){
+  _inActiveMatch = false;
+  _rageQuitWarningShown = false;
+  if(_origEndGameRQ) _origEndGameRQ.apply(this, arguments);
+};
+
+// ─── Init au démarrage — version 5.7 ─────────────────────────
 document.addEventListener('DOMContentLoaded',function(){
-  checkAdminStatus();
-  _updateHeaderBadges();
-  _patchRenderFriendsList();
-  // Badges dans header au changement de profil
-  setTimeout(_updateHeaderBadges, 1000);
+  _showAdminSidebarIfNeeded();
+  _injectCustomQuestionsIntoQB();
+  // Écouter les broadcasts Firebase après connexion
+  setTimeout(function(){
+    if(window._fb && window._fb.ok) _listenBroadcasts();
+  }, 3000);
+  // Ré-afficher section admin si déjà loggué
+  setTimeout(_showAdminSidebarIfNeeded, 1200);
 },false);
+
+// Aussi appeler _showAdminSidebarIfNeeded après le chargement du profil
+var _origUpdateHeaderProfile5 = window.updateHeaderProfile;
+window.updateHeaderProfile = function(){
+  if(_origUpdateHeaderProfile5) _origUpdateHeaderProfile5.apply(this, arguments);
+  _showAdminSidebarIfNeeded();
+};
+
 
 // Patch updateHeaderProfile pour inclure badges
 var _origUpdateHeaderProfile = window.updateHeaderProfile;
