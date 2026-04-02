@@ -8,134 +8,6 @@
 <meta name="theme-color" content="#05050e">
 <style>
 
-
-
-/* ══ ADMIN PANEL ════════════════════════════════════════════ */
-.admin-tab-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px;scrollbar-width:none;}
-.admin-tab-row::-webkit-scrollbar{display:none;}
-.admin-tab{padding:8px 14px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);
-  border-radius:20px;font-family:'Bangers',cursive;font-size:.78rem;letter-spacing:1.5px;
-  cursor:pointer;white-space:nowrap;color:rgba(255,255,255,.6);transition:all .2s;}
-.admin-tab.active{background:linear-gradient(135deg,rgba(255,159,10,.2),rgba(255,100,0,.15));
-  border-color:rgba(255,159,10,.4);color:#ff9f0a;}
-
-/* Question editor */
-.q-editor-form{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
-  border-radius:14px;padding:14px;}
-.q-answer-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.q-answer-lbl{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,.08);
-  display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;
-  font-size:.85rem;flex-shrink:0;cursor:pointer;border:2px solid transparent;transition:all .2s;}
-.q-answer-lbl.correct-sel{background:rgba(48,209,88,.2);border-color:var(--green);color:#30d158;}
-
-/* Player card admin */
-.admin-player-row{display:flex;align-items:center;gap:10px;padding:10px 12px;
-  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
-  border-radius:11px;margin-bottom:6px;}
-.admin-player-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;font-size:1.1rem;background:rgba(255,255,255,.07);overflow:hidden;}
-.admin-player-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.admin-action-btn{padding:5px 10px;border:none;border-radius:7px;font-size:.65rem;
-  font-weight:800;cursor:pointer;letter-spacing:1px;transition:all .2s;}
-.admin-ban-btn{background:rgba(255,59,48,.15);color:var(--red);border:1px solid rgba(255,59,48,.3);}
-.admin-ban-btn:hover{background:rgba(255,59,48,.3);}
-
-/* Stats cards admin */
-.admin-stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
-.admin-stat-box{background:linear-gradient(145deg,var(--panel),var(--panel2));
-  border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 8px;text-align:center;}
-.admin-stat-n{font-family:'Bangers',cursive;font-size:1.7rem;color:var(--gold);}
-.admin-stat-l{font-size:.58rem;color:rgba(255,255,255,.3);letter-spacing:1px;text-transform:uppercase;}
-
-/* Notif globale */
-.global-notif-preview{background:rgba(191,90,242,.08);border:1px solid rgba(191,90,242,.2);
-  border-radius:10px;padding:10px 12px;font-size:.78rem;color:rgba(255,255,255,.7);
-  margin-top:8px;line-height:1.5;min-height:40px;}
-
-/* ══ BADGES ADMIN / VERIFIED ════════════════════════════════ */
-.badge-admin{display:inline-flex;align-items:center;justify-content:center;
-  font-size:.75rem;margin-left:4px;vertical-align:middle;cursor:default;}
-.badge-verified{display:inline-flex;align-items:center;justify-content:center;
-  width:16px;height:16px;background:#0a84ff;border-radius:50%;
-  font-size:.6rem;margin-left:3px;vertical-align:middle;
-  box-shadow:0 0 6px rgba(10,132,255,.5);}
-.badge-verified::after{content:'✓';color:#fff;font-weight:900;}
-.player-name-wrap{display:inline-flex;align-items:center;gap:3px;flex-wrap:nowrap;}
-
-/* ══ ÉCRAN PROFIL AVANCÉ ════════════════════════════════════ */
-#s-my-profile{padding:0;overflow-y:auto;}
-
-/* Cover + avatar */
-.profile-cover{
-  background:linear-gradient(135deg,#1a1a2e 0%,#0f0f20 50%,#1a0a00 100%);
-  padding:24px 16px 16px;text-align:center;position:relative;
-  border-bottom:1px solid rgba(255,255,255,.07);
-}
-.profile-cover-bg{
-  position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,159,10,.08),rgba(191,90,242,.08));
-  pointer-events:none;
-}
-.profile-av-big{
-  width:88px;height:88px;border-radius:50%;border:3px solid var(--gold);
-  background:rgba(255,255,255,.07);display:flex;align-items:center;
-  justify-content:center;font-size:2.6rem;margin:0 auto 12px;
-  overflow:hidden;position:relative;z-index:1;
-  box-shadow:0 0 24px rgba(255,214,10,.25),0 6px 20px rgba(0,0,0,.4);
-}
-.profile-av-big img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.profile-name-row{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;}
-.profile-pseudo-big{font-family:'Bangers',cursive;font-size:1.7rem;letter-spacing:2px;}
-.profile-id-txt{font-size:.62rem;color:rgba(255,255,255,.3);letter-spacing:1px;margin-bottom:10px;}
-.profile-rank-pill{display:inline-flex;align-items:center;gap:6px;
-  padding:4px 14px;border-radius:20px;font-family:'Bangers',cursive;
-  font-size:.85rem;letter-spacing:1.5px;border:1px solid;margin-bottom:12px;}
-
-/* Stats grid */
-.profile-stats-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
-  padding:14px 14px 0;
-}
-.profile-stat-card{
-  background:linear-gradient(145deg,var(--panel),var(--panel2));
-  border:1px solid rgba(255,255,255,.07);border-radius:14px;
-  padding:12px 8px;text-align:center;position:relative;overflow:hidden;
-}
-.profile-stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;
-  height:2px;background:var(--accent,var(--gold));opacity:.5;}
-.profile-stat-n{font-family:'Bangers',cursive;font-size:1.6rem;line-height:1;}
-.profile-stat-l{font-size:.58rem;color:rgba(255,255,255,.32);letter-spacing:1px;
-  margin-top:3px;text-transform:uppercase;}
-
-/* XP bar */
-.profile-xp-section{padding:14px;}
-.profile-xp-bar-wrap{background:rgba(255,255,255,.06);border-radius:10px;height:10px;overflow:hidden;margin:6px 0 3px;}
-.profile-xp-bar-fill{height:100%;border-radius:10px;
-  background:linear-gradient(90deg,var(--blue),var(--purple));
-  transition:width .8s cubic-bezier(.34,1.56,.64,1);}
-
-/* Winrate ring */
-.winrate-ring-wrap{display:flex;align-items:center;justify-content:center;margin:10px 0 6px;}
-
-/* Match history */
-.match-hist-item{display:flex;align-items:center;gap:10px;
-  padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05);}
-.match-hist-result{width:36px;height:36px;border-radius:10px;display:flex;
-  align-items:center;justify-content:center;font-family:'Bangers',cursive;
-  font-size:.8rem;font-weight:900;flex-shrink:0;}
-.match-hist-result.win{background:rgba(48,209,88,.15);color:#30d158;border:1px solid rgba(48,209,88,.3);}
-.match-hist-result.loss{background:rgba(255,59,48,.12);color:var(--red);border:1px solid rgba(255,59,48,.25);}
-.match-hist-result.draw{background:rgba(255,214,10,.1);color:var(--gold);border:1px solid rgba(255,214,10,.25);}
-
-/* Edit profile btn */
-.profile-edit-btn{
-  position:absolute;top:16px;right:16px;z-index:2;
-  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.15);
-  border-radius:10px;padding:7px 12px;color:rgba(255,255,255,.7);
-  font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;
-}
-.profile-edit-btn:hover{background:rgba(255,255,255,.18);color:#fff;}
-
 /* ══ MODE COMPÉTITION / TOURNOI ════════════════════════════ */
 
 /* ── Bracket ─────────────────────────────────────────────── */
@@ -323,6 +195,85 @@
 }
 .notif-permission-bar.show{display:flex;align-items:center;gap:12px;}
 
+/* ══ ADMIN SYSTEM — v5.6.3 ═══════════════════════════════════ */
+
+/* Sidebar admin section */
+.sb-admin-section{background:linear-gradient(135deg,rgba(255,59,48,.07),rgba(255,149,0,.05));border-top:1px solid rgba(255,59,48,.15);border-bottom:1px solid rgba(255,59,48,.15);}
+.sb-admin-header{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:8px;background:linear-gradient(135deg,rgba(255,59,48,.12),rgba(255,149,0,.08));border:1px solid rgba(255,59,48,.2);}
+.sb-admin-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#ff3b30,#ff9500);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.sb-admin-name{font-weight:800;font-size:.88rem;color:#fff;}
+.sb-admin-role{font-size:.6rem;letter-spacing:2px;color:rgba(255,59,48,.8);font-weight:700;}
+.sb-admin-login-btn{width:100%;padding:11px;background:linear-gradient(135deg,#ff3b30,#ff6b35);border:none;border-radius:10px;color:#fff;font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;cursor:pointer;box-shadow:0 3px 12px rgba(255,59,48,.3);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.sb-admin-login-btn:hover{transform:translateY(-2px);box-shadow:0 5px 18px rgba(255,59,48,.4);}
+.sb-admin-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;margin-bottom:6px;cursor:pointer;transition:background .2s;font-size:.88rem;font-weight:600;}
+.sb-admin-item:hover{background:rgba(255,59,48,.1);}
+.sb-admin-item .si-icon{font-size:1.1rem;width:32px;text-align:center;display:flex;align-items:center;justify-content:center;}
+.sb-admin-item .si-label{flex:1;}
+.sb-admin-item .si-badge{font-size:.68rem;padding:2px 8px;border-radius:10px;font-weight:700;}
+.sb-admin-logout{width:100%;padding:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,59,48,.2);border-radius:9px;color:rgba(255,59,48,.7);font-family:'Bangers',cursive;font-size:.88rem;letter-spacing:2px;cursor:pointer;transition:all .2s;margin-top:4px;}
+.sb-admin-logout:hover{background:rgba(255,59,48,.1);color:#ff3b30;}
+
+/* Modals admin */
+.adm-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:600;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(8px);overflow-y:auto;}
+.adm-modal-overlay.open{display:flex;}
+.adm-modal-box{background:linear-gradient(145deg,#12121f,#1a1a2e);border-radius:22px;width:100%;max-width:400px;margin:auto;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);max-height:92vh;overflow-y:auto;overscroll-behavior:contain;}
+.adm-modal-hdr{padding:20px 20px 0;text-align:center;position:sticky;top:0;background:linear-gradient(180deg,#12121f 80%,transparent);z-index:2;padding-bottom:12px;}
+.adm-modal-icon{font-size:2.2rem;margin-bottom:6px;}
+.adm-modal-title{font-family:'Bangers',cursive;font-size:1.7rem;letter-spacing:3px;}
+.adm-modal-sub{font-size:.72rem;color:rgba(255,255,255,.38);margin-top:4px;line-height:1.5;}
+.adm-modal-body{padding:0 20px 20px;}
+.adm-modal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.07);border:none;color:rgba(255,255,255,.4);width:30px;height:30px;border-radius:50%;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.adm-modal-close:hover{background:rgba(255,255,255,.14);color:#fff;}
+.adm-inp{width:100%;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:600;outline:none;transition:all .2s;margin-bottom:10px;box-sizing:border-box;}
+.adm-inp:focus{border-color:rgba(255,59,48,.5);background:rgba(255,59,48,.04);}
+.adm-inp:last-child{margin-bottom:0;}
+.adm-section-lbl{font-size:.68rem;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:7px;margin-top:12px;text-transform:uppercase;font-weight:700;display:block;}
+.adm-pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.adm-pill{padding:7px 14px;border:1.5px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.65);font-family:'Outfit',sans-serif;font-weight:700;font-size:.73rem;cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+.adm-pill:hover{border-color:#fff;background:rgba(255,255,255,.08);}
+.adm-pill.on{background:linear-gradient(135deg,#ff3b30,#ff9500);color:#fff;border-color:transparent;box-shadow:0 2px 10px rgba(255,59,48,.3);}
+.adm-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;margin-bottom:8px;}
+.adm-toggle-lbl{font-size:.82rem;font-weight:600;color:rgba(255,255,255,.8);}
+.adm-toggle{position:relative;width:42px;height:22px;cursor:pointer;flex-shrink:0;}
+.adm-toggle input{opacity:0;width:0;height:0;position:absolute;}
+.adm-toggle-sl{position:absolute;inset:0;background:rgba(255,255,255,.1);border-radius:11px;transition:.3s;}
+.adm-toggle-sl::before{content:'';position:absolute;left:3px;top:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:.3s;}
+.adm-toggle input:checked+.adm-toggle-sl{background:linear-gradient(135deg,#ff3b30,#ff9500);}
+.adm-toggle input:checked+.adm-toggle-sl::before{transform:translateX(20px);}
+.adm-btn{width:100%;padding:13px;border:none;border-radius:12px;font-family:'Bangers',cursive;font-size:1.05rem;letter-spacing:2px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;color:#fff;}
+.adm-btn:last-child{margin-bottom:0;}
+.adm-btn-red{background:linear-gradient(135deg,#ff3b30,#ff6b35);box-shadow:0 4px 16px rgba(255,59,48,.3);}
+.adm-btn-red:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(255,59,48,.45);}
+.adm-btn-gold{background:linear-gradient(135deg,#ff9f0a,#ff6b00);box-shadow:0 4px 16px rgba(255,159,10,.3);}
+.adm-btn-gold:hover{transform:translateY(-2px);}
+.adm-btn-green{background:linear-gradient(135deg,#30d158,#16a34a);box-shadow:0 4px 16px rgba(48,209,88,.25);}
+.adm-btn-green:hover{transform:translateY(-2px);}
+.adm-btn-ghost{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);}
+.adm-btn-ghost:hover{background:rgba(255,255,255,.1);color:#fff;}
+.adm-err{font-size:.75rem;color:#ff3b30;min-height:16px;margin-bottom:8px;line-height:1.4;}
+
+/* Code résultat */
+.adm-code-box{background:linear-gradient(135deg,rgba(255,159,10,.1),rgba(255,59,48,.08));border:2px solid rgba(255,159,10,.3);border-radius:16px;padding:18px;text-align:center;margin:12px 0;}
+.adm-code-lbl{font-size:.62rem;letter-spacing:4px;color:rgba(255,255,255,.35);margin-bottom:6px;}
+.adm-code-val{font-family:'Bangers',cursive;font-size:3.2rem;letter-spacing:12px;color:#ff9f0a;cursor:pointer;text-shadow:0 0 20px rgba(255,159,10,.4);transition:transform .15s;}
+.adm-code-val:hover{transform:scale(1.05);}
+.adm-code-hint{font-size:.62rem;color:rgba(255,255,255,.25);margin-top:4px;}
+
+/* Questions builder */
+.adm-q-card{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-bottom:8px;position:relative;}
+.adm-q-num{font-family:'Bangers',cursive;font-size:.7rem;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:5px;}
+.adm-q-txt{font-weight:700;font-size:.84rem;line-height:1.4;margin-bottom:7px;color:rgba(255,255,255,.9);}
+.adm-q-opts{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.adm-q-opt{padding:5px 8px;border-radius:7px;font-size:.7rem;font-weight:700;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.6);}
+.adm-q-opt.ok{background:rgba(48,209,88,.12);border-color:rgba(48,209,88,.3);color:#30d158;}
+.adm-q-del{position:absolute;top:8px;right:8px;background:rgba(255,59,48,.1);border:1px solid rgba(255,59,48,.2);border-radius:7px;padding:3px 8px;font-size:.68rem;color:#ff3b30;cursor:pointer;font-weight:700;transition:all .2s;}
+.adm-q-del:hover{background:rgba(255,59,48,.22);}
+
+/* Modal compétition bloquée */
+.comp-block-modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:700;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);}
+.comp-block-modal.open{display:flex;}
+.comp-block-box{background:linear-gradient(145deg,#12121f,#1a1a2e);border:2px solid rgba(255,59,48,.28);border-radius:22px;padding:28px 22px;max-width:320px;width:100%;text-align:center;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+
 /* ── OFFLINE / ONLINE indicator ── */
 #network-banner{
   position:fixed;top:0;left:0;right:0;z-index:9999;
@@ -360,7 +311,7 @@
 .mcard.online-only.offline-disabled .offline-lock-icon{display:block;}
 .mcard.online-only.offline-disabled .online-badge{display:none;}
 </style>
-<title>Quiz Otaku 5.6.1 🎌</title>
+<title>Quiz Otaku 5.6.3 🎌</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <!-- Bootstrap 5.3 — CDN (online) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous" media="print" onload="this.media='all'">
@@ -878,7 +829,7 @@ body[data-theme="abidjan"] .daily-banner{border-color:rgba(0,154,68,.35);}
 #hdr-profile{display:none;}
 #hdr-profile.visible{display:flex!important;}
 /* Masquer le bouton ⚙️ quand profil visible */
-/* settings-btn toujours visible v5.6.4 */
+body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 
 /* ══════════════════════════════════
    V5.1 CSS
@@ -1237,12 +1188,12 @@ body[data-theme="abidjan"] .daily-banner{border-color:rgba(0,154,68,.35);}
   <div class="sidebar-section">
     <h4>👤 MON PROFIL</h4>
     <div style="display:flex;align-items:center;gap:12px;padding:8px 0;margin-bottom:8px">
-      <div id="sb-avatar-preview" onclick="openMyProfile()" style="width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:1.6rem;cursor:pointer;overflow:hidden;flex-shrink:0;transition:transform .2s" title="Changer l'avatar">
+      <div id="sb-avatar-preview" onclick="openAvatarChangeModal()" style="width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:1.6rem;cursor:pointer;overflow:hidden;flex-shrink:0;transition:transform .2s" title="Changer l'avatar">
         <span id="sb-avatar-inner">⚡</span>
       </div>
       <div style="flex:1;min-width:0">
         <div id="sb-pseudo-display" style="font-weight:800;font-size:.92rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Joueur</div>
-        <button onclick="openMyProfile()" style="margin-top:4px;background:rgba(245,168,0,.1);border:1px solid rgba(245,168,0,.25);border-radius:7px;padding:3px 10px;color:var(--gold);font-size:.65rem;font-weight:700;cursor:pointer;letter-spacing:1px">👤 MON PROFIL</button>
+        <button onclick="openAvatarChangeModal()" style="margin-top:4px;background:rgba(245,168,0,.1);border:1px solid rgba(245,168,0,.25);border-radius:7px;padding:3px 10px;color:var(--gold);font-size:.65rem;font-weight:700;cursor:pointer;letter-spacing:1px">✏️ CHANGER AVATAR</button>
       </div>
     </div>
   </div>
@@ -1287,8 +1238,50 @@ body[data-theme="abidjan"] .daily-banner{border-color:rgba(0,154,68,.35);}
 
   <div class="version-box">
     <div class="v-label">VERSION DU JEU</div>
-    <div class="v-num">5.6.4 🎌</div>
-    <div style="font-size:.65rem;color:rgba(255,255,255,.25);margin-top:3px">500+ questions · 9 modes · Multijoueur 2-20</div>
+    <div class="v-num">5.6.3 🎌</div>
+    <div style="font-size:.65rem;color:rgba(255,255,255,.25);margin-top:3px">500+ questions · 9 modes · Admin compétition</div>
+  </div>
+
+  <!-- ══ SECTION ADMINISTRATION ══ -->
+  <div class="sidebar-section sb-admin-section">
+    <h4>🛡️ ADMINISTRATION</h4>
+
+    <!-- État : non connecté -->
+    <div id="sb-adm-guest">
+      <div style="font-size:.72rem;color:rgba(255,255,255,.3);line-height:1.5;margin-bottom:10px">
+        Accès réservé au créateur du jeu.<br>Connecte-toi pour gérer les compétitions.
+      </div>
+      <button class="sb-admin-login-btn" onclick="openAdmLogin();closeSidebar()">
+        🔐 CONNEXION ADMIN
+      </button>
+    </div>
+
+    <!-- État : connecté admin -->
+    <div id="sb-adm-logged" style="display:none">
+      <div class="sb-admin-header">
+        <div class="sb-admin-avatar">🛡️</div>
+        <div>
+          <div class="sb-admin-name">Administrateur</div>
+          <div class="sb-admin-role">ACCÈS TOTAL</div>
+        </div>
+      </div>
+      <div class="sb-admin-item" onclick="openAdmCreateModal();closeSidebar()">
+        <span class="si-icon" style="color:#ff9f0a">🏆</span>
+        <span class="si-label">Créer une compétition</span>
+        <span class="si-badge" style="background:rgba(255,159,10,.15);color:#ff9f0a">NOUVEAU</span>
+      </div>
+      <div class="sb-admin-item" onclick="openAdmQuestionsModal();closeSidebar()">
+        <span class="si-icon" style="color:#30d158">📝</span>
+        <span class="si-label">Gérer les questions</span>
+        <span class="si-badge" id="sb-adm-qcount" style="background:rgba(48,209,88,.12);color:#30d158">0</span>
+      </div>
+      <div class="sb-admin-item" onclick="openAdmMonitorModal();closeSidebar()">
+        <span class="si-icon" style="color:#0a84ff">📡</span>
+        <span class="si-label">Mes tournois</span>
+        <span class="si-badge" style="background:rgba(10,132,255,.12);color:#0a84ff">LIVE</span>
+      </div>
+      <button class="sb-admin-logout" onclick="admLogout()">🚪 DÉCONNEXION ADMIN</button>
+    </div>
   </div>
 
   <div class="sidebar-section">
@@ -1331,7 +1324,7 @@ body[data-theme="abidjan"] .daily-banner{border-color:rgba(0,154,68,.35);}
     </div>
   </div>
   <div class="hdr-right">
-    <div id="hdr-profile" style="display:none;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:6px 12px;cursor:pointer" onclick="openMyProfile()">
+    <div id="hdr-profile" style="display:none;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:6px 12px;cursor:pointer" onclick="openSidebar()">
       <div id="hdr-av" style="font-size:1.5rem;line-height:1">⚡</div>
       <div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px">
         <div id="hdr-pseudo" style="font-weight:800;font-size:.82rem;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div>
@@ -1342,7 +1335,7 @@ body[data-theme="abidjan"] .daily-banner{border-color:rgba(0,154,68,.35);}
     🔔
     <span class="notif-bell-count" id="notif-bell-count">0</span>
   </button>
-  <button class="settings-btn" id="hdr-settings-btn" onclick="openSidebar()" style="display:flex!important"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2v4.586l7 7L14.586 9l-7-7H3zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2z"/><circle cx="4.5" cy="4.5" r="1.5"/><path fill-rule="evenodd" d="M14.5 1.5l-4 4L14 8.5l4-4L14.5 1.5z"/></svg></button>
+  <button class="settings-btn" id="hdr-settings-btn" onclick="openSidebar()"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2v4.586l7 7L14.586 9l-7-7H3zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2z"/><circle cx="4.5" cy="4.5" r="1.5"/><path fill-rule="evenodd" d="M14.5 1.5l-4 4L14 8.5l4-4L14.5 1.5z"/></svg></button>
     <span class="badge rounded-pill" id="fb-badge" style="background:rgba(255,214,10,.15);color:var(--gold);border:1.5px solid rgba(255,214,10,.3);font-size:.6rem;letter-spacing:1px"><span class="fb-dot"></span> <span id="fb-txt">Firebase...</span></span>
   </div>
 </header>
@@ -1447,7 +1440,7 @@ body[data-theme="abidjan"] .daily-banner{border-color:rgba(0,154,68,.35);}
       <div class="mcard-desc">Chapitres progressifs · Missions</div>
       <span class="mcard-tag" style="background:rgba(16,185,129,.15);color:#10b981">AVENTURE</span>
     </div>
-    <div class="mcard online-only" style="--mc:#ff9f0a;grid-column:span 2" onclick="checkOnlineThenRun(openTournamentLobby)">
+    <div class="mcard online-only" style="--mc:#ff9f0a;grid-column:span 2" onclick="onCompetitionCardClick()">
       <div style="display:flex;align-items:center;gap:12px">
         <div class="mcard-icon" style="width:48px;height:48px;flex-shrink:0">
           <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5z"/></svg>
@@ -2334,266 +2327,189 @@ body[data-theme="abidjan"] .daily-banner{border-color:rgba(0,154,68,.35);}
   </div>
 </div>
 
-
-<!-- ════ ÉCRAN PROFIL AVANCÉ ════ -->
-<div id="s-my-profile" class="screen hidden">
-  <div class="profile-cover">
-    <div class="profile-cover-bg"></div>
-    <button class="back-btn" onclick="go('home')" style="position:absolute;top:14px;left:14px;z-index:2;margin:0;padding:6px 10px;font-size:.72rem">← Retour</button>
-    <button class="profile-edit-btn" onclick="openAvatarChangeModal()">✏️ Modifier</button>
-
-    <!-- Avatar -->
-    <div class="profile-av-big" id="myprof-av">⚡</div>
-
-    <!-- Pseudo + badges -->
-    <div class="profile-name-row">
-      <span class="profile-pseudo-big" id="myprof-pseudo">Joueur</span>
-      <span id="myprof-admin-badge"></span>
-      <span id="myprof-verified-badge"></span>
+<!-- ══ MODAL : COMPÉTITION BLOQUÉE (joueurs normaux) ══ -->
+<div class="comp-block-modal" id="comp-block-modal">
+  <div class="comp-block-box">
+    <div style="font-size:3rem;margin-bottom:10px">🔒</div>
+    <div style="font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:3px;color:#ff3b30;margin-bottom:10px">ACCÈS RESTREINT</div>
+    <div style="font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.65;margin-bottom:20px">
+      Seul l'administrateur peut organiser une compétition.<br><br>
+      Si tu as reçu un code d'invitation, rejoins le tournoi via le bouton ci-dessous.
     </div>
-    <div class="profile-id-txt" id="myprof-id">#------</div>
-
-    <!-- Rang -->
-    <div class="profile-rank-pill" id="myprof-rank-pill" style="border-color:var(--gold);color:var(--gold)">
-      <span id="myprof-rank-icon">🌱</span>
-      <span id="myprof-rank-name">Débutant</span>
-    </div>
-
-    <!-- Bouton changer avatar -->
-    <button onclick="openAvatarChangeModal()" style="background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:7px 16px;color:rgba(255,255,255,.7);font-size:.72rem;font-weight:700;cursor:pointer;position:relative;z-index:1">
-      🎭 Changer avatar
+    <button onclick="document.getElementById('comp-block-modal').classList.remove('open');showJoinTournModal()"
+      style="width:100%;padding:13px;background:linear-gradient(135deg,#ff9f0a,#ff6b00);border:none;border-radius:12px;color:#fff;font-family:'Bangers',cursive;font-size:1.05rem;letter-spacing:2px;cursor:pointer;margin-bottom:8px">
+      🏆 REJOINDRE AVEC UN CODE
     </button>
-  </div>
-
-  <!-- XP / Niveau -->
-  <div class="profile-xp-section">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-      <div style="font-family:'Bangers',cursive;font-size:.82rem;letter-spacing:2px;color:rgba(255,255,255,.5)">EXPÉRIENCE</div>
-      <div style="font-size:.72rem;color:rgba(255,255,255,.4)" id="myprof-xp-txt">0 / 100 XP</div>
-    </div>
-    <div class="profile-xp-bar-wrap">
-      <div class="profile-xp-bar-fill" id="myprof-xp-fill" style="width:0%"></div>
-    </div>
-    <div style="display:flex;justify-content:space-between">
-      <div style="font-size:.6rem;color:rgba(255,255,255,.25)" id="myprof-level-txt">Niv. 1</div>
-      <div style="font-size:.6rem;color:rgba(255,255,255,.25)" id="myprof-next-rank"></div>
-    </div>
-  </div>
-
-  <!-- Stats principales -->
-  <div class="profile-stats-grid">
-    <div class="profile-stat-card" style="--accent:var(--blue)">
-      <div class="profile-stat-n" id="myprof-played">0</div>
-      <div class="profile-stat-l">Matchs</div>
-    </div>
-    <div class="profile-stat-card" style="--accent:var(--green)">
-      <div class="profile-stat-n" style="color:var(--green)" id="myprof-wins">0</div>
-      <div class="profile-stat-l">Victoires</div>
-    </div>
-    <div class="profile-stat-card" style="--accent:var(--red)">
-      <div class="profile-stat-n" style="color:var(--red)" id="myprof-losses">0</div>
-      <div class="profile-stat-l">Défaites</div>
-    </div>
-    <div class="profile-stat-card" style="--accent:#ff9f0a">
-      <div class="profile-stat-n" style="color:#ff9f0a" id="myprof-winrate">0%</div>
-      <div class="profile-stat-l">Winrate</div>
-    </div>
-    <div class="profile-stat-card" style="--accent:var(--gold)">
-      <div class="profile-stat-n" style="color:var(--gold)" id="myprof-best">0</div>
-      <div class="profile-stat-l">Meilleur</div>
-    </div>
-    <div class="profile-stat-card" style="--accent:#bf5af2">
-      <div class="profile-stat-n" style="color:#bf5af2" id="myprof-coins">0</div>
-      <div class="profile-stat-l">Pièces</div>
-    </div>
-  </div>
-
-  <!-- Badges -->
-  <div style="padding:14px">
-    <div style="font-family:'Bangers',cursive;font-size:.78rem;letter-spacing:3px;color:rgba(255,255,255,.25);margin-bottom:8px">BADGES</div>
-    <div id="myprof-badges-row" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-  </div>
-
-  <!-- Historique matchs -->
-  <div style="padding:0 14px 10px">
-    <div style="font-family:'Bangers',cursive;font-size:.78rem;letter-spacing:3px;color:rgba(255,255,255,.25);margin-bottom:8px">DERNIERS MATCHS</div>
-  </div>
-  <div id="myprof-match-history" style="margin-bottom:20px">
-    <div style="text-align:center;padding:20px;color:rgba(255,255,255,.2);font-size:.78rem">Joue pour voir ton historique ici !</div>
+    <button onclick="document.getElementById('comp-block-modal').classList.remove('open')"
+      style="width:100%;padding:10px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.4);font-family:'Bangers',cursive;font-size:.9rem;letter-spacing:2px;cursor:pointer">
+      FERMER
+    </button>
   </div>
 </div>
 
-
-<!-- ════════════════════════════════════════════════════════
-     SCREEN ADMIN — Visible uniquement aux admins
-════════════════════════════════════════════════════════ -->
-<div id="s-admin" class="screen hidden">
-  <button class="back-btn" onclick="go('home')">← Retour</button>
-
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-    <div style="font-size:2rem">👑</div>
-    <div>
-      <div style="font-family:'Bangers',cursive;font-size:1.5rem;letter-spacing:3px;background:linear-gradient(135deg,#ff9f0a,#ff6b00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">PANEL ADMINISTRATEUR</div>
-      <div style="font-size:.65rem;color:rgba(255,255,255,.35);letter-spacing:1px">Quiz Otaku v5.6.4 — Accès restreint</div>
+<!-- ══ MODAL : CONNEXION ADMIN ══ -->
+<div class="adm-modal-overlay" id="adm-login-modal">
+  <div class="adm-modal-box" style="border:2px solid rgba(255,59,48,.25)">
+    <div class="adm-modal-hdr" style="position:relative">
+      <button class="adm-modal-close" onclick="closeAdmLogin()">✕</button>
+      <div class="adm-modal-icon">🛡️</div>
+      <div class="adm-modal-title" style="background:linear-gradient(135deg,#ff3b30,#ff9500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">ACCÈS ADMIN</div>
+      <div class="adm-modal-sub">Entre le mot de passe administrateur<br>pour accéder au panneau de contrôle</div>
+    </div>
+    <div class="adm-modal-body" style="padding-top:16px">
+      <input type="password" class="adm-inp" id="adm-pwd-inp" placeholder="••••••••" maxlength="32"
+        style="text-align:center;letter-spacing:4px;font-size:1.1rem"
+        onkeydown="if(event.key==='Enter')admDoLogin()">
+      <div class="adm-err" id="adm-pwd-err"></div>
+      <button class="adm-btn adm-btn-red" onclick="admDoLogin()">🔓 CONNEXION</button>
+      <button class="adm-btn adm-btn-ghost" onclick="closeAdmLogin()">ANNULER</button>
     </div>
   </div>
+</div>
 
-  <!-- Tabs admin -->
-  <div class="admin-tab-row">
-    <div class="admin-tab active" onclick="switchAdminTab('stats',this)">📊 Stats</div>
-    <div class="admin-tab" onclick="switchAdminTab('questions',this)">✍️ Questions</div>
-    <div class="admin-tab" onclick="switchAdminTab('players',this)">👥 Joueurs</div>
-    <div class="admin-tab" onclick="switchAdminTab('notif',this)">📢 Notif globale</div>
-    <div class="admin-tab" onclick="switchAdminTab('tournament',this)">🏆 Tournois</div>
-  </div>
-
-  <!-- ── STATS ── -->
-  <div id="admin-tab-stats">
-    <div class="admin-stat-row">
-      <div class="admin-stat-box"><div class="admin-stat-n" id="adm-stat-players">—</div><div class="admin-stat-l">Joueurs</div></div>
-      <div class="admin-stat-box"><div class="admin-stat-n" id="adm-stat-matches">—</div><div class="admin-stat-l">Matchs</div></div>
-      <div class="admin-stat-box"><div class="admin-stat-n" id="adm-stat-tournois">—</div><div class="admin-stat-l">Tournois</div></div>
+<!-- ══ MODAL : CRÉER COMPÉTITION ══ -->
+<div class="adm-modal-overlay" id="adm-create-modal">
+  <div class="adm-modal-box" style="border:2px solid rgba(255,159,10,.2)">
+    <div class="adm-modal-hdr" style="position:relative">
+      <button class="adm-modal-close" onclick="closeAdmCreateModal()">✕</button>
+      <div class="adm-modal-icon">🏆</div>
+      <div class="adm-modal-title" style="background:linear-gradient(135deg,#ff9f0a,#ff3b30);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">CRÉER UNE COMPÉTITION</div>
+      <div class="adm-modal-sub">Configure ton tournoi officiel</div>
     </div>
-    <div class="sec">
-      <h3>📊 QUESTIONS PERSONNALISÉES</h3>
-      <div id="adm-custom-q-count" style="font-family:'Bangers',cursive;font-size:1.4rem;color:var(--gold)">0</div>
-      <div style="font-size:.7rem;color:rgba(255,255,255,.35)">questions créées par l'admin</div>
-    </div>
-    <button class="btn btn-blue btn-full" style="margin-top:10px" onclick="refreshAdminStats()">🔄 Actualiser</button>
-  </div>
+    <div class="adm-modal-body" style="padding-top:4px">
 
-  <!-- ── CRÉATEUR DE QUESTIONS ── -->
-  <div id="admin-tab-questions" style="display:none">
-    <div class="sec">
-      <h3>✍️ CRÉER UNE QUESTION</h3>
-      <div class="q-editor-form">
-        <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-bottom:4px;letter-spacing:1px">QUESTION</div>
-        <textarea id="adm-q-text" class="inp" placeholder="Écris ta question ici..." rows="3" style="resize:vertical;margin-bottom:10px;line-height:1.5"></textarea>
+      <span class="adm-section-lbl">NOM DU TOURNOI</span>
+      <input class="adm-inp" id="adm-tourn-name" placeholder="Ex : Grand Tournoi Otaku Été 2025" maxlength="40">
 
-        <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-bottom:6px;letter-spacing:1px">RÉPONSES (clique la lettre pour marquer comme correcte)</div>
-        <div id="adm-answers-editor">
-          <div class="q-answer-row">
-            <div class="q-answer-lbl" data-idx="0" onclick="setCorrectAnswer(0)">A</div>
-            <input class="inp" id="adm-ans-0" placeholder="Réponse A..." style="flex:1">
-          </div>
-          <div class="q-answer-row">
-            <div class="q-answer-lbl" data-idx="1" onclick="setCorrectAnswer(1)">B</div>
-            <input class="inp" id="adm-ans-1" placeholder="Réponse B..." style="flex:1">
-          </div>
-          <div class="q-answer-row">
-            <div class="q-answer-lbl" data-idx="2" onclick="setCorrectAnswer(2)">C</div>
-            <input class="inp" id="adm-ans-2" placeholder="Réponse C..." style="flex:1">
-          </div>
-          <div class="q-answer-row">
-            <div class="q-answer-lbl" data-idx="3" onclick="setCorrectAnswer(3)">D</div>
-            <input class="inp" id="adm-ans-3" placeholder="Réponse D..." style="flex:1">
-          </div>
+      <span class="adm-section-lbl">NOMBRE DE JOUEURS</span>
+      <div class="adm-pill-row" id="adm-size-row">
+        <div class="adm-pill" onclick="admPill('adm-size-row',this,4)">4 joueurs</div>
+        <div class="adm-pill on" onclick="admPill('adm-size-row',this,8)">8 joueurs</div>
+        <div class="adm-pill" onclick="admPill('adm-size-row',this,16)">16 joueurs</div>
+      </div>
+
+      <span class="adm-section-lbl">QUESTIONS PAR MATCH</span>
+      <div class="adm-pill-row" id="adm-qnum-row">
+        <div class="adm-pill" onclick="admPill('adm-qnum-row',this,5)">5 q.</div>
+        <div class="adm-pill on" onclick="admPill('adm-qnum-row',this,10)">10 q.</div>
+        <div class="adm-pill" onclick="admPill('adm-qnum-row',this,15)">15 q.</div>
+        <div class="adm-pill" onclick="admPill('adm-qnum-row',this,20)">20 q.</div>
+      </div>
+
+      <span class="adm-section-lbl">TEMPS PAR QUESTION</span>
+      <div class="adm-pill-row" id="adm-timer-row">
+        <div class="adm-pill" onclick="admPill('adm-timer-row',this,10)">10 s</div>
+        <div class="adm-pill on" onclick="admPill('adm-timer-row',this,15)">15 s</div>
+        <div class="adm-pill" onclick="admPill('adm-timer-row',this,20)">20 s</div>
+        <div class="adm-pill" onclick="admPill('adm-timer-row',this,30)">30 s</div>
+      </div>
+
+      <span class="adm-section-lbl">SOURCE DES QUESTIONS</span>
+      <div class="adm-pill-row" id="adm-qsrc-row">
+        <div class="adm-pill on" onclick="admPill('adm-qsrc-row',this,'bank');admToggleQsrcNote()">🎲 Banque du jeu</div>
+        <div class="adm-pill" onclick="admPill('adm-qsrc-row',this,'custom');admToggleQsrcNote()">✏️ Mes questions</div>
+        <div class="adm-pill" onclick="admPill('adm-qsrc-row',this,'mixed');admToggleQsrcNote()">🔀 Les deux</div>
+      </div>
+      <div id="adm-qsrc-note" style="display:none;font-size:.7rem;color:rgba(255,159,10,.7);background:rgba(255,159,10,.07);border-radius:8px;padding:8px 10px;margin-bottom:10px;line-height:1.5">
+        ⚠️ Tu utilises tes questions perso. Ajoute-les d'abord via "Gérer les questions" (<span id="adm-qsrc-count">0</span> ajoutées).
+      </div>
+
+      <div class="adm-toggle-row">
+        <span class="adm-toggle-lbl">🎮 Je joue aussi (admin joueur)</span>
+        <label class="adm-toggle"><input type="checkbox" id="adm-host-plays" checked><span class="adm-toggle-sl"></span></label>
+      </div>
+      <div class="adm-toggle-row">
+        <span class="adm-toggle-lbl">🚀 Démarrage automatique</span>
+        <label class="adm-toggle"><input type="checkbox" id="adm-auto-start"><span class="adm-toggle-sl"></span></label>
+      </div>
+
+      <div class="adm-err" id="adm-create-err"></div>
+      <button class="adm-btn adm-btn-gold" onclick="admDoCreateTournament()">🏆 CRÉER & GÉNÉRER LE CODE</button>
+      <button class="adm-btn adm-btn-ghost" onclick="closeAdmCreateModal()">ANNULER</button>
+
+      <!-- Code créé -->
+      <div id="adm-code-result" style="display:none">
+        <div class="adm-code-box">
+          <div class="adm-code-lbl">TOURNOI CRÉÉ ✅</div>
+          <div id="adm-code-name-display" style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:6px"></div>
+          <div class="adm-code-val" id="adm-code-display" onclick="admCopyCode()">------</div>
+          <div class="adm-code-hint">Tape sur le code pour le copier</div>
         </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
-          <div>
-            <div style="font-size:.68rem;color:rgba(255,255,255,.35);margin-bottom:4px">CATÉGORIE</div>
-            <select id="adm-q-cat" class="inp" style="font-size:.82rem">
-              <option value="shonen">⚡ Shōnen</option>
-              <option value="shojo">🌸 Shōjo & Seinen</option>
-              <option value="mangaka">✍️ Mangaka</option>
-              <option value="japon">⛩️ Culture Japonaise</option>
-              <option value="anime">🎬 Anime & Studios</option>
-              <option value="ci">🇨🇮 Côte d'Ivoire</option>
-              <option value="bd">📖 BD Africaine</option>
-            </select>
-          </div>
-          <div>
-            <div style="font-size:.68rem;color:rgba(255,255,255,.35);margin-bottom:4px">DIFFICULTÉ</div>
-            <select id="adm-q-diff" class="inp" style="font-size:.82rem">
-              <option value="facile">🌸 Facile</option>
-              <option value="moyen">⚔️ Moyen</option>
-              <option value="difficile">🔥 Difficile</option>
-            </select>
-          </div>
+        <div style="display:flex;gap:8px">
+          <button class="adm-btn adm-btn-green" style="flex:1;margin-bottom:0" onclick="admShareWA()">📱 WhatsApp</button>
+          <button class="adm-btn adm-btn-ghost" style="flex:1;margin-bottom:0" onclick="admCopyCode()">📋 Copier</button>
         </div>
-
-        <div style="margin-top:10px">
-          <div style="font-size:.68rem;color:rgba(255,255,255,.35);margin-bottom:4px">EXPLICATION (optionnel)</div>
-          <input class="inp" id="adm-q-expl" placeholder="Explication de la bonne réponse...">
-        </div>
-
-        <div id="adm-q-err" class="errbox hidden" style="margin-top:8px"></div>
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <button class="btn btn-gold" style="flex:1" onclick="saveAdminQuestion()">💾 SAUVEGARDER</button>
-          <button class="btn btn-ghost" onclick="clearQuestionEditor()">🗑️ EFFACER</button>
-        </div>
-        <div id="adm-q-success" style="display:none;text-align:center;padding:8px;color:var(--green);font-weight:700;margin-top:6px">✅ Question sauvegardée !</div>
-      </div>
-    </div>
-
-    <!-- Liste des questions créées -->
-    <div class="sec">
-      <h3>📋 MES QUESTIONS (<span id="adm-q-list-count">0</span>)</h3>
-      <div id="adm-q-list" style="max-height:350px;overflow-y:auto">
-        <div style="text-align:center;padding:20px;color:rgba(255,255,255,.3);font-size:.78rem">Aucune question créée</div>
+        <button class="adm-btn adm-btn-ghost" style="margin-top:8px" onclick="closeAdmCreateModal()">FERMER</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ── GESTION JOUEURS ── -->
-  <div id="admin-tab-players" style="display:none">
-    <div style="position:relative;margin-bottom:10px">
-      <input id="adm-player-search" class="inp" placeholder="🔍 Rechercher un joueur..." oninput="filterAdminPlayers(this.value)" style="padding-left:14px">
+<!-- ══ MODAL : GESTION QUESTIONS ══ -->
+<div class="adm-modal-overlay" id="adm-questions-modal">
+  <div class="adm-modal-box" style="border:2px solid rgba(48,209,88,.18)">
+    <div class="adm-modal-hdr" style="position:relative">
+      <button class="adm-modal-close" onclick="closeAdmQuestionsModal()">✕</button>
+      <div class="adm-modal-icon">📝</div>
+      <div class="adm-modal-title" style="background:linear-gradient(135deg,#30d158,#0a84ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">MES QUESTIONS</div>
+      <div class="adm-modal-sub">Ces questions seront utilisées dans tes compétitions</div>
     </div>
-    <div id="adm-players-list">
-      <div style="text-align:center;padding:20px;color:rgba(255,255,255,.3)">Chargement...</div>
+    <div class="adm-modal-body" style="padding-top:4px">
+      <!-- Formulaire -->
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;margin-bottom:14px">
+        <span class="adm-section-lbl" style="margin-top:0">NOUVELLE QUESTION</span>
+        <textarea class="adm-inp" id="adm-q-text" placeholder="Texte de la question..." rows="2" style="resize:vertical;line-height:1.5"></textarea>
+
+        <span class="adm-section-lbl">CHOIX A <span style="color:rgba(255,255,255,.25);font-weight:400;letter-spacing:0">(champs vides = ignorés)</span></span>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">
+          <input class="adm-inp" style="margin-bottom:0;flex:1" id="adm-c0" placeholder="Choix A">
+          <label style="display:flex;align-items:center;gap:4px;font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap;cursor:pointer"><input type="radio" name="adm-ok" value="0" style="accent-color:#30d158"> ✓ Bonne</label>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">
+          <input class="adm-inp" style="margin-bottom:0;flex:1" id="adm-c1" placeholder="Choix B">
+          <label style="display:flex;align-items:center;gap:4px;font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap;cursor:pointer"><input type="radio" name="adm-ok" value="1" style="accent-color:#30d158"> ✓ Bonne</label>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">
+          <input class="adm-inp" style="margin-bottom:0;flex:1" id="adm-c2" placeholder="Choix C (optionnel)">
+          <label style="display:flex;align-items:center;gap:4px;font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap;cursor:pointer"><input type="radio" name="adm-ok" value="2" style="accent-color:#30d158"> ✓ Bonne</label>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <input class="adm-inp" style="margin-bottom:0;flex:1" id="adm-c3" placeholder="Choix D (optionnel)">
+          <label style="display:flex;align-items:center;gap:4px;font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap;cursor:pointer"><input type="radio" name="adm-ok" value="3" style="accent-color:#30d158"> ✓ Bonne</label>
+        </div>
+        <input class="adm-inp" id="adm-q-cat" placeholder="Catégorie (ex: Dragon Ball, Naruto...)" maxlength="30">
+        <div class="adm-err" id="adm-q-err"></div>
+        <button class="adm-btn adm-btn-green" onclick="admAddQuestion()">➕ AJOUTER</button>
+      </div>
+
+      <!-- Liste des questions -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span style="font-family:'Bangers',cursive;font-size:.85rem;letter-spacing:2px;color:rgba(255,255,255,.5)">MES QUESTIONS (<span id="adm-q-total">0</span>)</span>
+        <button onclick="admClearQuestions()" style="padding:4px 10px;background:rgba(255,59,48,.1);border:1px solid rgba(255,59,48,.2);border-radius:7px;color:#ff3b30;font-size:.68rem;font-weight:700;cursor:pointer">🗑️ TOUT EFFACER</button>
+      </div>
+      <div id="adm-q-list"><div style="text-align:center;padding:20px;color:rgba(255,255,255,.2);font-size:.78rem">Aucune question. Ajoute-en ci-dessus !</div></div>
+
+      <button class="adm-btn adm-btn-ghost" style="margin-top:8px" onclick="closeAdmQuestionsModal()">FERMER</button>
     </div>
   </div>
+</div>
 
-  <!-- ── NOTIFICATION GLOBALE ── -->
-  <div id="admin-tab-notif" style="display:none">
-    <div class="sec">
-      <h3>📢 ENVOYER UN MESSAGE À TOUS</h3>
-      <textarea id="adm-notif-text" class="inp" placeholder="Écris ton message global ici..." rows="4" style="resize:vertical;margin-bottom:10px;line-height:1.5"></textarea>
-      <select id="adm-notif-type" class="inp" style="margin-bottom:10px;font-size:.82rem">
-        <option value="system">📢 Annonce</option>
-        <option value="event">🎉 Événement</option>
-        <option value="update">🔔 Mise à jour</option>
-        <option value="tournament">🏆 Tournoi</option>
-      </select>
-      <div class="global-notif-preview" id="adm-notif-preview">Aperçu du message...</div>
-      <button class="btn btn-full" style="background:linear-gradient(135deg,#bf5af2,#7c3aed);margin-top:10px" onclick="sendGlobalNotification()">📢 ENVOYER À TOUS</button>
+<!-- ══ MODAL : MES TOURNOIS (monitoring) ══ -->
+<div class="adm-modal-overlay" id="adm-monitor-modal">
+  <div class="adm-modal-box" style="border:2px solid rgba(10,132,255,.2)">
+    <div class="adm-modal-hdr" style="position:relative">
+      <button class="adm-modal-close" onclick="closeAdmMonitorModal()">✕</button>
+      <div class="adm-modal-icon">📡</div>
+      <div class="adm-modal-title" style="background:linear-gradient(135deg,#0a84ff,#bf5af2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">MES TOURNOIS</div>
+      <div class="adm-modal-sub">Surveille et contrôle tes compétitions</div>
     </div>
-    <!-- Historique des notifs envoyées -->
-    <div class="sec">
-      <h3>📜 HISTORIQUE</h3>
-      <div id="adm-notif-history" style="max-height:200px;overflow-y:auto">
-        <div style="text-align:center;padding:14px;color:rgba(255,255,255,.3);font-size:.75rem">Aucune notif envoyée</div>
+    <div class="adm-modal-body" style="padding-top:8px">
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <button class="adm-btn adm-btn-ghost" style="flex:1;padding:9px;font-size:.82rem;margin-bottom:0" onclick="admRefreshMonitor()">🔄 Actualiser</button>
+        <button class="adm-btn adm-btn-gold" style="flex:1;padding:9px;font-size:.82rem;margin-bottom:0" onclick="closeAdmMonitorModal();openAdmCreateModal()">➕ Nouveau</button>
       </div>
-    </div>
-  </div>
-
-  <!-- ── TOURNOIS ADMIN ── -->
-  <div id="admin-tab-tournament" style="display:none">
-    <div class="sec">
-      <h3>🏆 CRÉER UN TOURNOI OFFICIEL</h3>
-      <input class="inp" id="adm-tourn-name" placeholder="Nom du tournoi..." style="margin-bottom:8px">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-        <select id="adm-tourn-size" class="inp" style="font-size:.82rem">
-          <option value="4">4 joueurs</option>
-          <option value="8">8 joueurs</option>
-          <option value="16">16 joueurs</option>
-        </select>
-        <select id="adm-tourn-qtype" class="inp" style="font-size:.82rem">
-          <option value="custom">Questions admin</option>
-          <option value="mixed">Mélangées</option>
-          <option value="standard">Standard</option>
-        </select>
-      </div>
-      <button class="btn btn-full" style="background:linear-gradient(135deg,#ff9f0a,#ff6b00)" onclick="createOfficialTournament()">🏆 CRÉER ET OUVRIR</button>
-    </div>
-    <div class="sec">
-      <h3>📋 TOURNOIS ACTIFS</h3>
-      <div id="adm-active-tournaments">
-        <div style="text-align:center;padding:14px;color:rgba(255,255,255,.3);font-size:.75rem">Chargement...</div>
-      </div>
-      <button class="btn btn-ghost btn-full" onclick="loadAdminTournaments()">🔄 Actualiser</button>
+      <div id="adm-monitor-list"><div style="text-align:center;padding:24px;color:rgba(255,255,255,.25);font-size:.78rem">Chargement...</div></div>
+      <button class="adm-btn adm-btn-ghost" style="margin-top:8px" onclick="closeAdmMonitorModal()">FERMER</button>
     </div>
   </div>
 </div>
@@ -3065,7 +2981,7 @@ function dbOn(p,cb){return window._fb.onValue(dbR(p),cb);}
 
 // Screens
 function go(name){
-  ['home','lobby','wait','loading','cd','game','results','leaderboard','profile','story','friends','weekly','badges','community','players','tournament-lobby','tournament-bracket','tournament-results','my-profile','admin'].forEach(s=>{
+  ['home','lobby','wait','loading','cd','game','results','leaderboard','profile','story','friends','weekly','badges','community','players','tournament-lobby','tournament-bracket','tournament-results'].forEach(s=>{
     const el=document.getElementById('s-'+s);
     if(el)el.classList.add('hidden');
   });
@@ -4144,7 +4060,7 @@ var _avatarCache={};
 function getPlayerAvatar(playerId,fbAvatar){
   // Priorité : profil local si c'est moi
   if(playerId===myId){
-    var p=loadProfile();return p?p.avatar||(PRESET_AVATARS&&PRESET_AVATARS[0])||'⚡':'⚡';
+    var p=loadProfile();return p?p.avatar||'⚡':'⚡';
   }
   // Sinon avatar Firebase (passé en paramètre) ou cache
   if(fbAvatar)_avatarCache[playerId]=fbAvatar;
@@ -4405,7 +4321,7 @@ function generateScoreCard(){
     ctx.strokeStyle='rgba(245,168,0,0.12)';ctx.lineWidth=1;ctx.strokeRect(18,18,764,414);
     // Title
     ctx.font='bold 36px Arial Black, Arial';ctx.fillStyle='#f5a800';ctx.textAlign='center';
-    ctx.fillText('🎌 QUIZ OTAKU V5.6.3.3.2 🎌',400,62);
+    ctx.fillText('🎌 QUIZ OTAKU V5.6.2.2 🎌',400,62);
     ctx.fillStyle='rgba(245,168,0,0.3)';ctx.fillRect(100,75,600,2);
     // Player name
     ctx.font='bold 52px Arial';ctx.fillStyle='#ffffff';
@@ -4491,7 +4407,7 @@ function shareScoreCardWA(){
   var pseudo=myName||'Joueur';
   var pct=Math.round((myCorrect/Math.max(questions.length,1))*100);
   var rankData=getRank(loadXP().xp);
-  var msg='QUIZ OTAKU V5.6.3.3.2\n'
+  var msg='QUIZ OTAKU V5.6.2.2\n'
     +rankData.rank.icon+' '+pseudo+' — '+myScore+' pts ('+pct+'%)\n'
     +'Streak : '+bestStreak+' | Rang : '+rankData.rank.name+'\n'
     +'Viens me battre !'
@@ -6777,15 +6693,9 @@ function listenPlayerInvites(){
   dbOn('player_invites/'+myId, function(snap){
     if(!snap.exists()) return;
     var invites = snap.val();
-    var _seenFriendInv = {};
-    try{ _seenFriendInv = JSON.parse(localStorage.getItem('oq_seen_finv')||'{}'); }catch(e){}
     Object.keys(invites).forEach(function(fromId){
       var inv = invites[fromId];
       if(!inv) return;
-      var invKey = fromId+'_'+(inv.ts||'');
-      if(_seenFriendInv[invKey]) return;
-      _seenFriendInv[invKey] = true;
-      try{ localStorage.setItem('oq_seen_finv', JSON.stringify(_seenFriendInv)); }catch(e){}
       // Vérifier si déjà traité (notif existante)
       var exists = _notifs.find(function(n){
         return n.data && n.data.fromId === fromId && n.ts >= (inv.ts||0)-5000;
@@ -7895,779 +7805,440 @@ if(typeof parseRoomURL!=='undefined'){
 }
 
 // ══════════════════════════════════════════════════════════════
-//  SYSTÈME ADMIN + VÉRIFICATION + PROFIL AVANCÉ
-//  v5.6.3
+//  SYSTÈME ADMIN — Quiz Otaku v5.6.3
+//  Accès via la sidebar ⚙️ > section Administration
+//  Aucun override de go() — zéro impact sur le jeu existant
 // ══════════════════════════════════════════════════════════════
 
-// ─── Config Admin ─────────────────────────────────────────────
-var ADMINS = {
-  'u_vjrg4rt7': {pseudo:'Lamelo🇨🇮🇯🇵', verified:true},
-};
-var VERIFIED_USERS = {
-  'u_vjrg4rt7': true,
-};
+// ── Config ─────────────────────────────────────────────────────
+// Mot de passe admin local. Tu peux aussi le stocker dans Firebase
+// à l'adresse : admin/config/password
+var ADM_PWD_LOCAL = 'Lamelo225Admin!'; // ← CHANGE CE MOT DE PASSE
+var FB_COMP = 'competitions';          // chemin Firebase pour les tournois admin
 
-function isAdmin(uid){ return !!(ADMINS[uid]); }
-function isVerified(uid){ return !!(VERIFIED_USERS[uid]); }
-
-// Auto-attribuer rôle admin si c'est moi
-function checkAdminStatus(){
-  var p = loadProfile();
-  if(!p) return;
-  if(isAdmin(p.id)){
-    p.role = 'admin';
-    p.verified = true;
-    localStorage.setItem('oq_profile', JSON.stringify(p));
-  }
-}
-
-// ─── Générer HTML badges admin/verified ───────────────────────
-function getBadgesHtml(uid, opts){
-  opts = opts||{};
-  var html = '';
-  if(isAdmin(uid)){
-    html += '<span class="badge-admin" title="Administrateur" style="font-size:'+(opts.size||'.85rem')+'">👑</span>';
-  }
-  if(isVerified(uid)){
-    html += '<span class="badge-verified" style="width:'+(opts.vSize||'16px')+';height:'+(opts.vSize||'16px')+'" title="Compte vérifié"></span>';
-  }
-  return html;
-}
-
-function getBadgesText(uid){
-  var t = '';
-  if(isAdmin(uid)) t += ' 👑';
-  if(isVerified(uid)) t += ' ✔️';
-  return t;
-}
-
-// ─── Stats avancées : victoires / défaites / winrate ──────────
-function loadAdvProfile(){
-  try{ return JSON.parse(localStorage.getItem('oq_adv_profile'))||{wins:0,losses:0,matchHistory:[]}; }
-  catch(e){ return {wins:0,losses:0,matchHistory:[]}; }
-}
-
-function saveAdvProfile(d){
-  try{ localStorage.setItem('oq_adv_profile', JSON.stringify(d)); }
-  catch(e){}
-}
-
-function recordMatchResult(won, score, mode){
-  var d = loadAdvProfile();
-  if(won) d.wins = (d.wins||0)+1;
-  else d.losses = (d.losses||0)+1;
-  // Historique (max 20)
-  d.matchHistory = d.matchHistory||[];
-  d.matchHistory.unshift({
-    result: won?'win':'loss',
-    score: score||0,
-    mode: mode||'solo',
-    ts: Date.now()
-  });
-  if(d.matchHistory.length>20) d.matchHistory=d.matchHistory.slice(0,20);
-  saveAdvProfile(d);
-}
-
-function getWinrate(wins, losses){
-  var total = (wins||0)+(losses||0);
-  if(total===0) return 0;
-  return Math.round((wins/total)*100);
-}
-
-// ─── Ouvrir le profil avancé ───────────────────────────────────
-function openMyProfile(){
-  go('my-profile');
-  renderMyProfile();
-}
-
-function renderMyProfile(){
-  var p = loadProfile();
-  if(!p){ go('profile'); return; }
-
-  var adv = loadAdvProfile();
-  var xpData = loadXP();
-  var stats = loadStats();
-  var rankRes = getRank(xpData.xp);
-  var rank = rankRes.rank;
-  var rankIdx = rankRes.index;
-  var nextRank = RANKS[Math.min(rankIdx+1, RANKS.length-1)];
-  var xpProg = rankIdx===RANKS.length-1 ? 100 :
-    Math.round((xpData.xp-rank.min)/(nextRank.min-rank.min)*100);
-
-  // Avatar
-  var avEl = document.getElementById('myprof-av');
-  if(avEl){
-    var av = p.avatar||'⚡';
-    if(av.startsWith('data:'))
-      avEl.innerHTML='<img src="'+av+'">';
-    else
-      avEl.innerHTML='<span>'+av+'</span>';
-  }
-
-  // Pseudo + badges
-  var pseudoEl = document.getElementById('myprof-pseudo');
-  if(pseudoEl) pseudoEl.textContent = p.pseudo||'Joueur';
-  var adminBadge = document.getElementById('myprof-admin-badge');
-  var verBadge = document.getElementById('myprof-verified-badge');
-  if(adminBadge) adminBadge.innerHTML = isAdmin(p.id)?'<span style="font-size:1.4rem">👑</span>':'';
-  if(verBadge) verBadge.innerHTML = isVerified(p.id)?'<span style="width:22px;height:22px;background:#0a84ff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;color:#fff;font-weight:900;box-shadow:0 0 10px rgba(10,132,255,.5)">✓</span>':'';
-
-  // ID
-  var idEl = document.getElementById('myprof-id');
-  if(idEl) idEl.textContent = '#'+p.id;
-
-  // Rang
-  var rpEl = document.getElementById('myprof-rank-pill');
-  var riEl = document.getElementById('myprof-rank-icon');
-  var rnEl = document.getElementById('myprof-rank-name');
-  if(rpEl){rpEl.style.borderColor=rank.color;rpEl.style.color=rank.color;}
-  if(riEl) riEl.textContent=rank.icon;
-  if(rnEl) rnEl.textContent=rank.name;
-
-  // XP
-  var xpFill = document.getElementById('myprof-xp-fill');
-  var xpTxt = document.getElementById('myprof-xp-txt');
-  var lvlTxt = document.getElementById('myprof-level-txt');
-  var nextRankTxt = document.getElementById('myprof-next-rank');
-  if(xpFill) xpFill.style.width=xpProg+'%';
-  if(xpTxt) xpTxt.textContent = rankIdx===RANKS.length-1 ? xpData.xp+' XP (MAX)' : xpData.xp+' / '+nextRank.min+' XP';
-  if(lvlTxt) lvlTxt.textContent = 'Rang '+rankIdx+1;
-  if(nextRankTxt) nextRankTxt.textContent = rankIdx<RANKS.length-1 ? 'Prochain : '+nextRank.name+' '+nextRank.icon : '👑 Rang maximum !';
-
-  // Stats
-  var wins = adv.wins||0;
-  var losses = adv.losses||0;
-  var wr = getWinrate(wins, losses);
-  var played = (stats.played||0);
-  setEl('myprof-played', played);
-  setEl('myprof-wins', wins);
-  setEl('myprof-losses', losses);
-  setEl('myprof-winrate', wr+'%');
-  setEl('myprof-best', stats.best||0);
-  setEl('myprof-coins', p.coins||0);
-
-  // Colorer winrate
-  var wrEl = document.getElementById('myprof-winrate');
-  if(wrEl) wrEl.style.color = wr>=60?'var(--green)':wr>=40?'var(--gold)':'var(--red)';
-
-  // Badges
-  var badgesRow = document.getElementById('myprof-badges-row');
-  if(badgesRow){
-    var badges = p.badges||{};
-    var badgeKeys = Object.keys(badges);
-    if(badgeKeys.length===0){
-      badgesRow.innerHTML='<div style="font-size:.72rem;color:rgba(255,255,255,.2)">Aucun badge encore !</div>';
-    }else{
-      badgesRow.innerHTML='';
-      badgeKeys.forEach(function(k){
-        var b=document.createElement('div');
-        b.style.cssText='background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:8px 12px;font-size:.78rem;font-weight:700;text-align:center;min-width:70px';
-        b.innerHTML='<div style="font-size:1.4rem;margin-bottom:3px">'+k+'</div>'
-          +'<div style="font-size:.58rem;color:rgba(255,255,255,.35);letter-spacing:1px">'+k+'</div>';
-        badgesRow.appendChild(b);
-      });
-    }
-  }
-
-  // Historique matchs
-  renderMatchHistory(adv.matchHistory||[]);
-}
-
-function setEl(id, val){
-  var el=document.getElementById(id);
-  if(el) el.textContent=val;
-}
-
-function renderMatchHistory(history){
-  var el = document.getElementById('myprof-match-history');
-  if(!el) return;
-  if(!history||history.length===0){
-    el.innerHTML='<div style="text-align:center;padding:20px;color:rgba(255,255,255,.2);font-size:.78rem">Joue pour voir ton historique ici !</div>';
-    return;
-  }
-  el.innerHTML='';
-  history.slice(0,10).forEach(function(m){
-    var row=document.createElement('div');
-    row.className='match-hist-item';
-    var d=new Date(m.ts);
-    var timeStr=d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})+' '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-    var modeLabels={'solo':'Solo','duel':'Duel','chrono':'Chrono','aide':'Aide','survival':'Survie','daily':'Daily','tournament':'Tournoi'};
-    var modeLabel=modeLabels[m.mode]||m.mode||'Solo';
-    row.innerHTML='<div class="match-hist-result '+(m.result==='win'?'win':'loss')+'">'+
-      (m.result==='win'?'WIN':'DEF')+'</div>'
-      +'<div style="flex:1"><div style="font-weight:700;font-size:.82rem">'+modeLabel+'</div>'
-      +'<div style="font-size:.62rem;color:rgba(255,255,255,.3)">'+timeStr+'</div></div>'
-      +'<div style="font-family:Bangers,cursive;font-size:1rem;color:var(--gold)">'+m.score+' pts</div>';
-    el.appendChild(row);
-  });
-}
-
-// ─── Injecter badges dans les pseudo existants ─────────────────
-// Override renderFriendsList pour ajouter badges
-var _origRenderFriendsList = null;
-function _patchRenderFriendsList(){
-  if(typeof renderFriendsList==='function'){
-    _origRenderFriendsList = renderFriendsList;
-    renderFriendsList = function(){
-      _origRenderFriendsList.apply(this,arguments);
-      // Post-process: injecter badges dans les noms
-      document.querySelectorAll('[data-player-id]').forEach(function(el){
-        var uid = el.dataset.playerId;
-        if(uid&&!el.dataset.badged){
-          el.dataset.badged='1';
-          el.insertAdjacentHTML('beforeend', getBadgesHtml(uid));
-        }
-      });
-    };
-  }
-}
-
-// ─── Badges dans le leaderboard ────────────────────────────────
-// On injecte après renderLeaderboard
-var _origGoLeaderboard = null;
-function _patchLeaderboard(){
-  setTimeout(function(){
-    document.querySelectorAll('.lb-name,[data-lb-uid]').forEach(function(el){
-      var _lbParent=el.closest('[data-lb-uid]');var uid = el.dataset.lbUid||(_lbParent?_lbParent.dataset.lbUid:null);
-      if(uid&&!el.dataset.badged){
-        el.dataset.badged='1';
-        el.insertAdjacentHTML('beforeend', getBadgesHtml(uid,{size:'.7rem'}));
-      }
-    });
-  },300);
-}
-
-// ─── Badges dans le chat communauté ────────────────────────────
-// buildMsgEl est déjà défini — on ajoute les badges au nom
-var _origBuildMsgEl = null;
-if(typeof buildMsgEl !== 'undefined') _origBuildMsgEl = buildMsgEl;
-
-function buildMsgEl(msg, selfId){
-  var row = _origBuildMsgEl ? _origBuildMsgEl(msg, selfId) : document.createElement('div');
-  // Injecter badge après le nom de l'expéditeur si pas soi
-  if(msg.uid && msg.uid!==selfId){
-    var senderEl = row.querySelector('.comm-sender');
-    if(senderEl){
-      senderEl.insertAdjacentHTML('beforeend', getBadgesHtml(msg.uid,{size:'.7rem',vSize:'13px'}));
-    }
-  }
-  return row;
-}
-
-// ─── Badges dans les résultats multijoueur ────────────────────
-function injectBadgesInResults(){
-  setTimeout(function(){
-    document.querySelectorAll('.lb-row [data-uid],[data-uid]').forEach(function(el){
-      var uid=el.dataset.uid;
-      if(uid&&!el.dataset.badged){
-        el.dataset.badged='1';
-        el.insertAdjacentHTML('beforeend',getBadgesHtml(uid,{size:'.7rem'}));
-      }
-    });
-  },200);
-}
-
-// ─── Badges dans le header (pseudo) ───────────────────────────
-function _updateHeaderBadges(){
-  var p=loadProfile(); if(!p) return;
-  var ps=document.getElementById('hdr-pseudo');
-  if(ps&&!ps.dataset.badged){
-    ps.dataset.badged='1';
-    ps.insertAdjacentHTML('afterend', getBadgesHtml(p.id,{size:'.65rem',vSize:'13px'}));
-  }
-}
-
-// ─── Enregistrer résultat de match à la fin de partie ─────────
-var _origEndGame = window.endGame;
-window.endGame = function(){
-  // Appeler la fonction originale
-  if(_origEndGame) _origEndGame.apply(this,arguments);
-  // Enregistrer victoire/défaite
-  var isWin = (myCorrect/Math.max(questions.length,1))>=0.6;
-  recordMatchResult(isWin, myScore, gameMode);
+// ── État ───────────────────────────────────────────────────────
+var _adm = {
+  ok: false,          // admin connecté ?
+  size: 8,
+  qnum: 10,
+  timer: 15,
+  qsrc: 'bank',
+  lastCode: '',
+  questions: [],      // questions personnalisées
 };
 
-// ─── Init au démarrage ─────────────────────────────────────────
-document.addEventListener('DOMContentLoaded',function(){
-  checkAdminStatus();
-  _updateHeaderBadges();
-  _patchRenderFriendsList();
-  // Badges dans header au changement de profil
-  setTimeout(_updateHeaderBadges, 1000);
-},false);
-
-// Patch updateHeaderProfile pour inclure badges
-var _origUpdateHeaderProfile = window.updateHeaderProfile;
-window.updateHeaderProfile = function(){
-  if(_origUpdateHeaderProfile) _origUpdateHeaderProfile.apply(this,arguments);
-  setTimeout(function(){
-    var p=loadProfile(); if(!p) return;
-    // Supprimer badges existants pour éviter doublons
-    document.querySelectorAll('#hdr-profile .badge-admin,#hdr-profile .badge-verified').forEach(function(b){b.remove();});
-    var ps=document.getElementById('hdr-pseudo');
-    if(ps) ps.insertAdjacentHTML('afterend', getBadgesHtml(p.id,{size:'.65rem',vSize:'13px'}));
-  },100);
-};
-
-// ══════════════════════════════════════════════════════════════
-//  ADMIN SYSTEM COMPLET — v5.6.4
-//  Admin ID: u_vjrg4rt7 — Lamelo🇨🇮🇯🇵
-// ══════════════════════════════════════════════════════════════
-
-var ADMIN_ID = 'u_vjrg4rt7';
-var FB_ADMIN_QUESTIONS = 'admin/questions';
-var FB_ADMIN_BANS = 'admin/bans';
-var FB_GLOBAL_NOTIFS = 'admin/global_notifs';
-var _adminCustomQuestions = [];
-var _adminCorrectIdx = 0;
-var _adminTab = 'stats';
-var _adminAllPlayers = [];
-
-// ─── Vérifier si admin ────────────────────────────────────────
-function amIAdmin(){
-  var p = loadProfile();
-  return p && (p.id === ADMIN_ID || p.role === 'admin');
-}
-
-// ─── Ouvrir le panel admin ────────────────────────────────────
-function openAdminPanel(){
-  if(!amIAdmin()){showSF('⛔ Accès refusé','var(--red)');return;}
-  go('admin');
-  switchAdminTab('stats', null);
-  refreshAdminStats();
-  loadAdminQuestions();
-  loadAdminPlayers();
-  loadAdminTournaments();
-  listenGlobalNotifs();
-}
-
-// ─── Switch tabs ──────────────────────────────────────────────
-function switchAdminTab(tab, btn){
-  _adminTab = tab;
-  ['stats','questions','players','notif','tournament'].forEach(function(t){
-    var el = document.getElementById('admin-tab-'+t);
-    if(el) el.style.display = t===tab?'block':'none';
-  });
-  document.querySelectorAll('.admin-tab').forEach(function(b){b.classList.remove('active');});
-  if(btn) btn.classList.add('active');
-}
-
-// ─── Stats globales ───────────────────────────────────────────
-async function refreshAdminStats(){
-  if(!fbOK()) return;
+// ── Persistance session ────────────────────────────────────────
+(function(){
   try{
-    // Joueurs
-    var lbSnap = await dbG('leaderboard');
-    var playerCount = lbSnap.exists() ? Object.keys(lbSnap.val()||{}).length : 0;
-    setEl('adm-stat-players', playerCount);
-
-    // Questions custom
-    var qSnap = await dbG(FB_ADMIN_QUESTIONS);
-    var qCount = qSnap.exists() ? Object.keys(qSnap.val()||{}).length : 0;
-    setEl('adm-stat-matches', qCount);
-    setEl('adm-custom-q-count', qCount);
-    setEl('adm-q-list-count', qCount);
-
-    // Tournois
-    var tSnap = await dbG('tournaments');
-    var tCount = tSnap.exists() ? Object.keys(tSnap.val()||{}).filter(function(k){
-      var t = tSnap.val()[k];
-      return t && t.status !== 'finished';
-    }).length : 0;
-    setEl('adm-stat-tournois', tCount);
-  }catch(e){ console.warn('Admin stats error:',e); }
-}
-
-// ══════════════════════════════════════════════════════════════
-// CRÉATEUR DE QUESTIONS
-// ══════════════════════════════════════════════════════════════
-function setCorrectAnswer(idx){
-  _adminCorrectIdx = idx;
-  document.querySelectorAll('.q-answer-lbl').forEach(function(el,i){
-    el.classList.toggle('correct-sel', i===idx);
-  });
-  showSF('✅ Réponse '+['A','B','C','D'][idx]+' sélectionnée','var(--green)');
-}
-
-function clearQuestionEditor(){
-  document.getElementById('adm-q-text').value='';
-  ['adm-ans-0','adm-ans-1','adm-ans-2','adm-ans-3'].forEach(function(id){
-    var el=document.getElementById(id);if(el)el.value='';
-  });
-  document.querySelectorAll('.q-answer-lbl').forEach(function(el){el.classList.remove('correct-sel');});
-  _adminCorrectIdx=0;
-  var err=document.getElementById('adm-q-err');if(err)err.classList.add('hidden');
-  var suc=document.getElementById('adm-q-success');if(suc)suc.style.display='none';
-  window._adminEditingQId=null;
-}
-
-async function saveAdminQuestion(){
-  var qText = (document.getElementById('adm-q-text').value||'').trim();
-  var ans0 = (document.getElementById('adm-ans-0').value||'').trim();
-  var ans1 = (document.getElementById('adm-ans-1').value||'').trim();
-  var ans2 = (document.getElementById('adm-ans-2').value||'').trim();
-  var ans3 = (document.getElementById('adm-ans-3').value||'').trim();
-  var cat = document.getElementById('adm-q-cat').value||'shonen';
-  var diff = document.getElementById('adm-q-diff').value||'facile';
-  var expl = (document.getElementById('adm-q-expl').value||'').trim();
-  var err = document.getElementById('adm-q-err');
-  var suc = document.getElementById('adm-q-success');
-
-  // Validation
-  if(qText.length<10){
-    if(err){err.textContent='❌ La question doit faire au moins 10 caractères.';err.classList.remove('hidden');}return;
-  }
-  if(!ans0||!ans1||!ans2||!ans3){
-    if(err){err.textContent='❌ Remplis les 4 réponses.';err.classList.remove('hidden');}return;
-  }
-  if(err) err.classList.add('hidden');
-
-  var catMap = {'shonen':'Shōnen','shojo':'Shōjo & Seinen','mangaka':'Mangaka',
-    'japon':'Culture Japonaise','anime':'Anime & Studios','ci':"Côte d'Ivoire",'bd':'BD Africaine'};
-
-  var q = {
-    q: qText,
-    cat: catMap[cat]||cat,
-    catId: cat,
-    ops: [ans0, ans1, ans2, ans3],
-    ok: _adminCorrectIdx,
-    ex: expl||'',
-    diff: diff,
-    createdBy: ADMIN_ID,
-    createdAt: Date.now(),
-    isAdmin: true
-  };
-
-  try{
-    var qId = window._adminEditingQId || ('aq_'+Date.now()+'_'+Math.random().toString(36).slice(2,6));
-    await dbU(FB_ADMIN_QUESTIONS+'/'+qId, q);
-    // Injecter dans QB pour qu'elle soit utilisée immédiatement
-    injectAdminQuestionToQB(q);
-    if(suc){suc.style.display='block';setTimeout(function(){suc.style.display='none';},2500);}
-    clearQuestionEditor();
-    loadAdminQuestions();
-    refreshAdminStats();
-    showSF('✅ Question ajoutée au jeu !','var(--green)');
-  }catch(e){
-    if(err){err.textContent='❌ Erreur: '+e.message;err.classList.remove('hidden');}
-  }
-}
-
-function injectAdminQuestionToQB(q){
-  // Ajouter la question admin dans QB (banque de questions en mémoire)
-  if(typeof QB !== 'undefined'){
-    // Éviter les doublons
-    var exists = QB.some(function(existing){ return existing.q===q.q; });
-    if(!exists){
-      QB.push({q:q.q,cat:q.cat,ops:q.ops,ok:q.ok,ex:q.ex||'',admin:true});
-    }
-  }
-}
-
-async function loadAdminQuestions(){
-  var list = document.getElementById('adm-q-list');
-  var count = document.getElementById('adm-q-list-count');
-  if(!list) return;
-  if(!fbOK()){list.innerHTML='<div style="text-align:center;padding:14px;color:rgba(255,255,255,.3)">Firebase requis</div>';return;}
-
-  try{
-    var snap = await dbG(FB_ADMIN_QUESTIONS);
-    if(!snap.exists()||!snap.val()){
-      list.innerHTML='<div style="text-align:center;padding:20px;color:rgba(255,255,255,.3);font-size:.78rem">Aucune question créée</div>';
-      if(count) count.textContent='0';
-      return;
-    }
-    var qs = snap.val();
-    var qArr = Object.entries(qs).map(function(e){return {id:e[0],...e[1]};});
-    _adminCustomQuestions = qArr;
-    if(count) count.textContent=qArr.length;
-    list.innerHTML='';
-    qArr.forEach(function(q){
-      // Injecter dans QB
-      injectAdminQuestionToQB(q);
-      var row=document.createElement('div');
-      row.style.cssText='padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;margin-bottom:6px;';
-      var letters=['A','B','C','D'];
-      row.innerHTML='<div style="font-size:.8rem;font-weight:700;margin-bottom:5px;line-height:1.4">'+escapeCommHtml(q.q)+'</div>'
-        +'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px">'
-        +q.ops.map(function(op,i){
-        var bg=i===q.ok?'rgba(48,209,88,.2)':'rgba(255,255,255,.06)';
-        var col=i===q.ok?'#30d158':'rgba(255,255,255,.5)';
-        var brd=i===q.ok?'rgba(48,209,88,.3)':'rgba(255,255,255,.08)';
-        var chk=i===q.ok?'✓ ':'';
-        return '<span style="font-size:.65rem;padding:2px 7px;border-radius:6px;background:'+bg+';color:'+col+';border:1px solid '+brd+'">'+chk+letters[i]+'. '+escapeCommHtml(op)+'</span>';
-      }).join('')
-        +'</div>'
-        +'<div style="display:flex;justify-content:space-between;align-items:center">'
-        +'<span style="font-size:.6rem;color:rgba(255,255,255,.3)">'+q.cat+' · '+q.diff+'</span>'
-        +'<div style="display:flex;gap:5px">'
-        +'<button class="admin-action-btn" style="background:rgba(10,132,255,.15);color:var(--blue);border-color:rgba(10,132,255,.3)" onclick="editAdminQuestion(\''+q.id+'\')">✏️ Modifier</button>'
-        +'<button class="admin-action-btn admin-ban-btn" onclick="deleteAdminQuestion(\''+q.id+'\')">🗑️ Suppr.</button>'
-        +'</div></div>';
-      list.appendChild(row);
-    });
-  }catch(e){list.innerHTML='<div style="color:var(--red);padding:10px">Erreur: '+e.message+'</div>';}
-}
-
-function editAdminQuestion(qId){
-  var q = _adminCustomQuestions.find(function(x){return x.id===qId;});
-  if(!q) return;
-  window._adminEditingQId = qId;
-  var el = document.getElementById('adm-q-text');
-  if(el) el.value=q.q;
-  ['adm-ans-0','adm-ans-1','adm-ans-2','adm-ans-3'].forEach(function(id,i){
-    var inp=document.getElementById(id);if(inp)inp.value=q.ops[i]||'';
-  });
-  setCorrectAnswer(q.ok||0);
-  var catEl=document.getElementById('adm-q-cat');
-  if(catEl) catEl.value=q.catId||'shonen';
-  var diffEl=document.getElementById('adm-q-diff');
-  if(diffEl) diffEl.value=q.diff||'facile';
-  var explEl=document.getElementById('adm-q-expl');
-  if(explEl) explEl.value=q.ex||'';
-  switchAdminTab('questions',null);
-  document.querySelector('.admin-tab')&&document.querySelectorAll('.admin-tab')[1].click();
-  showSF('✏️ Question chargée pour modification','var(--blue)');
-}
-
-async function deleteAdminQuestion(qId){
-  if(!confirm('Supprimer cette question ?')) return;
-  try{
-    await dbS(FB_ADMIN_QUESTIONS+'/'+qId, null);
-    loadAdminQuestions();
-    refreshAdminStats();
-    showSF('🗑️ Question supprimée','var(--red)');
-  }catch(e){ showSF('❌ Erreur suppression','var(--red)'); }
-}
-
-// ══════════════════════════════════════════════════════════════
-// GESTION DES JOUEURS
-// ══════════════════════════════════════════════════════════════
-async function loadAdminPlayers(){
-  var list = document.getElementById('adm-players-list');
-  if(!list||!fbOK()) return;
-  list.innerHTML='<div style="text-align:center;padding:14px;color:rgba(255,255,255,.3)">Chargement...</div>';
-  try{
-    var snap = await dbG('leaderboard');
-    if(!snap.exists()){list.innerHTML='<div style="text-align:center;padding:14px;color:rgba(255,255,255,.3)">Aucun joueur</div>';return;}
-    var players = snap.val();
-    _adminAllPlayers = Object.entries(players).map(function(e){return {id:e[0],...e[1]};});
-    renderAdminPlayersList(_adminAllPlayers);
-  }catch(e){list.innerHTML='<div style="color:var(--red);padding:10px">Erreur: '+e.message+'</div>';}
-}
-
-function filterAdminPlayers(query){
-  if(!query.trim()){renderAdminPlayersList(_adminAllPlayers);return;}
-  var q=query.toLowerCase();
-  renderAdminPlayersList(_adminAllPlayers.filter(function(p){return (p.name||'').toLowerCase().includes(q);}));
-}
-
-function renderAdminPlayersList(players){
-  var list = document.getElementById('adm-players-list');
-  if(!list) return;
-  list.innerHTML='';
-  players.forEach(function(p){
-    var av=p.avatar||'⚡';
-    var avHtml=av.startsWith('data:')?'<img src="'+av+'">':'<span style="font-size:1.1rem">'+av+'</span>';
-    var row=document.createElement('div');
-    row.className='admin-player-row';
-    row.innerHTML='<div class="admin-player-av">'+avHtml+'</div>'
-      +'<div style="flex:1;min-width:0"><div style="font-weight:700;font-size:.84rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'
-      +escapeCommHtml(p.name||'?')+(p.id===ADMIN_ID?' 👑':'')+'</div>'
-      +'<div style="font-size:.62rem;color:rgba(255,255,255,.3)">🏆 '+p.best+' pts · '+p.played+' matchs</div></div>'
-      +(p.id!==ADMIN_ID?'<button class="admin-action-btn admin-ban-btn" onclick="banPlayer(\''+p.id+'\',\''+escapeCommHtml(p.name||'?')+'\')">🚫 Bannir</button>':'<span style="font-size:.65rem;color:#ff9f0a">ADMIN</span>');
-    list.appendChild(row);
-  });
-}
-
-async function banPlayer(uid, name){
-  if(!confirm('Bannir '+name+' ? Cette action est réversible depuis Firebase.')) return;
-  try{
-    await dbU(FB_ADMIN_BANS+'/'+uid, {name:name,bannedAt:Date.now(),bannedBy:ADMIN_ID});
-    // Supprimer du leaderboard
-    await dbS('leaderboard/'+uid, null);
-    showSF('🚫 '+name+' banni !','var(--red)');
-    loadAdminPlayers();
-    addNotif('system','🚫 Joueur banni : '+name,'Action admin','👑',{});
-  }catch(e){ showSF('❌ Erreur ban','var(--red)'); }
-}
-
-// ══════════════════════════════════════════════════════════════
-// NOTIFICATION GLOBALE
-// ══════════════════════════════════════════════════════════════
-function listenGlobalNotifs(){
-  // Écouter les notifs globales pour tous les joueurs
-  dbOn(FB_GLOBAL_NOTIFS, function(snap){
-    if(!snap.exists()) return;
-    var notifs = snap.val();
-    var myId2 = myId;
-    var seen = {};
-    try{ seen = JSON.parse(localStorage.getItem('oq_seen_gnotifs')||'{}'); }catch(e){}
-    Object.entries(notifs).forEach(function(entry){
-      var nId=entry[0], n=entry[1];
-      if(seen[nId]) return;
-      seen[nId]=true;
-      try{ localStorage.setItem('oq_seen_gnotifs', JSON.stringify(seen)); }catch(e){}
-      // Afficher la notif
-      addNotif(n.type||'system', n.title||'Annonce', n.body||'', '📢', {});
-    });
-    // Mettre à jour l'historique
-    renderGlobalNotifHistory(Object.values(notifs));
-  });
-
-  // Preview en temps réel
-  var textArea = document.getElementById('adm-notif-text');
-  if(textArea){
-    textArea.oninput = function(){
-      var prev = document.getElementById('adm-notif-preview');
-      if(prev) prev.textContent = textArea.value||'Aperçu du message...';
-    };
-  }
-}
-
-async function sendGlobalNotification(){
-  var text = (document.getElementById('adm-notif-text').value||'').trim();
-  var type = document.getElementById('adm-notif-type').value||'system';
-  if(!text){showSF('⚠️ Écris un message !','var(--red)');return;}
-  if(!fbOK()){showSF('📡 Internet requis','var(--red)');return;}
-
-  var icons={'system':'📢','event':'🎉','update':'🔔','tournament':'🏆'};
-  var titles={'system':'Annonce officielle','event':'Événement spécial','update':'Mise à jour','tournament':'Tournoi Quiz Otaku'};
-
-  var notifId='gn_'+Date.now();
-  var notif={
-    title: titles[type]||'Annonce',
-    body: text,
-    type: type,
-    icon: icons[type]||'📢',
-    sentBy: ADMIN_ID,
-    sentAt: Date.now()
-  };
-
-  try{
-    await dbU(FB_GLOBAL_NOTIFS+'/'+notifId, notif);
-    document.getElementById('adm-notif-text').value='';
-    document.getElementById('adm-notif-preview').textContent='Aperçu du message...';
-    showSF('📢 Notif envoyée à tous !','#bf5af2');
-    addNotif('system','📢 Notif globale envoyée','Tous les joueurs ont été notifiés','👑',{});
-  }catch(e){ showSF('❌ Erreur envoi','var(--red)'); }
-}
-
-function renderGlobalNotifHistory(notifs){
-  var hist = document.getElementById('adm-notif-history');
-  if(!hist) return;
-  if(!notifs||notifs.length===0){
-    hist.innerHTML='<div style="text-align:center;padding:14px;color:rgba(255,255,255,.3);font-size:.75rem">Aucune notif envoyée</div>';
-    return;
-  }
-  hist.innerHTML='';
-  notifs.sort(function(a,b){return (b.sentAt||0)-(a.sentAt||0);}).slice(0,10).forEach(function(n){
-    var row=document.createElement('div');
-    row.style.cssText='padding:8px 10px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:5px;font-size:.74rem;';
-    row.innerHTML='<div style="font-weight:700;margin-bottom:2px">'+escapeCommHtml(n.title||'')+'</div>'
-      +'<div style="color:rgba(255,255,255,.5)">'+escapeCommHtml(n.body||'')+'</div>'
-      +'<div style="font-size:.6rem;color:rgba(255,255,255,.25);margin-top:3px">'+new Date(n.sentAt||0).toLocaleString('fr-FR')+'</div>';
-    hist.appendChild(row);
-  });
-}
-
-// ══════════════════════════════════════════════════════════════
-// TOURNOIS ADMIN
-// ══════════════════════════════════════════════════════════════
-async function createOfficialTournament(){
-  var name = (document.getElementById('adm-tourn-name').value||'').trim()||'Tournoi Officiel';
-  var size = parseInt(document.getElementById('adm-tourn-size').value)||4;
-  var qtype = document.getElementById('adm-tourn-qtype').value||'standard';
-
-  // Utiliser questions admin si disponible
-  var cats = ['shonen','mangaka','japon','ci'];
-  if(qtype==='custom'&&_adminCustomQuestions.length>0){
-    // Questions spécifiques admin
-  }
-
-  // Déléguer à openTournamentLobby avec paramètres pré-configurés
-  _tourn.size = size;
-  _tourn.cats = cats;
-  openTournamentLobby();
-  setTimeout(function(){
-    var nameLabel = document.getElementById('tourn-code');
-    if(nameLabel) nameLabel.title = name;
-    showSF('🏆 Tournoi "'+name+'" créé !','#ff9f0a');
-  },1000);
-  go('tournament-lobby');
-}
-
-async function loadAdminTournaments(){
-  var list = document.getElementById('adm-active-tournaments');
-  if(!list||!fbOK()) return;
-  try{
-    var snap = await dbG('tournaments');
-    if(!snap.exists()){
-      list.innerHTML='<div style="text-align:center;padding:14px;color:rgba(255,255,255,.3)">Aucun tournoi actif</div>';
-      return;
-    }
-    var ts = snap.val();
-    var active = Object.entries(ts).filter(function(e){return e[1]&&e[1].status!=='finished';});
-    list.innerHTML='';
-    if(active.length===0){list.innerHTML='<div style="text-align:center;padding:14px;color:rgba(255,255,255,.3)">Aucun tournoi actif</div>';return;}
-    active.forEach(function(e){
-      var t=e[1];
-      var pCount=Object.keys(t.players||{}).length;
-      var row=document.createElement('div');
-      row.style.cssText='padding:10px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;margin-bottom:6px;display:flex;align-items:center;gap:10px;';
-      row.innerHTML='<div style="flex:1"><div style="font-weight:700;font-size:.84rem">'+e[0]+'</div>'
-        +'<div style="font-size:.65rem;color:rgba(255,255,255,.35)">'+pCount+' joueurs · '+t.status+'</div></div>'
-        +'<button class="admin-action-btn admin-ban-btn" onclick="closeTournamentAdmin(\''+e[0]+'\')">Fermer</button>';
-      list.appendChild(row);
-    });
-  }catch(e){list.innerHTML='<div style="color:var(--red);padding:10px">'+e.message+'</div>';}
-}
-
-async function closeTournamentAdmin(code){
-  if(!confirm('Fermer le tournoi '+code+' ?')) return;
-  await dbU('tournaments/'+code,{status:'finished'}).catch(function(){});
-  loadAdminTournaments();
-  showSF('🏆 Tournoi fermé','var(--gold)');
-}
-
-// ── Charger questions admin dans QB au démarrage ──────────────
-async function loadAdminQuestionsIntoQB(){
-  if(!fbOK()||!navigator.onLine) return;
-  try{
-    var snap = await dbG(FB_ADMIN_QUESTIONS);
-    if(!snap.exists()) return;
-    var qs = snap.val();
-    Object.values(qs).forEach(injectAdminQuestionToQB);
-    console.log('[OQ Admin] Chargé '+Object.keys(qs).length+' questions admin dans QB');
+    if(sessionStorage.getItem('oq_adm')==='1') _adm.ok=true;
+    var q=localStorage.getItem('oq_adm_q');
+    if(q) _adm.questions=JSON.parse(q)||[];
   }catch(e){}
+  // Afficher/masquer la section admin dans la sidebar
+  admSyncUI();
+})();
+
+function admSaveQ(){try{localStorage.setItem('oq_adm_q',JSON.stringify(_adm.questions));}catch(e){}}
+
+function admSyncUI(){
+  var guest=document.getElementById('sb-adm-guest');
+  var logged=document.getElementById('sb-adm-logged');
+  var cnt=document.getElementById('sb-adm-qcount');
+  if(guest) guest.style.display=_adm.ok?'none':'block';
+  if(logged) logged.style.display=_adm.ok?'block':'none';
+  if(cnt) cnt.textContent=_adm.questions.length;
 }
 
-// ── Initialiser admin au boot ─────────────────────────────────
-document.addEventListener('DOMContentLoaded',function(){
-  // Révéler bouton admin si admin
-  setTimeout(function(){
-    if(amIAdmin()){
-      var adminBtn = document.getElementById('sidebar-admin-btn');
-      if(adminBtn) adminBtn.style.display='flex';
-    }
-    // Charger questions admin dans QB
-    if(fbOK()&&navigator.onLine) loadAdminQuestionsIntoQB();
-    // Écouter notifs globales pour tous
-    if(fbOK()&&navigator.onLine) listenGlobalNotifs();
-  }, 2000);
-},false);
+// ── Clic carte Compétition ─────────────────────────────────────
+function onCompetitionCardClick(){
+  if(!navigator.onLine){showSF('📡 Internet requis','var(--red)');return;}
+  if(!fbOK()){showSF('📡 Firebase requis','var(--red)');return;}
+  if(_adm.ok){
+    // Admin → ouvrir création de compétition directement
+    openAdmCreateModal();
+  }else{
+    // Joueur → message bloqué
+    document.getElementById('comp-block-modal').classList.add('open');
+  }
+}
 
-// Override updateProfileUI pour révéler le bouton admin
-var _origUpdateProfileUI2 = window.updateProfileUI;
-window.updateProfileUI = function(){
-  if(_origUpdateProfileUI2) _origUpdateProfileUI2.apply(this,arguments);
-  setTimeout(function(){
-    if(amIAdmin()){
-      var adminBtn = document.getElementById('sidebar-admin-btn');
-      if(adminBtn) adminBtn.style.display='flex';
+// ── Login admin ────────────────────────────────────────────────
+function openAdmLogin(){
+  var m=document.getElementById('adm-login-modal');
+  if(m) m.classList.add('open');
+  var i=document.getElementById('adm-pwd-inp');
+  var e=document.getElementById('adm-pwd-err');
+  if(i){i.value='';setTimeout(function(){i.focus();},200);}
+  if(e) e.textContent='';
+}
+function closeAdmLogin(){
+  var m=document.getElementById('adm-login-modal');
+  if(m) m.classList.remove('open');
+}
+
+async function admDoLogin(){
+  var i=document.getElementById('adm-pwd-inp');
+  var e=document.getElementById('adm-pwd-err');
+  if(!i) return;
+  var pwd=i.value.trim();
+  if(!pwd){e.textContent='Entre le mot de passe.';return;}
+  e.textContent='Vérification...';
+
+  // 1. Vérif locale
+  if(pwd===ADM_PWD_LOCAL){
+    admLoginSuccess();return;
+  }
+  // 2. Vérif Firebase
+  if(fbOK()){
+    try{
+      var snap=await dbG('admin/config/password');
+      var fbp=snap&&snap.val?snap.val():null;
+      if(fbp&&fbp===pwd){admLoginSuccess();return;}
+    }catch(ex){}
+  }
+  e.textContent='❌ Mot de passe incorrect.';
+  i.value='';i.focus();
+}
+
+function admLoginSuccess(){
+  _adm.ok=true;
+  try{sessionStorage.setItem('oq_adm','1');}catch(ex){}
+  closeAdmLogin();
+  admSyncUI();
+  showSF('🛡️ Accès admin accordé !','#ff9f0a');
+  // Rouvrir la sidebar pour montrer la section admin
+  setTimeout(openSidebar,300);
+}
+
+function admLogout(){
+  if(!confirm('Quitter le mode administrateur ?')) return;
+  _adm.ok=false;
+  try{sessionStorage.removeItem('oq_adm');}catch(ex){}
+  admSyncUI();
+  showSF('🚪 Déconnecté du mode admin','rgba(255,255,255,.5)');
+}
+
+// ── Pills sélection ───────────────────────────────────────────
+function admPill(rowId, el, val){
+  var row=document.getElementById(rowId);
+  if(row) row.querySelectorAll('.adm-pill').forEach(function(p){p.classList.remove('on');});
+  el.classList.add('on');
+  // Stocker la valeur selon le row
+  if(rowId==='adm-size-row') _adm.size=val;
+  else if(rowId==='adm-qnum-row') _adm.qnum=val;
+  else if(rowId==='adm-timer-row') _adm.timer=val;
+  else if(rowId==='adm-qsrc-row') _adm.qsrc=val;
+}
+
+function admToggleQsrcNote(){
+  var note=document.getElementById('adm-qsrc-note');
+  var cnt=document.getElementById('adm-qsrc-count');
+  var show=(_adm.qsrc==='custom'||_adm.qsrc==='mixed');
+  if(note) note.style.display=show?'block':'none';
+  if(cnt) cnt.textContent=_adm.questions.length;
+}
+
+// ── Créer compétition ──────────────────────────────────────────
+function openAdmCreateModal(){
+  if(!_adm.ok){openAdmLogin();return;}
+  var m=document.getElementById('adm-create-modal');
+  if(m) m.classList.add('open');
+  // Réinitialiser
+  var cr=document.getElementById('adm-code-result');
+  var btns=document.querySelectorAll('#adm-create-modal .adm-btn-gold, #adm-create-modal .adm-btn-ghost');
+  if(cr) cr.style.display='none';
+  // Re-afficher les boutons create
+  var createBtns=document.querySelectorAll('#adm-create-modal .adm-btn-gold');
+  createBtns.forEach(function(b){b.style.display='';});
+}
+function closeAdmCreateModal(){
+  var m=document.getElementById('adm-create-modal');
+  if(m) m.classList.remove('open');
+}
+
+async function admDoCreateTournament(){
+  if(!fbOK()){showSF('📡 Firebase requis','var(--red)');return;}
+  var errEl=document.getElementById('adm-create-err');
+  errEl.textContent='';
+
+  var nameEl=document.getElementById('adm-tourn-name');
+  var name=(nameEl&&nameEl.value.trim())||'Tournoi Officiel';
+
+  // Vérif questions custom
+  if((_adm.qsrc==='custom'||_adm.qsrc==='mixed')&&_adm.questions.length<_adm.qnum){
+    errEl.textContent='⚠️ Il te faut au moins '+_adm.qnum+' questions perso (tu en as '+_adm.questions.length+'). Ajoute-les dans "Gérer les questions".';
+    return;
+  }
+
+  var code='C'+Math.random().toString(36).slice(2,7).toUpperCase();
+  var p=loadProfile()||{};
+  var hostPlays=document.getElementById('adm-host-plays')&&document.getElementById('adm-host-plays').checked;
+  var autoStart=document.getElementById('adm-auto-start')&&document.getElementById('adm-auto-start').checked;
+  var customQs=(_adm.qsrc==='custom')?_adm.questions.slice():
+               (_adm.qsrc==='mixed')?_adm.questions.slice():[];
+
+  var data={
+    name:name,
+    code:code,
+    createdBy:myId,
+    createdAt:Date.now(),
+    status:'waiting',
+    size:_adm.size,
+    qNum:_adm.qnum,
+    timerSec:_adm.timer,
+    qsrc:_adm.qsrc,
+    hostPlays:hostPlays,
+    autoStart:autoStart,
+    customQuestions:customQs.length?customQs:null,
+    players:{},
+    rounds:{},
+    isAdminTournament:true,
+    adminId:myId,
+  };
+
+  if(hostPlays){
+    data.players[myId]={name:p.pseudo||myName||'Admin',avatar:p.avatar||'⚡',score:0,joinedAt:Date.now(),isAdmin:true};
+  }
+
+  try{
+    // Sauvegarder sous /competitions ET /tournaments pour compatibilité avec le lobby existant
+    await dbS(FB_COMP+'/'+code, data);
+    await dbS(FB_TOURN+'/'+code, data);
+    _adm.lastCode=code;
+
+    // Afficher le code
+    var cr=document.getElementById('adm-code-result');
+    var cd=document.getElementById('adm-code-display');
+    var cn=document.getElementById('adm-code-name-display');
+    if(cd) cd.textContent=code;
+    if(cn) cn.textContent=name;
+    if(cr) cr.style.display='block';
+
+    // Masquer les boutons du formulaire
+    var gb=document.querySelectorAll('#adm-create-modal .adm-btn-gold, #adm-create-modal .adm-btn-ghost:not(:last-child)');
+    gb.forEach(function(b){if(b.textContent.indexOf('CRÉER')!==-1||b.textContent.indexOf('ANNULER')!==-1) b.style.display='none';});
+
+    showSF('🏆 Tournoi créé ! Code : '+code,'#ff9f0a');
+  }catch(ex){
+    errEl.textContent='Erreur Firebase : '+ex.message;
+  }
+}
+
+function admCopyCode(){
+  var code=_adm.lastCode;
+  if(!code) return;
+  try{navigator.clipboard.writeText(code);showSF('📋 Code copié : '+code,'var(--gold)');}
+  catch(e){showSF('Code : '+code,'var(--gold)');}
+}
+
+function admShareWA(){
+  var code=_adm.lastCode;
+  if(!code) return;
+  var link=(typeof GAME_LINK!=='undefined'&&GAME_LINK.startsWith('http'))?GAME_LINK:'';
+  var nameEl=document.getElementById('adm-code-name-display');
+  var name=(nameEl&&nameEl.textContent)||'Tournoi Officiel';
+  var msg='🏆 QUIZ OTAKU — COMPÉTITION OFFICIELLE ⚔️\n'
+    +'📌 '+name+'\n\n'
+    +'🎮 Code d\'accès : *'+code+'*\n'
+    +(link?'👉 '+link+'?tourn='+code+'\n':'')
+    +'⚡ Les places sont limitées, rejoins vite !';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+// ── Gestion des questions ──────────────────────────────────────
+function openAdmQuestionsModal(){
+  if(!_adm.ok){openAdmLogin();return;}
+  var m=document.getElementById('adm-questions-modal');
+  if(m) m.classList.add('open');
+  admRenderQuestions();
+}
+function closeAdmQuestionsModal(){
+  var m=document.getElementById('adm-questions-modal');
+  if(m) m.classList.remove('open');
+}
+
+function admAddQuestion(){
+  var errEl=document.getElementById('adm-q-err');
+  errEl.textContent='';
+  var txt=document.getElementById('adm-q-text');
+  if(!txt||!txt.value.trim()){errEl.textContent='Saisis le texte de la question.';return;}
+
+  // Récupérer les choix non vides
+  var ids=['adm-c0','adm-c1','adm-c2','adm-c3'];
+  var ops=ids.map(function(id){var el=document.getElementById(id);return el?el.value.trim():'';}).filter(function(v){return v!=='';});
+  if(ops.length<2){errEl.textContent='Ajoute au moins 2 choix de réponses.';return;}
+
+  // Bonne réponse
+  var okR=document.querySelector('input[name="adm-ok"]:checked');
+  if(!okR){errEl.textContent='Coche la bonne réponse (✓ Bonne).';return;}
+  var okVal=parseInt(okR.value);
+  // Recalculer l'index si des choix vides ont été filtrés
+  var origVals=ids.map(function(id){var el=document.getElementById(id);return el?el.value.trim():'';});
+  var filledCount=0;
+  var okIdx=-1;
+  for(var i=0;i<origVals.length;i++){
+    if(origVals[i]!==''){
+      if(i===okVal){okIdx=filledCount;break;}
+      filledCount++;
     }
-  },200);
-};
+  }
+  if(okIdx===-1){errEl.textContent='La bonne réponse sélectionnée est vide.';return;}
+
+  var catEl=document.getElementById('adm-q-cat');
+  var q={q:txt.value.trim(),ops:ops,ok:okIdx,cat:(catEl&&catEl.value.trim())||'Compétition',ex:''};
+  _adm.questions.push(q);
+  admSaveQ();
+  admRenderQuestions();
+  admSyncUI();
+
+  // Reset form
+  txt.value='';
+  ids.forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  if(catEl) catEl.value='';
+  document.querySelectorAll('input[name="adm-ok"]').forEach(function(r){r.checked=false;});
+  showSF('✅ Question ajoutée !','#30d158');
+}
+
+function admRenderQuestions(){
+  var list=document.getElementById('adm-q-list');
+  var total=document.getElementById('adm-q-total');
+  if(total) total.textContent=_adm.questions.length;
+  if(!list) return;
+  if(!_adm.questions.length){
+    list.innerHTML='<div style="text-align:center;padding:20px;color:rgba(255,255,255,.2);font-size:.78rem">Aucune question. Ajoute-en ci-dessus !</div>';
+    return;
+  }
+  list.innerHTML=_adm.questions.map(function(q,i){
+    var opts=q.ops.map(function(op,ci){
+      return '<div class="adm-q-opt'+(ci===q.ok?' ok':'')+'">'+escapeCommHtml(op)+(ci===q.ok?' ✓':'')+'</div>';
+    }).join('');
+    return '<div class="adm-q-card">'
+      +'<div class="adm-q-num">Q'+(i+1)+' · '+escapeCommHtml(q.cat||'')+'</div>'
+      +'<div class="adm-q-txt">'+escapeCommHtml(q.q)+'</div>'
+      +'<div class="adm-q-opts">'+opts+'</div>'
+      +'<button class="adm-q-del" onclick="admDeleteQ('+i+')">🗑️</button>'
+      +'</div>';
+  }).join('');
+}
+
+function admDeleteQ(i){
+  _adm.questions.splice(i,1);
+  admSaveQ();
+  admRenderQuestions();
+  admSyncUI();
+}
+
+function admClearQuestions(){
+  if(!_adm.questions.length) return;
+  if(!confirm('Effacer toutes les questions personnalisées ?')) return;
+  _adm.questions=[];admSaveQ();admRenderQuestions();admSyncUI();
+  showSF('🗑️ Questions effacées','rgba(255,255,255,.5)');
+}
+
+// ── Monitoring ─────────────────────────────────────────────────
+function openAdmMonitorModal(){
+  if(!_adm.ok){openAdmLogin();return;}
+  var m=document.getElementById('adm-monitor-modal');
+  if(m) m.classList.add('open');
+  admRefreshMonitor();
+}
+function closeAdmMonitorModal(){
+  var m=document.getElementById('adm-monitor-modal');
+  if(m) m.classList.remove('open');
+}
+
+async function admRefreshMonitor(){
+  var list=document.getElementById('adm-monitor-list');
+  if(!list) return;
+  if(!fbOK()){list.innerHTML='<div style="text-align:center;padding:20px;color:rgba(255,255,255,.3);font-size:.78rem">Firebase non connecté</div>';return;}
+  list.innerHTML='<div style="text-align:center;padding:20px;color:rgba(255,255,255,.25);font-size:.78rem">Chargement...</div>';
+  try{
+    var snap=await dbG(FB_COMP);
+    var data=snap&&snap.val?snap.val():{};
+    var codes=data?Object.keys(data).filter(function(c){return data[c]&&data[c].adminId===myId;}):[]; 
+    if(!codes.length){
+      list.innerHTML='<div style="text-align:center;padding:24px;color:rgba(255,255,255,.25);font-size:.78rem">Aucun tournoi créé.<br>Crée ton premier tournoi !</div>';
+      return;
+    }
+    // Trier par date décroissante
+    codes.sort(function(a,b){return (data[b].createdAt||0)-(data[a].createdAt||0);});
+    list.innerHTML=codes.map(function(c){
+      var t=data[c];
+      var st=t.status||'waiting';
+      var stLabel={'waiting':'⏳ En attente','ongoing':'🔴 En cours','finished':'✅ Terminé'}[st]||st;
+      var stColor={'waiting':'rgba(255,255,255,.4)','ongoing':'#ff3b30','finished':'#30d158'}[st]||'#fff';
+      var players=t.players?Object.keys(t.players).length:0;
+      return '<div style="background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-bottom:8px">'
+        +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'
+          +'<div>'
+            +'<div style="font-weight:800;font-size:.88rem">'+(t.name||c)+'</div>'
+            +'<div style="font-size:.65rem;margin-top:2px;color:'+stColor+'">'+stLabel+' · '+players+'/'+(t.size||8)+' joueurs</div>'
+          +'</div>'
+          +'<div style="font-family:\'Bangers\',cursive;font-size:1.3rem;letter-spacing:3px;color:#ff9f0a;cursor:pointer" onclick="admCopySpecificCode(\''+c+'\')" title="Copier le code">'+c+'</div>'
+        +'</div>'
+        +'<div style="display:flex;gap:6px">'
+          +(st==='waiting'?'<button onclick="admForceStart(\''+c+'\')" style="flex:1;padding:8px;background:linear-gradient(135deg,#30d158,#16a34a);border:none;border-radius:8px;color:#fff;font-family:\'Bangers\',cursive;font-size:.85rem;letter-spacing:1.5px;cursor:pointer">🚀 LANCER</button>':'')
+          +(st==='ongoing'?'<button onclick="admFinalizeT(\''+c+'\')" style="flex:1;padding:8px;background:linear-gradient(135deg,#ff9f0a,#ff6b00);border:none;border-radius:8px;color:#fff;font-family:\'Bangers\',cursive;font-size:.85rem;letter-spacing:1.5px;cursor:pointer">🏆 FINALISER</button>':'')
+          +'<button onclick="admShareCode(\''+c+'\',\''+(t.name||c)+'\')" style="padding:8px 12px;background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.25);border-radius:8px;color:#25d366;font-family:\'Bangers\',cursive;font-size:.85rem;cursor:pointer">📱</button>'
+          +'<button onclick="admDeleteT(\''+c+'\')" style="padding:8px 12px;background:rgba(255,59,48,.1);border:1px solid rgba(255,59,48,.2);border-radius:8px;color:#ff3b30;font-family:\'Bangers\',cursive;font-size:.85rem;cursor:pointer">🗑️</button>'
+        +'</div>'
+        +'</div>';
+    }).join('');
+  }catch(ex){
+    list.innerHTML='<div style="text-align:center;padding:20px;color:#ff3b30;font-size:.78rem">Erreur : '+ex.message+'</div>';
+  }
+}
+
+async function admForceStart(code){
+  if(!confirm('Lancer le tournoi '+code+' maintenant ?')) return;
+  try{
+    await dbU(FB_COMP+'/'+code,{status:'ongoing',startedAt:Date.now()});
+    await dbU(FB_TOURN+'/'+code,{status:'ongoing',startedAt:Date.now()});
+    showSF('🚀 Tournoi lancé !','#ff9f0a');
+    admRefreshMonitor();
+  }catch(e){showSF('Erreur : '+e.message,'var(--red)');}
+}
+async function admFinalizeT(code){
+  if(!confirm('Marquer ce tournoi comme terminé ?')) return;
+  try{
+    await dbU(FB_COMP+'/'+code,{status:'finished',finishedAt:Date.now()});
+    await dbU(FB_TOURN+'/'+code,{status:'finished',finishedAt:Date.now()});
+    showSF('🏆 Tournoi finalisé !','var(--gold)');
+    admRefreshMonitor();
+  }catch(e){showSF('Erreur','var(--red)');}
+}
+async function admDeleteT(code){
+  if(!confirm('⚠️ Supprimer le tournoi '+code+' ?\nAction irréversible.')) return;
+  try{
+    await dbS(FB_COMP+'/'+code,null);
+    await dbS(FB_TOURN+'/'+code,null);
+    showSF('🗑️ Tournoi supprimé','rgba(255,255,255,.4)');
+    admRefreshMonitor();
+  }catch(e){showSF('Erreur','var(--red)');}
+}
+function admCopySpecificCode(code){
+  try{navigator.clipboard.writeText(code);showSF('📋 '+code+' copié !','var(--gold)');}
+  catch(e){showSF('Code : '+code,'var(--gold)');}
+}
+function admShareCode(code,name){
+  var link=(typeof GAME_LINK!=='undefined'&&GAME_LINK.startsWith('http'))?GAME_LINK:'';
+  var msg='🏆 QUIZ OTAKU — COMPÉTITION OFFICIELLE ⚔️\n'
+    +'📌 '+name+'\n\n'
+    +'🎮 Code d\'accès : *'+code+'*\n'
+    +(link?'👉 '+link+'?tourn='+code+'\n':'')
+    +'⚡ Rejoins vite !';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+// ── Fermer modals en cliquant en dehors ────────────────────────
+['adm-login-modal','adm-create-modal','adm-questions-modal','adm-monitor-modal','comp-block-modal'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el) el.addEventListener('click',function(e){
+    if(e.target===el) el.classList.remove('open');
+  });
+});
+
+
 
 </script>
 </body>
