@@ -440,6 +440,29 @@ body::before{content:'';position:fixed;inset:0;
 .sidebar-item .si-icon{font-size:1.15rem;width:32px;text-align:center;display:flex;align-items:center;justify-content:center;}
 .sidebar-item .si-label{flex:1;}
 .sidebar-item .si-badge{font-size:.68rem;padding:2px 8px;border-radius:10px;font-weight:700;}
+
+/* ══ SYSTÈME SAUVEGARDE ════════════════════════════════════ */
+.backup-code-box{
+  background:rgba(0,0,0,.35);border:1.5px solid rgba(48,209,88,.25);
+  border-radius:12px;padding:12px 14px;font-family:'Bangers',cursive;
+  font-size:.85rem;letter-spacing:2px;color:var(--green);word-break:break-all;
+  text-align:center;line-height:1.8;user-select:all;cursor:pointer;
+  transition:border-color .2s;min-height:50px;
+}
+.backup-code-box:hover{border-color:rgba(48,209,88,.5);}
+.backup-status{text-align:center;font-size:.72rem;padding:6px;border-radius:8px;margin-top:6px;}
+.backup-status.ok{background:rgba(48,209,88,.1);color:var(--green);}
+.backup-status.err{background:rgba(255,59,48,.1);color:var(--red);}
+.backup-status.info{background:rgba(10,132,255,.1);color:var(--blue);}
+.backup-cloud-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:20px;font-size:.65rem;font-weight:800;
+  letter-spacing:1px;
+}
+.backup-cloud-badge.synced{background:rgba(48,209,88,.12);color:var(--green);border:1px solid rgba(48,209,88,.25);}
+.backup-cloud-badge.pending{background:rgba(255,159,10,.12);color:#ff9f0a;border:1px solid rgba(255,159,10,.25);}
+.backup-cloud-badge.offline{background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1);}
+
 .version-box{margin:16px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px;}
 .version-box .v-num{font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px;color:var(--gold);}
 .version-box .v-label{font-size:.7rem;color:rgba(255,255,255,.35);letter-spacing:1px;}
@@ -844,7 +867,7 @@ body[data-theme="abidjan"] .daily-banner{border-color:rgba(0,154,68,.35);}
 #hdr-profile{display:none;}
 #hdr-profile.visible{display:flex!important;}
 /* Masquer le bouton ⚙️ quand profil visible */
-body.has-profile .settings-btn#hdr-settings-btn{display:none;}
+/* settings-btn toujours visible */
 
 /* ══════════════════════════════════
    V5.1 CSS
@@ -1161,6 +1184,18 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 }
 #dm-screen.open{display:flex;}
 </style>
+
+<!-- ═══ PWA ═══ -->
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Quiz Otaku">
+<script>
+if('serviceWorker' in navigator){
+  /* SW externe désactivé pour WebView APK */
+}
+</script>
 </head>
 <body>
 <canvas id="confetti"></canvas>
@@ -1249,6 +1284,62 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
       <span class="si-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="color:var(--blue)"><path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/></svg></span>
       <span class="si-label">Voir mes statistiques</span>
     </div>
+  </div>
+
+  <div class="sidebar-section">
+    <h4>💾 SAUVEGARDE</h4>
+
+    <!-- Badge sync cloud -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="font-size:.72rem;color:rgba(255,255,255,.4)">Dernière synchro</div>
+      <div class="backup-cloud-badge offline" id="backup-cloud-badge">⚪ Non sync</div>
+    </div>
+
+    <!-- Bouton : Sauvegarder dans le cloud -->
+    <button onclick="backupToCloud()" id="backup-save-btn"
+      style="width:100%;padding:11px;background:linear-gradient(135deg,rgba(48,209,88,.2),rgba(16,185,129,.15));border:1.5px solid rgba(48,209,88,.3);border-radius:11px;color:var(--green);font-family:'Bangers',cursive;font-size:.95rem;letter-spacing:2px;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px">
+      ☁️ SAUVEGARDER EN LIGNE
+    </button>
+
+    <!-- Bouton : Restaurer depuis cloud -->
+    <button onclick="restoreFromCloud()"
+      style="width:100%;padding:11px;background:rgba(10,132,255,.12);border:1.5px solid rgba(10,132,255,.25);border-radius:11px;color:var(--blue);font-family:'Bangers',cursive;font-size:.95rem;letter-spacing:2px;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px">
+      🔄 RESTAURER MA SAUVEGARDE
+    </button>
+
+    <!-- Séparateur -->
+    <div style="display:flex;align-items:center;gap:8px;margin:8px 0">
+      <div style="flex:1;height:1px;background:rgba(255,255,255,.07)"></div>
+      <div style="font-size:.6rem;color:rgba(255,255,255,.2);letter-spacing:1px">OU CODE LOCAL</div>
+      <div style="flex:1;height:1px;background:rgba(255,255,255,.07)"></div>
+    </div>
+
+    <!-- Exporter code backup -->
+    <button onclick="exportBackupCode()"
+      style="width:100%;padding:10px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.7);font-family:'Bangers',cursive;font-size:.88rem;letter-spacing:1.5px;cursor:pointer;margin-bottom:8px">
+      📋 EXPORTER MON CODE
+    </button>
+
+    <!-- Zone affichage code + copie -->
+    <div id="backup-code-display" style="display:none;margin-bottom:8px">
+      <div style="font-size:.65rem;color:rgba(255,255,255,.35);margin-bottom:5px">Clique sur le code pour copier · Garde-le précieusement !</div>
+      <div class="backup-code-box" id="backup-code-txt" onclick="copyBackupCode()">—</div>
+      <button onclick="shareBackupWhatsApp()" style="width:100%;margin-top:6px;padding:8px;background:linear-gradient(135deg,#25d366,#128c7e);border:none;border-radius:9px;color:#fff;font-family:'Bangers',cursive;font-size:.82rem;letter-spacing:1.5px;cursor:pointer">
+        💬 ENVOYER SUR WHATSAPP
+      </button>
+    </div>
+
+    <!-- Importer code backup -->
+    <div style="margin-top:4px">
+      <input id="backup-import-inp" class="inp" placeholder="Colle ton code de sauvegarde ici..."
+        style="font-size:.75rem;letter-spacing:1px;margin-bottom:6px" onpaste="onBackupPaste(event)">
+      <button onclick="importBackupCode()"
+        style="width:100%;padding:10px;background:rgba(191,90,242,.12);border:1.5px solid rgba(191,90,242,.25);border-radius:10px;color:#bf5af2;font-family:'Bangers',cursive;font-size:.88rem;letter-spacing:1.5px;cursor:pointer">
+        📥 IMPORTER MA SAUVEGARDE
+      </button>
+    </div>
+
+    <div id="backup-status-msg" style="display:none" class="backup-status"></div>
   </div>
 
   <div class="version-box">
@@ -2364,8 +2455,8 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
     <div style="font-size:3rem;margin-bottom:10px">🔒</div>
     <div style="font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:3px;color:#ff3b30;margin-bottom:10px">ACCÈS RESTREINT</div>
     <div style="font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.65;margin-bottom:20px">
-      Seul l'administrateur peut organiser une compétition.<br><br>
-      Si tu as reçu un code d'invitation, rejoins le tournoi via le bouton ci-dessous.
+      Seul l'administrateur peut <strong>créer</strong> une compétition.<br><br>
+      Si tu as reçu un <strong>code d'invitation</strong>, clique sur « Rejoindre » pour participer directement !
     </div>
     <button onclick="document.getElementById('comp-block-modal').classList.remove('open');showJoinTournModal()"
       style="width:100%;padding:13px;background:linear-gradient(135deg,#ff9f0a,#ff6b00);border:none;border-radius:12px;color:#fff;font-family:'Bangers',cursive;font-size:1.05rem;letter-spacing:2px;cursor:pointer;margin-bottom:8px">
@@ -3081,7 +3172,7 @@ function dbOn(p,cb){return window._fb.onValue(dbR(p),cb);}
 
 // Screens
 function go(name){
-  ['home','lobby','wait','loading','cd','game','results','leaderboard','profile','story','friends','weekly','badges','community','players','tournament-lobby','tournament-bracket','tournament-results'].forEach(s=>{
+  ['home','lobby','wait','loading','cd','game','results','leaderboard','profile','story','friends','weekly','badges','community','players','tournament-lobby','tournament-bracket','tournament-results','my-profile','admin'].forEach(s=>{
     const el=document.getElementById('s-'+s);
     if(el)el.classList.add('hidden');
   });
@@ -7913,7 +8004,17 @@ if(typeof parseRoomURL!=='undefined'){
 // ── Config ─────────────────────────────────────────────────────
 // Mot de passe admin local. Tu peux aussi le stocker dans Firebase
 // à l'adresse : admin/config/password
-var ADM_PWD_LOCAL = 'Lamelo225Admin!'; // ← CHANGE CE MOT DE PASSE
+var ADM_PWD_LOCAL = 'Lamelo225Admin!';
+// Auto-login admin si profil reconnu
+(function(){
+  try{
+    var p=JSON.parse(localStorage.getItem('oq_profile')||'{}');
+    if(p.id==='u_vjrg4rt7'||p.role==='admin'){
+      _adm.ok=true;
+      localStorage.setItem('oq_adm','1');
+    }
+  }catch(e){}
+})();
 var FB_COMP = 'competitions';          // chemin Firebase pour les tournois admin
 
 // ── État ───────────────────────────────────────────────────────
@@ -7963,6 +8064,15 @@ function onCompetitionCardClick(){
 }
 
 // ── Login admin ────────────────────────────────────────────────
+function openMyProfile(){
+  // Ouvrir la sidebar (paramètres) — comportement souhaité
+  openSidebar();
+}
+
+function openAdminPanel(){
+  openAdmLogin();
+}
+
 function openAdmLogin(){
   var m=document.getElementById('adm-login-modal');
   if(m) m.classList.add('open');
@@ -8583,6 +8693,275 @@ window.renderNotifList=function(){
 
 
 
+
+// ══════════════════════════════════════════════════════════════
+//  SYSTÈME DE SAUVEGARDE — Cloud Firebase + Code local
+//  Survit à la désinstallation de l'APK
+// ══════════════════════════════════════════════════════════════
+
+var FB_BACKUPS = 'player_backups';
+
+// ─── Collecter toutes les données ─────────────────────────────
+function collectAllData(){
+  var data = {
+    version: 2,
+    ts: Date.now(),
+    keys: {}
+  };
+  var SAVE_KEYS = [
+    'oq_profile','oq_stats','oq_xp','oq_adv','oq_story',
+    'oq_friends','oq_badges','oq_theme','oq_name',
+    'oq_last_play','oq_adv_profile','oq_notifs',
+    'oq_daily','oq_record','oq_streak'
+  ];
+  SAVE_KEYS.forEach(function(k){
+    try{
+      var v = localStorage.getItem(k);
+      if(v) data.keys[k] = v;
+    }catch(e){}
+  });
+  return data;
+}
+
+// ─── Restaurer toutes les données ─────────────────────────────
+function applyBackupData(data){
+  if(!data||!data.keys) return false;
+  try{
+    Object.entries(data.keys).forEach(function(entry){
+      localStorage.setItem(entry[0], entry[1]);
+    });
+    return true;
+  }catch(e){ return false; }
+}
+
+// ─── CLOUD : Sauvegarder ──────────────────────────────────────
+async function backupToCloud(){
+  var p = loadProfile();
+  if(!p){showBackupStatus('⚠️ Crée un profil d\'abord !','err');return;}
+  if(!fbOK()||!navigator.onLine){
+    showBackupStatus('📡 Internet requis pour la sauvegarde cloud','err');
+    // Proposer le code local à la place
+    exportBackupCode();
+    return;
+  }
+  var btn = document.getElementById('backup-save-btn');
+  if(btn) btn.textContent = '⏳ Sauvegarde...';
+
+  try{
+    var data = collectAllData();
+    data.playerId = p.id;
+    data.pseudo = p.pseudo;
+    await dbU(FB_BACKUPS+'/'+p.id, data);
+    var badge = document.getElementById('backup-cloud-badge');
+    if(badge){
+      badge.className='backup-cloud-badge synced';
+      badge.textContent='✅ Sync '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    }
+    showBackupStatus('✅ Sauvegarde cloud réussie !','ok');
+    showSF('☁️ Sauvegarde en ligne réussie !','var(--green)');
+    try{localStorage.setItem('oq_last_backup',Date.now());}catch(e){}
+  }catch(e){
+    showBackupStatus('❌ Erreur: '+e.message,'err');
+  }
+  if(btn) btn.innerHTML='☁️ SAUVEGARDER EN LIGNE';
+}
+
+// ─── CLOUD : Restaurer ────────────────────────────────────────
+async function restoreFromCloud(){
+  var p = loadProfile();
+  var playerId = p&&p.id;
+
+  if(!playerId){
+    // Demander l'ID si pas de profil
+    var inputId = prompt('Entre ton ID joueur (visible dans tes anciens paramètres ou code de sauvegarde) :');
+    if(!inputId||inputId.trim().length<5){showBackupStatus('❌ ID invalide','err');return;}
+    playerId = inputId.trim();
+  }
+
+  if(!fbOK()||!navigator.onLine){
+    showBackupStatus('📡 Internet requis pour restaurer depuis le cloud','err');
+    return;
+  }
+
+  showBackupStatus('⏳ Recherche de ta sauvegarde...','info');
+
+  try{
+    var snap = await dbG(FB_BACKUPS+'/'+playerId);
+    if(!snap.exists()||!snap.val()){
+      showBackupStatus('❌ Aucune sauvegarde trouvée pour cet ID','err');
+      return;
+    }
+    var data = snap.val();
+    var _confirmMsg='Sauvegarde du '+new Date(data.ts).toLocaleDateString('fr-FR')+'\nPseudo: '+(data.pseudo||'?')+'\n\nRestorer ces donnees ?';
+    if(!confirm(_confirmMsg)){
+      showBackupStatus('Restauration annulée','info');
+      return;
+    }
+    if(applyBackupData(data)){
+      showBackupStatus('✅ Sauvegarde restaurée ! Rechargement...','ok');
+      showSF('✅ Données restaurées !','var(--green)');
+      setTimeout(function(){ location.reload(); }, 2000);
+    }else{
+      showBackupStatus('❌ Erreur lors de la restauration','err');
+    }
+  }catch(e){
+    showBackupStatus('❌ Erreur: '+e.message,'err');
+  }
+}
+
+// ─── CODE LOCAL : Exporter ────────────────────────────────────
+function exportBackupCode(){
+  try{
+    var data = collectAllData();
+    var json = JSON.stringify(data);
+    // Encoder en base64
+    var code = 'OQ2:'+btoa(encodeURIComponent(json));
+    // Afficher le code
+    var display = document.getElementById('backup-code-display');
+    var txt = document.getElementById('backup-code-txt');
+    if(display) display.style.display='block';
+    if(txt) txt.textContent = code;
+    showBackupStatus('✅ Code généré ! Garde-le précieusement.','ok');
+    return code;
+  }catch(e){
+    showBackupStatus('❌ Erreur génération code','err');
+    return null;
+  }
+}
+
+function copyBackupCode(){
+  var txt = document.getElementById('backup-code-txt');
+  if(!txt) return;
+  var code = txt.textContent;
+  try{
+    navigator.clipboard.writeText(code);
+    showBackupStatus('📋 Code copié !','ok');
+    showSF('📋 Code de sauvegarde copié !','var(--gold)');
+  }catch(e){
+    // Fallback sélection manuelle
+    var range = document.createRange();
+    range.selectNode(txt);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    showBackupStatus('✅ Sélectionné — appuie sur Copier','info');
+  }
+}
+
+function shareBackupWhatsApp(){
+  var txt = document.getElementById('backup-code-txt');
+  var code = txt?txt.textContent:'';
+  if(!code||code==='—') return;
+  var p = loadProfile()||{};
+  var msg = '🎌 QUIZ OTAKU — MON CODE DE SAUVEGARDE\n'
+    +'Pseudo: '+(p.pseudo||'?')+'\n'
+    +'Date: '+new Date().toLocaleDateString('fr-FR')+'\n\n'
+    +'📋 Mon code:\n'+code+'\n\n'
+    +'(Garde ce message pour restaurer tes données)';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+// ─── CODE LOCAL : Importer ────────────────────────────────────
+function importBackupCode(){
+  var inp = document.getElementById('backup-import-inp');
+  var code = inp?inp.value.trim():'';
+  if(!code){showBackupStatus('⚠️ Colle ton code de sauvegarde','err');return;}
+  if(!code.startsWith('OQ2:')){
+    showBackupStatus('❌ Code invalide — il doit commencer par OQ2:','err');
+    return;
+  }
+  try{
+    var json = decodeURIComponent(atob(code.slice(4)));
+    var data = JSON.parse(json);
+    if(!data||!data.keys){showBackupStatus('❌ Code corrompu','err');return;}
+    var keyCount = Object.keys(data.keys).length;
+    var dateStr = data.ts ? new Date(data.ts).toLocaleDateString('fr-FR') : '?';
+    if(!confirm('Sauvegarde du '+dateStr+' — '+keyCount+' donnees. Restorer ces donnees ?')){
+      showBackupStatus('Restauration annulée','info');
+      return;
+    }
+    if(applyBackupData(data)){
+      showBackupStatus('✅ Données restaurées ! Rechargement...','ok');
+      showSF('✅ Sauvegarde importée !','var(--green)');
+      if(inp) inp.value='';
+      setTimeout(function(){ location.reload(); }, 2000);
+    }else{
+      showBackupStatus('❌ Erreur restauration','err');
+    }
+  }catch(e){
+    showBackupStatus('❌ Code invalide ou corrompu','err');
+  }
+}
+
+function onBackupPaste(evt){
+  // Auto-détecter et importer si code collé
+  setTimeout(function(){
+    var inp = document.getElementById('backup-import-inp');
+    if(inp&&inp.value.startsWith('OQ2:')){
+      showBackupStatus('✅ Code détecté — clique Importer pour restaurer','info');
+    }
+  },100);
+}
+
+function showBackupStatus(msg, type){
+  var el = document.getElementById('backup-status-msg');
+  if(!el) return;
+  el.textContent = msg;
+  el.className = 'backup-status '+(type||'info');
+  el.style.display='block';
+  clearTimeout(window._backupStatusTimer);
+  window._backupStatusTimer = setTimeout(function(){
+    if(el) el.style.display='none';
+  }, 4000);
+}
+
+// ─── AUTO-SYNC : Sauvegarder automatiquement toutes les 10min ─
+function autoBackupStart(){
+  // Sync cloud silencieux toutes les 10 minutes si online
+  setInterval(function(){
+    if(fbOK()&&navigator.onLine){
+      var p = loadProfile();
+      if(!p) return;
+      var data = collectAllData();
+      data.playerId = p.id;
+      data.pseudo = p.pseudo;
+      data.autoSync = true;
+      dbU(FB_BACKUPS+'/'+p.id, data).then(function(){
+        var badge = document.getElementById('backup-cloud-badge');
+        if(badge){
+          badge.className='backup-cloud-badge synced';
+          badge.textContent='✅ Sync '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+        }
+        try{localStorage.setItem('oq_last_backup',Date.now());}catch(e){}
+      }).catch(function(){});
+    }
+  }, 10*60*1000); // 10 minutes
+}
+
+// ─── Au démarrage : vérifier si données à restaurer ───────────
+document.addEventListener('DOMContentLoaded',function(){
+  // Mettre à jour badge sync
+  var badge = document.getElementById('backup-cloud-badge');
+  var lastBackup = parseInt(localStorage.getItem('oq_last_backup')||'0');
+  if(badge){
+    if(lastBackup>0){
+      var diff = Date.now()-lastBackup;
+      var hrs = Math.floor(diff/3600000);
+      badge.className='backup-cloud-badge synced';
+      badge.textContent='✅ Il y a '+(hrs>0?hrs+'h':'<1h');
+    } else {
+      badge.className='backup-cloud-badge pending';
+      badge.textContent='⚠️ Jamais sauvegardé';
+    }
+  }
+  // Démarrer auto-sync
+  setTimeout(autoBackupStart, 5000);
+  // Auto-restore check: si pas de profil mais Firebase dispo
+  var p = loadProfile();
+  if(!p&&fbOK()&&navigator.onLine){
+    // Rien à faire automatiquement sans ID connu
+    // L'utilisateur devra utiliser le bouton Restaurer
+  }
+},false);
 
 </script>
 </body>
