@@ -195,10 +195,51 @@
 }
 .notif-permission-bar.show{display:flex;align-items:center;gap:12px;}
 
-/* ══ ADMIN SYSTEM — v5.6.3 ═══════════════════════════════════ */
+/* ══ ADMIN SYSTEM — v5.6.5 ═══════════════════════════════════ */
 
 /* Sidebar admin section */
 .sb-admin-section{background:linear-gradient(135deg,rgba(255,59,48,.07),rgba(255,149,0,.05));border-top:1px solid rgba(255,59,48,.15);border-bottom:1px solid rgba(255,59,48,.15);}
+
+/* ── SAUVEGARDE & RESTAURATION ─────────────────────────────── */
+.backup-section{background:linear-gradient(135deg,rgba(10,132,255,.06),rgba(191,90,242,.04));border-top:1px solid rgba(10,132,255,.15);border-bottom:1px solid rgba(10,132,255,.15);}
+.backup-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+.backup-btn{padding:11px 8px;border:none;border-radius:11px;font-family:'Bangers',cursive;font-size:.92rem;letter-spacing:1.5px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;color:#fff;}
+.backup-btn.save{background:linear-gradient(135deg,#0a84ff,#7c3aed);box-shadow:0 3px 12px rgba(10,132,255,.3);}
+.backup-btn.save:hover{transform:translateY(-2px);}
+.backup-btn.restore{background:linear-gradient(135deg,#30d158,#16a34a);box-shadow:0 3px 12px rgba(48,209,88,.25);}
+.backup-btn.restore:hover{transform:translateY(-2px);}
+.backup-sync-row{display:flex;align-items:center;gap:8px;padding:9px 0 4px;}
+.backup-sync-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.8s ease infinite;flex-shrink:0;}
+.backup-sync-dot.off{background:rgba(255,255,255,.2);animation:none;}
+.backup-sync-txt{font-size:.7rem;color:rgba(255,255,255,.38);line-height:1.4;}
+.bk-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:700;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(10px);}
+.bk-modal-overlay.open{display:flex;}
+.bk-modal-box{background:linear-gradient(145deg,#10101e,#1a1a2e);border-radius:22px;width:100%;max-width:400px;margin:auto;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);max-height:90vh;overflow-y:auto;overscroll-behavior:contain;}
+.bk-modal-hdr{padding:22px 20px 10px;text-align:center;position:relative;}
+.bk-modal-body{padding:0 20px 22px;}
+.bk-modal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.07);border:none;color:rgba(255,255,255,.4);width:30px;height:30px;border-radius:50%;font-size:.95rem;cursor:pointer;}
+.bk-key-box{background:rgba(0,0,0,.35);border:1.5px solid rgba(10,132,255,.3);border-radius:12px;padding:12px 14px;font-family:'Courier New',monospace;font-size:.68rem;color:#a5f3fc;word-break:break-all;line-height:1.6;user-select:all;max-height:110px;overflow-y:auto;cursor:text;}
+.bk-key-inp{width:100%;background:rgba(0,0,0,.3);border:1.5px solid rgba(48,209,88,.25);border-radius:12px;padding:12px 14px;font-family:'Courier New',monospace;font-size:.7rem;color:#86efac;resize:vertical;min-height:80px;outline:none;line-height:1.5;box-sizing:border-box;}
+.bk-key-inp:focus{border-color:rgba(48,209,88,.6);background:rgba(48,209,88,.04);}
+.bk-step{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.bk-step-num{width:24px;height:24px;border-radius:50%;background:rgba(10,132,255,.2);border:1px solid rgba(10,132,255,.35);display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:.9rem;color:#0a84ff;flex-shrink:0;margin-top:1px;}
+.bk-step-txt{font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.5;}
+.bk-step-txt strong{color:#fff;}
+
+/* ── Compteur joueurs inscrits ─────────────────────────────── */
+.adm-player-counter{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(10,132,255,.07);border:1px solid rgba(10,132,255,.18);border-radius:12px;margin-bottom:10px;}
+.adm-player-counter-icon{font-size:1.4rem;}
+.adm-player-counter-info{flex:1;}
+.adm-player-counter-num{font-family:'Bangers',cursive;font-size:1.5rem;color:#0a84ff;line-height:1;}
+.adm-player-counter-lbl{font-size:.62rem;letter-spacing:2px;color:rgba(255,255,255,.35);text-transform:uppercase;}
+
+/* ── Notification admin broadcast ─────────────────────────── */
+.adm-broadcast-item{background:linear-gradient(135deg,rgba(191,90,242,.12),rgba(255,59,48,.08));border:2px solid rgba(191,90,242,.3);border-radius:14px;padding:13px 15px;margin-bottom:8px;animation:challengePulse 2.5s ease infinite;}
+.adm-broadcast-badge{display:inline-flex;align-items:center;gap:5px;font-size:.6rem;font-weight:800;letter-spacing:2px;padding:2px 8px;border-radius:8px;background:rgba(191,90,242,.2);color:#bf5af2;margin-bottom:5px;}
+.adm-broadcast-msg{font-size:.84rem;font-weight:700;color:#fff;line-height:1.45;}
+.adm-broadcast-time{font-size:.62rem;color:rgba(255,255,255,.3);margin-top:4px;}
+/* notif-item déjà existant, on surcharge uniquement broadcast */
+.notif-item.broadcast{background:rgba(191,90,242,.06);border-left:3px solid #bf5af2;}
 .sb-admin-header{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:8px;background:linear-gradient(135deg,rgba(255,59,48,.12),rgba(255,149,0,.08));border:1px solid rgba(255,59,48,.2);}
 .sb-admin-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#ff3b30,#ff9500);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
 .sb-admin-name{font-weight:800;font-size:.88rem;color:#fff;}
@@ -311,7 +352,7 @@
 .mcard.online-only.offline-disabled .offline-lock-icon{display:block;}
 .mcard.online-only.offline-disabled .online-badge{display:none;}
 </style>
-<title>Quiz Otaku 5.6.3 🎌</title>
+<title>Quiz Otaku 5.6.5 🎌</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <!-- Bootstrap 5.3 — CDN (online) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous" media="print" onload="this.media='all'">
@@ -1236,9 +1277,26 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
     </div>
   </div>
 
+  <!-- ══ SECTION SAUVEGARDE ══ -->
+  <div class="sidebar-section backup-section">
+    <h4>💾 SAUVEGARDE</h4>
+    <div class="backup-sync-row">
+      <div class="backup-sync-dot" id="bk-sync-dot"></div>
+      <div class="backup-sync-txt" id="bk-sync-txt">Sauvegarde cloud active</div>
+    </div>
+    <div class="backup-btn-row">
+      <button class="backup-btn save" onclick="openBkSaveModal();closeSidebar()">
+        📤 Sauvegarder
+      </button>
+      <button class="backup-btn restore" onclick="openBkRestoreModal();closeSidebar()">
+        📥 Restaurer
+      </button>
+    </div>
+  </div>
+
   <div class="version-box">
     <div class="v-label">VERSION DU JEU</div>
-    <div class="v-num">5.6.3 🎌</div>
+    <div class="v-num">5.6.5 🎌</div>
     <div style="font-size:.65rem;color:rgba(255,255,255,.25);margin-top:3px">500+ questions · 9 modes · Admin compétition</div>
   </div>
 
@@ -1265,6 +1323,17 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
           <div class="sb-admin-role">ACCÈS TOTAL</div>
         </div>
       </div>
+
+      <!-- Compteur joueurs inscrits -->
+      <div class="adm-player-counter" id="adm-player-counter">
+        <div class="adm-player-counter-icon">👥</div>
+        <div class="adm-player-counter-info">
+          <div class="adm-player-counter-num" id="adm-player-count">—</div>
+          <div class="adm-player-counter-lbl">Joueurs inscrits</div>
+        </div>
+        <button onclick="admLoadPlayerCount()" style="padding:5px 10px;background:rgba(10,132,255,.12);border:1px solid rgba(10,132,255,.2);border-radius:8px;color:#0a84ff;font-size:.68rem;font-weight:700;cursor:pointer">🔄</button>
+      </div>
+
       <div class="sb-admin-item" onclick="openAdmCreateModal();closeSidebar()">
         <span class="si-icon" style="color:#ff9f0a">🏆</span>
         <span class="si-label">Créer une compétition</span>
@@ -1279,6 +1348,11 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
         <span class="si-icon" style="color:#0a84ff">📡</span>
         <span class="si-label">Mes tournois</span>
         <span class="si-badge" style="background:rgba(10,132,255,.12);color:#0a84ff">LIVE</span>
+      </div>
+      <div class="sb-admin-item" onclick="openAdmBroadcastModal();closeSidebar()">
+        <span class="si-icon" style="color:#bf5af2">📢</span>
+        <span class="si-label">Envoyer une notification</span>
+        <span class="si-badge" style="background:rgba(191,90,242,.15);color:#bf5af2">TOUS</span>
       </div>
       <button class="sb-admin-logout" onclick="admLogout()">🚪 DÉCONNEXION ADMIN</button>
     </div>
@@ -1315,7 +1389,7 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
 <div id="app">
 <header class="hdr">
   <div class="hdr-left">
-    <div class="hdr-badge" style="display:inline-flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="font-size:8px"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855-.143.268-.276.56-.395.872.705.157 1.472.257 2.282.287V1.077zM4.249 3.539c.142-.384.304-.744.481-1.078a6.7 6.7 0 0 1 .597-.933A7.01 7.01 0 0 0 3.051 3.05c.362.184.763.349 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9.124 9.124 0 0 1-1.565-.667A6.964 6.964 0 0 0 1.018 7.5h2.49zm1.4-2.741a12.344 12.344 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332zM8.5 5.09V7.5h2.99a12.342 12.342 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.612 13.612 0 0 1 7.5 10.91V8.5H4.51zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741H8.5zm-3.282 3.696c.12.312.252.604.395.872.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a6.696 6.696 0 0 1-.598-.933 8.853 8.853 0 0 1-.481-1.079 8.38 8.38 0 0 0-1.198.49 7.01 7.01 0 0 0 2.276 1.522zm-1.383-2.964A13.36 13.36 0 0 1 3.508 8.5h-2.49a6.963 6.963 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667zm6.728 2.964a7.009 7.009 0 0 0 2.275-1.521 8.376 8.376 0 0 0-1.197-.49 8.853 8.853 0 0 1-.481 1.078 6.688 6.688 0 0 1-.597.933zM8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855.143-.268.276-.56.395-.872A12.63 12.63 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.963 6.963 0 0 0 14.982 8.5h-2.49a13.36 13.36 0 0 1-.437 3.008zM14.982 7.5a6.963 6.963 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008h2.49zM11.27 2.461c.177.334.339.694.482 1.078a8.368 8.368 0 0 0 1.196-.49 7.01 7.01 0 0 0-2.275-1.52c.218.283.418.597.597.932zm-.488 1.343a7.765 7.765 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z"/></svg> V5.6.3</div>
+    <div class="hdr-badge" style="display:inline-flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="font-size:8px"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855-.143.268-.276.56-.395.872.705.157 1.472.257 2.282.287V1.077zM4.249 3.539c.142-.384.304-.744.481-1.078a6.7 6.7 0 0 1 .597-.933A7.01 7.01 0 0 0 3.051 3.05c.362.184.763.349 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9.124 9.124 0 0 1-1.565-.667A6.964 6.964 0 0 0 1.018 7.5h2.49zm1.4-2.741a12.344 12.344 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332zM8.5 5.09V7.5h2.99a12.342 12.342 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.612 13.612 0 0 1 7.5 10.91V8.5H4.51zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741H8.5zm-3.282 3.696c.12.312.252.604.395.872.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a6.696 6.696 0 0 1-.598-.933 8.853 8.853 0 0 1-.481-1.079 8.38 8.38 0 0 0-1.198.49 7.01 7.01 0 0 0 2.276 1.522zm-1.383-2.964A13.36 13.36 0 0 1 3.508 8.5h-2.49a6.963 6.963 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667zm6.728 2.964a7.009 7.009 0 0 0 2.275-1.521 8.376 8.376 0 0 0-1.197-.49 8.853 8.853 0 0 1-.481 1.078 6.688 6.688 0 0 1-.597.933zM8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855.143-.268.276-.56.395-.872A12.63 12.63 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.963 6.963 0 0 0 14.982 8.5h-2.49a13.36 13.36 0 0 1-.437 3.008zM14.982 7.5a6.963 6.963 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008h2.49zM11.27 2.461c.177.334.339.694.482 1.078a8.368 8.368 0 0 0 1.196-.49 7.01 7.01 0 0 0-2.275-1.52c.218.283.418.597.597.932zm-.488 1.343a7.765 7.765 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z"/></svg> V5.6.5</div>
     <div class="hdr-title">QUIZ<br>OTAKU</div>
     <div class="hdr-flags" style="display:flex;align-items:center;gap:6px;margin-top:4px">
       <span style="font-size:1rem">🇯🇵</span>
@@ -2510,6 +2584,178 @@ body.has-profile .settings-btn#hdr-settings-btn{display:none;}
       </div>
       <div id="adm-monitor-list"><div style="text-align:center;padding:24px;color:rgba(255,255,255,.25);font-size:.78rem">Chargement...</div></div>
       <button class="adm-btn adm-btn-ghost" style="margin-top:8px" onclick="closeAdmMonitorModal()">FERMER</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL : SAUVEGARDER ══ -->
+<div class="bk-modal-overlay" id="bk-save-modal">
+  <div class="bk-modal-box" style="border:2px solid rgba(10,132,255,.25)">
+    <div class="bk-modal-hdr" style="position:relative">
+      <button class="bk-modal-close" onclick="closeBkSaveModal()">✕</button>
+      <div style="font-size:2.2rem;margin-bottom:6px">📤</div>
+      <div style="font-family:'Bangers',cursive;font-size:1.7rem;letter-spacing:3px;background:linear-gradient(135deg,#0a84ff,#bf5af2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">SAUVEGARDER</div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.38);margin-top:4px;line-height:1.5">Génère ta clé de sauvegarde et conserve-la<br>pour restaurer tes données n'importe quand</div>
+    </div>
+    <div class="bk-modal-body">
+
+      <!-- Info données sauvegardées -->
+      <div style="background:rgba(10,132,255,.07);border:1px solid rgba(10,132,255,.18);border-radius:12px;padding:12px 14px;margin-bottom:14px" id="bk-save-info">
+        <div style="font-family:'Bangers',cursive;font-size:.8rem;letter-spacing:2px;color:rgba(255,255,255,.4);margin-bottom:8px">DONNÉES INCLUSES</div>
+        <div id="bk-save-summary" style="font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.8">Chargement...</div>
+      </div>
+
+      <!-- Clé générée -->
+      <div id="bk-key-generated" style="display:none">
+        <div style="font-family:'Bangers',cursive;font-size:.78rem;letter-spacing:2px;color:rgba(255,255,255,.35);margin-bottom:6px">TA CLÉ DE SAUVEGARDE</div>
+        <div class="bk-key-box" id="bk-key-display" onclick="bkCopyKey()">—</div>
+        <div style="font-size:.65rem;color:rgba(255,255,255,.28);margin-top:4px;margin-bottom:12px;text-align:center">Appuie sur la clé pour la copier</div>
+        <div style="display:flex;gap:8px">
+          <button class="adm-btn" style="flex:1;margin-bottom:0;background:rgba(10,132,255,.15);border:1.5px solid rgba(10,132,255,.3);color:#0a84ff;font-size:.88rem" onclick="bkCopyKey()">📋 Copier</button>
+          <button class="adm-btn" style="flex:1;margin-bottom:0;background:linear-gradient(135deg,#25d366,#128c7e);font-size:.88rem" onclick="bkShareWA()">📱 WhatsApp</button>
+        </div>
+        <div style="background:rgba(255,214,10,.07);border:1px solid rgba(255,214,10,.18);border-radius:10px;padding:10px 12px;margin-top:12px">
+          <div style="font-size:.72rem;color:rgba(255,214,10,.8);line-height:1.55">⚠️ <strong style="color:#ffd60a">Garde cette clé précieusement !</strong><br>Colle-la dans WhatsApp, Notes ou un fichier texte. Elle est la seule façon de récupérer tes données.</div>
+        </div>
+      </div>
+
+      <button class="adm-btn adm-btn-red" id="bk-generate-btn" style="background:linear-gradient(135deg,#0a84ff,#7c3aed);box-shadow:0 4px 16px rgba(10,132,255,.3)" onclick="bkGenerate()">⚡ GÉNÉRER MA CLÉ</button>
+      <button class="adm-btn adm-btn-ghost" onclick="closeBkSaveModal()">FERMER</button>
+
+      <!-- Sauvegarde cloud Firebase -->
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)">
+        <div style="font-family:'Bangers',cursive;font-size:.78rem;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:8px">🌐 SAUVEGARDE CLOUD</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:8px">Tes données sont aussi sauvegardées automatiquement sur nos serveurs via Firebase. Note ton ID joueur pour retrouver ton compte.</div>
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px">
+          <span style="font-size:.65rem;letter-spacing:1px;color:rgba(255,255,255,.3)">TON ID :</span>
+          <span style="font-family:'Courier New',monospace;font-size:.72rem;color:#0a84ff;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="bk-my-id">—</span>
+          <button onclick="bkCopyId()" style="padding:4px 9px;background:rgba(10,132,255,.12);border:1px solid rgba(10,132,255,.25);border-radius:7px;color:#0a84ff;font-size:.68rem;cursor:pointer">📋</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL : RESTAURER ══ -->
+<div class="bk-modal-overlay" id="bk-restore-modal">
+  <div class="bk-modal-box" style="border:2px solid rgba(48,209,88,.22)">
+    <div class="bk-modal-hdr" style="position:relative">
+      <button class="bk-modal-close" onclick="closeBkRestoreModal()">✕</button>
+      <div style="font-size:2.2rem;margin-bottom:6px">📥</div>
+      <div style="font-family:'Bangers',cursive;font-size:1.7rem;letter-spacing:3px;background:linear-gradient(135deg,#30d158,#0a84ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">RESTAURER</div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.38);margin-top:4px;line-height:1.5">Colle ta clé de sauvegarde pour récupérer<br>toutes tes données</div>
+    </div>
+    <div class="bk-modal-body">
+
+      <!-- Onglets -->
+      <div style="display:flex;gap:6px;margin-bottom:14px">
+        <button id="bk-tab-key" onclick="bkShowTab('key')" style="flex:1;padding:9px;border:1.5px solid rgba(48,209,88,.4);border-radius:10px;background:rgba(48,209,88,.12);color:#30d158;font-family:'Bangers',cursive;font-size:.9rem;letter-spacing:1px;cursor:pointer">🔑 Clé</button>
+        <button id="bk-tab-cloud" onclick="bkShowTab('cloud')" style="flex:1;padding:9px;border:1.5px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);font-family:'Bangers',cursive;font-size:.9rem;letter-spacing:1px;cursor:pointer">🌐 Cloud</button>
+      </div>
+
+      <!-- Tab : Clé de sauvegarde -->
+      <div id="bk-panel-key">
+        <div class="bk-step"><div class="bk-step-num">1</div><div class="bk-step-txt"><strong>Retrouve ta clé</strong> que tu as copiée lors d'une sauvegarde précédente (WhatsApp, Notes, SMS...)</div></div>
+        <div class="bk-step"><div class="bk-step-num">2</div><div class="bk-step-txt"><strong>Colle-la</strong> dans le champ ci-dessous</div></div>
+        <div class="bk-step"><div class="bk-step-num">3</div><div class="bk-step-txt"><strong>Appuie sur Restaurer</strong> — toutes tes données reviendront automatiquement</div></div>
+        <textarea class="bk-key-inp" id="bk-restore-inp" placeholder="Colle ta clé ici...&#10;(commence par OQB-)"></textarea>
+        <div class="adm-err" id="bk-restore-err" style="margin:6px 0"></div>
+        <button class="adm-btn adm-btn-green" onclick="bkDoRestore()">✅ RESTAURER MES DONNÉES</button>
+      </div>
+
+      <!-- Tab : Cloud par pseudo ou ID -->
+      <div id="bk-panel-cloud" style="display:none">
+        <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.5;margin-bottom:12px">Recherche ton compte via ton pseudo ou ton ID joueur pour récupérer tes données depuis nos serveurs.</div>
+        <input class="adm-inp" id="bk-cloud-search" placeholder="Ton pseudo ou ID joueur (u_xxxxx)" maxlength="40">
+        <button class="adm-btn" style="background:linear-gradient(135deg,#0a84ff,#7c3aed);margin-bottom:8px" onclick="bkCloudSearch()">🔍 RECHERCHER</button>
+        <div id="bk-cloud-results"><div style="text-align:center;padding:16px;color:rgba(255,255,255,.25);font-size:.78rem">Entre ton pseudo et lance la recherche</div></div>
+        <div class="adm-err" id="bk-cloud-err" style="margin:6px 0"></div>
+      </div>
+
+      <button class="adm-btn adm-btn-ghost" style="margin-top:4px" onclick="closeBkRestoreModal()">ANNULER</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL : RESTAURATION RÉUSSIE ══ -->
+<div class="bk-modal-overlay" id="bk-success-modal">
+  <div class="bk-modal-box" style="border:2px solid rgba(48,209,88,.3);text-align:center">
+    <div class="bk-modal-hdr">
+      <div style="font-size:3rem;margin-bottom:8px">🎉</div>
+      <div style="font-family:'Bangers',cursive;font-size:1.8rem;letter-spacing:3px;color:#30d158">RESTAURATION RÉUSSIE</div>
+    </div>
+    <div class="bk-modal-body">
+      <div id="bk-success-info" style="font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:16px"></div>
+      <button class="adm-btn adm-btn-green" onclick="bkSuccessClose()">🚀 REPRENDRE LE JEU</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL : NOTIFICATION BROADCAST ADMIN ══ -->
+<div class="adm-modal-overlay" id="adm-broadcast-modal">
+  <div class="adm-modal-box" style="border:2px solid rgba(191,90,242,.25)">
+    <div class="adm-modal-hdr" style="position:relative">
+      <button class="adm-modal-close" onclick="closeAdmBroadcastModal()">✕</button>
+      <div class="adm-modal-icon">📢</div>
+      <div class="adm-modal-title" style="background:linear-gradient(135deg,#bf5af2,#ff3b30);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">NOTIFIER LES JOUEURS</div>
+      <div class="adm-modal-sub">Tous les joueurs verront cette notification<br>la prochaine fois qu'ils ouvrent le jeu</div>
+    </div>
+    <div class="adm-modal-body" style="padding-top:10px">
+
+      <!-- Type de notif -->
+      <span class="adm-section-lbl">TYPE DE MESSAGE</span>
+      <div class="adm-pill-row" id="adm-bc-type-row">
+        <div class="adm-pill on" onclick="admPill('adm-bc-type-row',this,'info')">📢 Annonce</div>
+        <div class="adm-pill" onclick="admPill('adm-bc-type-row',this,'tournament')">🏆 Tournoi</div>
+        <div class="adm-pill" onclick="admPill('adm-bc-type-row',this,'event')">🎉 Événement</div>
+        <div class="adm-pill" onclick="admPill('adm-bc-type-row',this,'warning')">⚠️ Important</div>
+      </div>
+
+      <!-- Emoji / icône -->
+      <span class="adm-section-lbl">ICÔNE / EMOJI</span>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="adm-bc-emoji-row">
+        <div class="adm-pill on" onclick="admBcEmoji(this,'📢')">📢</div>
+        <div class="adm-pill" onclick="admBcEmoji(this,'🏆')">🏆</div>
+        <div class="adm-pill" onclick="admBcEmoji(this,'🎉')">🎉</div>
+        <div class="adm-pill" onclick="admBcEmoji(this,'⚡')">⚡</div>
+        <div class="adm-pill" onclick="admBcEmoji(this,'🎌')">🎌</div>
+        <div class="adm-pill" onclick="admBcEmoji(this,'🔥')">🔥</div>
+        <div class="adm-pill" onclick="admBcEmoji(this,'⚠️')">⚠️</div>
+        <div class="adm-pill" onclick="admBcEmoji(this,'🎮')">🎮</div>
+      </div>
+
+      <!-- Titre -->
+      <span class="adm-section-lbl">TITRE (court)</span>
+      <input class="adm-inp" id="adm-bc-title" placeholder="Ex : NOUVEAU TOURNOI, MISE À JOUR..." maxlength="40">
+
+      <!-- Message -->
+      <span class="adm-section-lbl">MESSAGE</span>
+      <textarea class="adm-inp" id="adm-bc-msg" placeholder="Écris ton message pour tous les joueurs..." rows="3" style="resize:vertical;line-height:1.5" maxlength="200"></textarea>
+
+      <!-- Aperçu -->
+      <div style="background:rgba(191,90,242,.06);border:1.5px solid rgba(191,90,242,.2);border-radius:12px;padding:12px 14px;margin-bottom:12px">
+        <div style="font-size:.62rem;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:6px">APERÇU</div>
+        <div style="display:flex;align-items:flex-start;gap:10px">
+          <div style="width:38px;height:38px;border-radius:50%;background:rgba(191,90,242,.15);border:2px solid rgba(191,90,242,.25);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0" id="adm-bc-preview-icon">📢</div>
+          <div>
+            <div style="font-weight:800;font-size:.84rem;color:#fff" id="adm-bc-preview-title">Titre de l'annonce</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.55);margin-top:2px;line-height:1.4" id="adm-bc-preview-msg">Contenu du message...</div>
+            <div style="font-size:.6rem;color:rgba(255,255,255,.25);margin-top:3px">🛡️ Admin · À l'instant</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="adm-err" id="adm-bc-err"></div>
+      <button class="adm-btn" style="background:linear-gradient(135deg,#bf5af2,#7c3aed);box-shadow:0 4px 16px rgba(191,90,242,.3)" onclick="admSendBroadcast()">
+        📢 ENVOYER À TOUS LES JOUEURS
+      </button>
+      <button class="adm-btn adm-btn-ghost" onclick="closeAdmBroadcastModal()">ANNULER</button>
+
+      <!-- Historique des envois -->
+      <div style="margin-top:14px">
+        <div style="font-family:'Bangers',cursive;font-size:.8rem;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:8px">DERNIÈRES NOTIFICATIONS</div>
+        <div id="adm-bc-history"><div style="text-align:center;padding:12px;color:rgba(255,255,255,.2);font-size:.75rem">Aucune notification envoyée</div></div>
+      </div>
     </div>
   </div>
 </div>
@@ -7805,7 +8051,7 @@ if(typeof parseRoomURL!=='undefined'){
 }
 
 // ══════════════════════════════════════════════════════════════
-//  SYSTÈME ADMIN — Quiz Otaku v5.6.3
+//  SYSTÈME ADMIN — Quiz Otaku v5.6.5
 //  Accès via la sidebar ⚙️ > section Administration
 //  Aucun override de go() — zéro impact sur le jeu existant
 // ══════════════════════════════════════════════════════════════
@@ -7830,7 +8076,7 @@ var _adm = {
 // ── Persistance session ────────────────────────────────────────
 (function(){
   try{
-    if(sessionStorage.getItem('oq_adm')==='1') _adm.ok=true;
+    if(localStorage.getItem('oq_adm')==='1') _adm.ok=true;
     var q=localStorage.getItem('oq_adm_q');
     if(q) _adm.questions=JSON.parse(q)||[];
   }catch(e){}
@@ -7902,7 +8148,7 @@ async function admDoLogin(){
 
 function admLoginSuccess(){
   _adm.ok=true;
-  try{sessionStorage.setItem('oq_adm','1');}catch(ex){}
+  try{localStorage.setItem('oq_adm','1');}catch(ex){}
   closeAdmLogin();
   admSyncUI();
   showSF('🛡️ Accès admin accordé !','#ff9f0a');
@@ -7913,7 +8159,7 @@ function admLoginSuccess(){
 function admLogout(){
   if(!confirm('Quitter le mode administrateur ?')) return;
   _adm.ok=false;
-  try{sessionStorage.removeItem('oq_adm');}catch(ex){}
+  try{localStorage.removeItem('oq_adm');}catch(ex){}
   admSyncUI();
   showSF('🚪 Déconnecté du mode admin','rgba(255,255,255,.5)');
 }
@@ -8230,13 +8476,632 @@ function admShareCode(code,name){
   window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 }
 
-// ── Fermer modals en cliquant en dehors ────────────────────────
-['adm-login-modal','adm-create-modal','adm-questions-modal','adm-monitor-modal','comp-block-modal'].forEach(function(id){
+// ══════════════════════════════════════════════════════════════
+//  SYSTÈME SAUVEGARDE & RESTAURATION — v5.6.5
+//  • Clé locale : encode toutes les données en base64 (OQB-...)
+//  • Cloud Firebase : sync automatique + recherche par pseudo/ID
+//  • Persistance : re-sync au démarrage si données vides
+// ══════════════════════════════════════════════════════════════
+
+var FB_PROFILES = 'profiles'; // path Firebase pour sync profils
+
+// Clés localStorage à sauvegarder (par ordre de priorité)
+var BK_KEYS = [
+  'oq_profile','oq_stats','oq_xp','oq_adv',
+  'oq_name','oq_theme','oq_story','oq_friends',
+  'oq_daily','oq_notifs','oq_adm_q'
+];
+
+// ── Générer la clé de sauvegarde ──────────────────────────────
+function bkCollectData(){
+  var snapshot={};
+  BK_KEYS.forEach(function(k){
+    try{var v=localStorage.getItem(k);if(v) snapshot[k]=v;}catch(e){}
+  });
+  return snapshot;
+}
+
+function bkEncode(data){
+  try{
+    var json=JSON.stringify(data);
+    var b64=btoa(unescape(encodeURIComponent(json)));
+    return 'OQB-'+b64;
+  }catch(e){return null;}
+}
+
+function bkDecode(key){
+  try{
+    if(!key||!key.startsWith('OQB-')) return null;
+    var b64=key.slice(4);
+    var json=decodeURIComponent(escape(atob(b64)));
+    return JSON.parse(json);
+  }catch(e){return null;}
+}
+
+// ── Résumé des données pour affichage ─────────────────────────
+function bkGetSummary(){
+  var p=loadProfile();
+  var s=loadStats();
+  var xp=loadXP();
+  var story=null;try{story=JSON.parse(localStorage.getItem('oq_story'));}catch(e){}
+  var lines=[];
+  if(p) lines.push('👤 Pseudo : <strong style="color:#fff">'+escapeCommHtml(p.pseudo||'?')+'</strong>');
+  if(p) lines.push('🪙 Pièces : <strong style="color:var(--gold)">'+(p.coins||0)+'</strong>');
+  if(p) lines.push('⚡ XP : <strong style="color:#a78bfa">'+(xp.xp||0)+' XP</strong>');
+  if(s) lines.push('🎮 Parties jouées : <strong style="color:#fff">'+(s.played||0)+'</strong>');
+  if(s) lines.push('🏆 Meilleur score : <strong style="color:var(--gold)">'+(s.best||0)+'</strong>');
+  if(s) lines.push('🔥 Streak record : <strong style="color:var(--red)">'+(s.streak||0)+'</strong>');
+  if(p&&p.badges) lines.push('🏅 Badges : <strong style="color:#fff">'+Object.keys(p.badges||{}).length+'</strong>');
+  if(story) lines.push('📖 Progression histoire : <strong style="color:#10b981">'+(story.completed||[]).length+' chapitres</strong>');
+  return lines.join('<br>');
+}
+
+// ── Ouvrir modal sauvegarde ───────────────────────────────────
+function openBkSaveModal(){
+  var m=document.getElementById('bk-save-modal');
+  if(m) m.classList.add('open');
+  // Remplir le résumé
+  var sum=document.getElementById('bk-save-summary');
+  if(sum) sum.innerHTML=bkGetSummary()||'<span style="color:rgba(255,255,255,.3)">Aucun profil créé</span>';
+  // Afficher l'ID joueur
+  var idEl=document.getElementById('bk-my-id');
+  if(idEl) idEl.textContent=myId||'—';
+  // Reset
+  var gen=document.getElementById('bk-key-generated');
+  if(gen) gen.style.display='none';
+  var btn=document.getElementById('bk-generate-btn');
+  if(btn) btn.style.display='';
+  // Sync status
+  bkUpdateSyncStatus();
+}
+function closeBkSaveModal(){
+  var m=document.getElementById('bk-save-modal');
+  if(m) m.classList.remove('open');
+}
+
+// ── Générer la clé ────────────────────────────────────────────
+function bkGenerate(){
+  var data=bkCollectData();
+  if(!Object.keys(data).length){
+    showSF('⚠️ Aucune donnée à sauvegarder','var(--red)');return;
+  }
+  var key=bkEncode(data);
+  if(!key){showSF('Erreur de génération','var(--red)');return;}
+  // Afficher la clé
+  var kd=document.getElementById('bk-key-display');
+  if(kd) kd.textContent=key;
+  var gen=document.getElementById('bk-key-generated');
+  if(gen) gen.style.display='block';
+  var btn=document.getElementById('bk-generate-btn');
+  if(btn) btn.style.display='none';
+  // Aussi sauvegarder sur Firebase
+  bkCloudSync();
+  showSF('🔑 Clé générée ! Copie-la maintenant.','#0a84ff');
+}
+
+function bkCopyKey(){
+  var kd=document.getElementById('bk-key-display');
+  var key=kd?kd.textContent:'';
+  if(!key||key==='—') return;
+  try{navigator.clipboard.writeText(key);showSF('📋 Clé copiée !','#0a84ff');}
+  catch(e){showSF('Sélectionne le texte manuellement','rgba(255,255,255,.5)');}
+}
+
+function bkCopyId(){
+  try{navigator.clipboard.writeText(myId);showSF('📋 ID copié : '+myId,'#0a84ff');}
+  catch(e){}
+}
+
+function bkShareWA(){
+  var kd=document.getElementById('bk-key-display');
+  var key=kd?kd.textContent:'';
+  if(!key||key==='—') return;
+  var p=loadProfile()||{};
+  var msg='🎌 QUIZ OTAKU — MA CLÉ DE SAUVEGARDE\n\n'
+    +'Pseudo : '+(p.pseudo||myName||'?')+'\n'
+    +'Date : '+new Date().toLocaleDateString('fr-FR')+'\n\n'
+    +'🔑 CLÉ :\n'+key+'\n\n'
+    +'(Pour restaurer : Paramètres ⚙️ > Sauvegarde > Restaurer > Colle cette clé)';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+// ── Ouvrir modal restauration ─────────────────────────────────
+function openBkRestoreModal(){
+  var m=document.getElementById('bk-restore-modal');
+  if(m) m.classList.add('open');
+  bkShowTab('key');
+  var inp=document.getElementById('bk-restore-inp');
+  if(inp) inp.value='';
+  var err=document.getElementById('bk-restore-err');
+  if(err) err.textContent='';
+}
+function closeBkRestoreModal(){
+  var m=document.getElementById('bk-restore-modal');
+  if(m) m.classList.remove('open');
+}
+
+function bkShowTab(tab){
+  var panelKey=document.getElementById('bk-panel-key');
+  var panelCloud=document.getElementById('bk-panel-cloud');
+  var tabKey=document.getElementById('bk-tab-key');
+  var tabCloud=document.getElementById('bk-tab-cloud');
+  if(tab==='key'){
+    if(panelKey) panelKey.style.display='';
+    if(panelCloud) panelCloud.style.display='none';
+    if(tabKey){tabKey.style.borderColor='rgba(48,209,88,.4)';tabKey.style.background='rgba(48,209,88,.12)';tabKey.style.color='#30d158';}
+    if(tabCloud){tabCloud.style.borderColor='rgba(255,255,255,.1)';tabCloud.style.background='rgba(255,255,255,.04)';tabCloud.style.color='rgba(255,255,255,.5)';}
+  }else{
+    if(panelKey) panelKey.style.display='none';
+    if(panelCloud) panelCloud.style.display='';
+    if(tabCloud){tabCloud.style.borderColor='rgba(10,132,255,.4)';tabCloud.style.background='rgba(10,132,255,.12)';tabCloud.style.color='#0a84ff';}
+    if(tabKey){tabKey.style.borderColor='rgba(255,255,255,.1)';tabKey.style.background='rgba(255,255,255,.04)';tabKey.style.color='rgba(255,255,255,.5)';}
+  }
+}
+
+// ── Restaurer depuis la clé ────────────────────────────────────
+function bkDoRestore(){
+  var inp=document.getElementById('bk-restore-inp');
+  var err=document.getElementById('bk-restore-err');
+  err.textContent='';
+  var key=(inp&&inp.value.trim())||'';
+  if(!key){err.textContent='Colle ta clé de sauvegarde d\'abord.';return;}
+  if(!key.startsWith('OQB-')){err.textContent='Clé invalide. Elle doit commencer par OQB-';return;}
+  var data=bkDecode(key);
+  if(!data){err.textContent='Clé corrompue ou incomplète. Vérifie qu\'elle est complète.';return;}
+  // Appliquer les données
+  var restored=[];
+  BK_KEYS.forEach(function(k){
+    if(data[k]!==undefined){
+      try{localStorage.setItem(k,data[k]);restored.push(k);}catch(e){}
+    }
+  });
+  if(!restored.length){err.textContent='Aucune donnée trouvée dans cette clé.';return;}
+  // Succès
+  closeBkRestoreModal();
+  bkShowSuccess(data);
+}
+
+// ── Restaurer depuis le cloud (Firebase) ──────────────────────
+async function bkCloudSearch(){
+  if(!fbOK()){
+    var e=document.getElementById('bk-cloud-err');
+    if(e) e.textContent='Firebase non connecté.';return;
+  }
+  var inp=document.getElementById('bk-cloud-search');
+  var results=document.getElementById('bk-cloud-results');
+  var err=document.getElementById('bk-cloud-err');
+  err.textContent='';
+  var query=(inp&&inp.value.trim())||'';
+  if(!query){err.textContent='Entre ton pseudo ou ID joueur.';return;}
+  results.innerHTML='<div style="text-align:center;padding:16px;color:rgba(255,255,255,.4);font-size:.78rem">Recherche en cours...</div>';
+  try{
+    var snap=await dbG(FB_PROFILES);
+    var data=snap&&snap.val?snap.val():{};
+    if(!data){results.innerHTML='<div style="text-align:center;padding:16px;color:rgba(255,255,255,.3);font-size:.78rem">Aucun profil cloud trouvé.</div>';return;}
+    var matches=Object.values(data).filter(function(p){
+      if(!p) return false;
+      var pseudo=(p.pseudo||'').toLowerCase();
+      var id=(p.id||p.uid||'').toLowerCase();
+      var q=query.toLowerCase();
+      return pseudo.includes(q)||id.includes(q)||id===q;
+    });
+    if(!matches.length){
+      results.innerHTML='<div style="text-align:center;padding:16px;color:rgba(255,255,255,.3);font-size:.78rem">Aucun compte trouvé pour "'+escapeCommHtml(query)+'"</div>';
+      return;
+    }
+    results.innerHTML=matches.slice(0,5).map(function(p,i){
+      return '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;margin-bottom:7px">'
+        +'<span style="font-size:1.3rem">'+(p.avatar||'⚡')+'</span>'
+        +'<div style="flex:1;min-width:0">'
+          +'<div style="font-weight:800;font-size:.86rem">'+escapeCommHtml(p.pseudo||'?')+'</div>'
+          +'<div style="font-size:.64rem;color:rgba(255,255,255,.35);margin-top:1px">Score : '+(p.best||0)+' · Parties : '+(p.played||0)+'</div>'
+        +'</div>'
+        +'<button onclick="bkCloudRestore('+i+')" data-idx="'+i+'" style="padding:7px 12px;background:linear-gradient(135deg,#30d158,#16a34a);border:none;border-radius:9px;color:#fff;font-family:\'Bangers\',cursive;font-size:.85rem;letter-spacing:1px;cursor:pointer">RÉCUPÉRER</button>'
+        +'</div>';
+    }).join('');
+    // Stocker les résultats pour récupération
+    window._bkCloudMatches=matches;
+  }catch(e){
+    results.innerHTML='<div style="text-align:center;padding:16px;color:#ff3b30;font-size:.78rem">Erreur : '+e.message+'</div>';
+  }
+}
+
+function bkCloudRestore(idx){
+  var matches=window._bkCloudMatches||[];
+  var p=matches[idx];
+  if(!p) return;
+  if(!confirm('Restaurer le compte "'+p.pseudo+'" ?\nTes données actuelles seront remplacées.')) return;
+  // Reconstruire un profil minimal depuis Firebase
+  var profile={
+    id:p.id||p.uid||myId,
+    pseudo:p.pseudo||'Joueur',
+    avatar:p.avatar||'⚡',
+    coins:p.coins||0,
+    badges:p.badges||{},
+    xp:p.xp||0,
+    createdAt:p.createdAt||Date.now(),
+  };
+  var stats={played:p.played||0,correct:p.correct||0,best:p.best||0,streak:0};
+  try{
+    localStorage.setItem('oq_profile',JSON.stringify(profile));
+    localStorage.setItem('oq_stats',JSON.stringify(stats));
+    localStorage.setItem('oq_name',profile.pseudo);
+  }catch(e){}
+  closeBkRestoreModal();
+  bkShowSuccess({oq_profile:JSON.stringify(profile),oq_stats:JSON.stringify(stats)});
+}
+
+// ── Modal succès ──────────────────────────────────────────────
+function bkShowSuccess(data){
+  var m=document.getElementById('bk-success-modal');
+  if(m) m.classList.add('open');
+  var p=null;try{p=JSON.parse(data['oq_profile']);}catch(e){}
+  var s=null;try{s=JSON.parse(data['oq_stats']);}catch(e){}
+  var info=document.getElementById('bk-success-info');
+  if(info){
+    var lines=[];
+    if(p) lines.push('👤 Profil <strong style="color:#fff">'+escapeCommHtml(p.pseudo||'?')+'</strong> restauré');
+    if(s) lines.push('🎮 <strong style="color:#fff">'+(s.played||0)+'</strong> parties récupérées');
+    if(s) lines.push('🏆 Meilleur score : <strong style="color:var(--gold)">'+(s.best||0)+'</strong>');
+    if(p) lines.push('🪙 Pièces : <strong style="color:var(--gold)">'+(p.coins||0)+'</strong>');
+    info.innerHTML=lines.join('<br>')||'Données restaurées avec succès !';
+  }
+}
+
+function bkSuccessClose(){
+  var m=document.getElementById('bk-success-modal');
+  if(m) m.classList.remove('open');
+  // Recharger l'UI avec les nouvelles données
+  try{updateProfileUI();}catch(e){}
+  try{updateHeaderProfile();}catch(e){}
+  try{updateHomeStats();}catch(e){}
+  try{updateAdmUI();}catch(e){}
+  showSF('✅ Données restaurées !','#30d158');
+}
+
+// ── Sync cloud automatique ────────────────────────────────────
+async function bkCloudSync(){
+  if(!fbOK()) return;
+  var p=loadProfile();
+  if(!p||!p.id) return;
+  var s=loadStats();
+  var xp=loadXP();
+  try{
+    await dbU(FB_PROFILES+'/'+p.id,{
+      id:p.id,
+      pseudo:p.pseudo||myName,
+      avatar:p.avatar||'⚡',
+      coins:p.coins||0,
+      badges:p.badges||{},
+      xp:xp.xp||0,
+      played:s.played||0,
+      correct:s.correct||0,
+      best:s.best||0,
+      updatedAt:Date.now(),
+      createdAt:p.createdAt||Date.now(),
+    });
+  }catch(e){}
+}
+
+// ── Indicateur sync sidebar ───────────────────────────────────
+function bkUpdateSyncStatus(){
+  var dot=document.getElementById('bk-sync-dot');
+  var txt=document.getElementById('bk-sync-txt');
+  var online=fbOK()&&navigator.onLine;
+  if(dot){dot.classList.toggle('off',!online);}
+  if(txt) txt.textContent=online?'Sauvegarde cloud active':'Sauvegarde locale uniquement';
+}
+
+// ── Auto-sync lors d'actions importantes ──────────────────────
+// On hook saveStats pour déclencher un sync Firebase à chaque fin de partie
+var _origSaveStats=window.saveStats;
+window.saveStats=function(s){
+  if(_origSaveStats) _origSaveStats(s);
+  // Sync silencieux après 2s (pour ne pas ralentir la fin de partie)
+  setTimeout(bkCloudSync, 2000);
+};
+
+// ── Auto-restauration au démarrage si profil vide mais données cloud dispo ──
+async function bkAutoRestore(){
+  // Seulement si pas de profil local ET Firebase connecté
+  var p=loadProfile();
+  if(p&&p.pseudo) return; // profil déjà là
+  if(!fbOK()||!navigator.onLine) return;
+  // Chercher par myId
+  try{
+    var snap=await dbG(FB_PROFILES+'/'+myId);
+    var cloud=snap&&snap.val?snap.val():null;
+    if(!cloud||!cloud.pseudo) return;
+    // Restaurer silencieusement
+    var profile={id:cloud.id||myId,pseudo:cloud.pseudo,avatar:cloud.avatar||'⚡',coins:cloud.coins||0,badges:cloud.badges||{},xp:cloud.xp||0,createdAt:cloud.createdAt||Date.now()};
+    var stats={played:cloud.played||0,correct:cloud.correct||0,best:cloud.best||0,streak:0};
+    localStorage.setItem('oq_profile',JSON.stringify(profile));
+    localStorage.setItem('oq_stats',JSON.stringify(stats));
+    localStorage.setItem('oq_name',profile.pseudo);
+    // Mettre à jour l'UI
+    setTimeout(function(){
+      try{updateProfileUI();}catch(e){}
+      try{updateHeaderProfile();}catch(e){}
+      try{updateHomeStats();}catch(e){}
+      showSF('✅ Profil restauré automatiquement !','#30d158');
+    },500);
+  }catch(e){}
+}
+
+// Lancer l'auto-restauration après init Firebase
+document.addEventListener('DOMContentLoaded',function(){
+  var tries=0;
+  var iv2=setInterval(function(){
+    tries++;
+    if(fbOK()){clearInterval(iv2);bkAutoRestore();}
+    if(tries>40) clearInterval(iv2);
+  },150);
+},false);
+
+// Fermer les modals backup en cliquant en dehors
+['bk-save-modal','bk-restore-modal','bk-success-modal'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el) el.addEventListener('click',function(e){if(e.target===el)el.classList.remove('open');});
+});
+
+// Sync cloud quand on ouvre la sidebar (mise à jour silencieuse)
+var _origOpenSidebar2=window.openSidebar;
+window.openSidebar=function(){
+  if(_origOpenSidebar2) _origOpenSidebar2.apply(this,arguments);
+  bkUpdateSyncStatus();
+  setTimeout(bkCloudSync,1000);
+};
+
+
   var el=document.getElementById(id);
   if(el) el.addEventListener('click',function(e){
     if(e.target===el) el.classList.remove('open');
   });
 });
+
+// ══════════════════════════════════════════════════════════════
+//  COMPTEUR JOUEURS INSCRITS — v5.6.5
+// ══════════════════════════════════════════════════════════════
+async function admLoadPlayerCount(){
+  var el=document.getElementById('adm-player-count');
+  if(!el) return;
+  if(!fbOK()){el.textContent='—';return;}
+  el.textContent='...';
+  try{
+    var snap=await dbG('leaderboard');
+    var data=snap&&snap.val?snap.val():{};
+    var count=data?Object.keys(data).length:0;
+    el.textContent=count;
+  }catch(e){el.textContent='—';}
+}
+
+// Charger le compteur quand la sidebar s'ouvre
+var _origOpenSidebar=window.openSidebar;
+window.openSidebar=function(){
+  if(_origOpenSidebar) _origOpenSidebar.apply(this,arguments);
+  if(_adm.ok) admLoadPlayerCount();
+};
+
+// ══════════════════════════════════════════════════════════════
+//  SYSTÈME BROADCAST NOTIFICATIONS — v5.6.5
+//  Firebase path : /broadcasts/{id}
+//  Chaque joueur voit les notifs non lues à l'ouverture du jeu
+// ══════════════════════════════════════════════════════════════
+var FB_BC='broadcasts';
+var _admBcEmoji='📢';
+var _admBcType='info';
+
+// Icônes par type pour les joueurs
+var BC_ICONS={info:'📢',tournament:'🏆',event:'🎉',warning:'⚠️'};
+
+function openAdmBroadcastModal(){
+  if(!_adm.ok){openAdmLogin();return;}
+  var m=document.getElementById('adm-broadcast-modal');
+  if(m) m.classList.add('open');
+  admLoadBcHistory();
+  // Live preview
+  var titleI=document.getElementById('adm-bc-title');
+  var msgI=document.getElementById('adm-bc-msg');
+  if(titleI) titleI.addEventListener('input',admUpdateBcPreview);
+  if(msgI) msgI.addEventListener('input',admUpdateBcPreview);
+}
+function closeAdmBroadcastModal(){
+  var m=document.getElementById('adm-broadcast-modal');
+  if(m) m.classList.remove('open');
+}
+
+function admBcEmoji(el,emoji){
+  _admBcEmoji=emoji;
+  var row=document.getElementById('adm-bc-emoji-row');
+  if(row) row.querySelectorAll('.adm-pill').forEach(function(p){p.classList.remove('on');});
+  el.classList.add('on');
+  var prev=document.getElementById('adm-bc-preview-icon');
+  if(prev) prev.textContent=emoji;
+}
+
+function admUpdateBcPreview(){
+  var t=document.getElementById('adm-bc-title');
+  var m=document.getElementById('adm-bc-msg');
+  var pt=document.getElementById('adm-bc-preview-title');
+  var pm=document.getElementById('adm-bc-preview-msg');
+  if(pt) pt.textContent=(t&&t.value.trim())||'Titre de l\'annonce';
+  if(pm) pm.textContent=(m&&m.value.trim())||'Contenu du message...';
+}
+
+async function admSendBroadcast(){
+  var errEl=document.getElementById('adm-bc-err');
+  errEl.textContent='';
+  var titleEl=document.getElementById('adm-bc-title');
+  var msgEl=document.getElementById('adm-bc-msg');
+  var title=(titleEl&&titleEl.value.trim())||'';
+  var msg=(msgEl&&msgEl.value.trim())||'';
+  if(!title){errEl.textContent='Ajoute un titre.';return;}
+  if(!msg){errEl.textContent='Écris un message.';return;}
+  if(!fbOK()){errEl.textContent='Firebase non connecté.';return;}
+
+  var id='bc_'+Date.now();
+  var data={
+    id:id,
+    type:_admBcType,
+    emoji:_admBcEmoji,
+    title:title,
+    message:msg,
+    sentAt:Date.now(),
+    sentBy:myId,
+    active:true,
+  };
+  try{
+    await dbS(FB_BC+'/'+id, data);
+    showSF('📢 Notification envoyée à tous les joueurs !','#bf5af2');
+    // Reset form
+    if(titleEl) titleEl.value='';
+    if(msgEl) msgEl.value='';
+    admLoadBcHistory();
+    errEl.textContent='';
+  }catch(e){
+    errEl.textContent='Erreur Firebase : '+e.message;
+  }
+}
+
+async function admLoadBcHistory(){
+  var list=document.getElementById('adm-bc-history');
+  if(!list||!fbOK()) return;
+  try{
+    var snap=await dbG(FB_BC);
+    var data=snap&&snap.val?snap.val():{};
+    var items=data?Object.values(data):[];
+    if(!items.length){
+      list.innerHTML='<div style="text-align:center;padding:12px;color:rgba(255,255,255,.2);font-size:.75rem">Aucune notification envoyée</div>';
+      return;
+    }
+    items.sort(function(a,b){return (b.sentAt||0)-(a.sentAt||0);});
+    list.innerHTML=items.slice(0,5).map(function(n){
+      var ago=admTimeAgo(n.sentAt);
+      return '<div style="display:flex;align-items:center;gap:9px;padding:9px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;margin-bottom:6px">'
+        +'<span style="font-size:1.1rem">'+n.emoji+'</span>'
+        +'<div style="flex:1;min-width:0">'
+          +'<div style="font-weight:700;font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escapeCommHtml(n.title)+'</div>'
+          +'<div style="font-size:.65rem;color:rgba(255,255,255,.35);margin-top:1px">'+ago+'</div>'
+        +'</div>'
+        +'<button onclick="admDeleteBc(\''+n.id+'\')" style="padding:3px 8px;background:rgba(255,59,48,.1);border:1px solid rgba(255,59,48,.2);border-radius:6px;color:#ff3b30;font-size:.65rem;cursor:pointer">🗑️</button>'
+        +'</div>';
+    }).join('');
+  }catch(e){}
+}
+
+async function admDeleteBc(id){
+  if(!fbOK()) return;
+  try{await dbS(FB_BC+'/'+id,null);admLoadBcHistory();showSF('🗑️ Notification supprimée','rgba(255,255,255,.4)');}
+  catch(e){}
+}
+
+function admTimeAgo(ts){
+  var d=Date.now()-ts;
+  if(d<60000) return 'À l\'instant';
+  if(d<3600000) return Math.floor(d/60000)+'min';
+  if(d<86400000) return Math.floor(d/3600000)+'h';
+  return Math.floor(d/86400000)+'j';
+}
+
+// ── Écouter les broadcasts Firebase (côté joueurs) ─────────────
+// Chaque joueur vérifie les nouvelles notifs depuis Firebase au démarrage
+var _oq_bc_seen='oq_bc_seen'; // clé localStorage : IDs déjà vus
+
+function bcMarkSeen(id){
+  try{
+    var seen=JSON.parse(localStorage.getItem(_oq_bc_seen)||'[]');
+    if(seen.indexOf(id)===-1){seen.push(id);}
+    // Garder les 200 derniers
+    if(seen.length>200) seen=seen.slice(-200);
+    localStorage.setItem(_oq_bc_seen,JSON.stringify(seen));
+  }catch(e){}
+}
+function bcIsSeen(id){
+  try{
+    var seen=JSON.parse(localStorage.getItem(_oq_bc_seen)||'[]');
+    return seen.indexOf(id)!==-1;
+  }catch(e){return false;}
+}
+
+async function bcFetchAndNotify(){
+  if(!fbOK()) return;
+  try{
+    var snap=await dbG(FB_BC);
+    var data=snap&&snap.val?snap.val():{};
+    if(!data) return;
+    var items=Object.values(data).filter(function(n){return n&&n.active&&!bcIsSeen(n.id);});
+    // Trier par date
+    items.sort(function(a,b){return (a.sentAt||0)-(b.sentAt||0);});
+    items.forEach(function(n){
+      // Injecter dans le système de notifications du jeu
+      addNotif('broadcast',
+        (n.emoji||'📢')+' '+n.title,
+        n.message,
+        n.emoji||'📢',
+        {broadcastId:n.id}
+      );
+      bcMarkSeen(n.id);
+    });
+  }catch(e){}
+}
+
+// Écouter en temps réel les nouvelles broadcasts
+function bcStartListener(){
+  if(!fbOK()) return;
+  try{
+    dbOn(FB_BC,function(snap){
+      if(!snap||!snap.val) return;
+      var data=snap.val();
+      Object.values(data).forEach(function(n){
+        if(n&&n.active&&!bcIsSeen(n.id)){
+          addNotif('broadcast',
+            (n.emoji||'📢')+' '+n.title,
+            n.message,
+            n.emoji||'📢',
+            {broadcastId:n.id}
+          );
+          bcMarkSeen(n.id);
+        }
+      });
+    });
+  }catch(e){}
+}
+
+// Démarrer après que Firebase soit prêt
+document.addEventListener('DOMContentLoaded',function(){
+  // On attend que Firebase soit initialisé (max 4s)
+  var tries=0;
+  var iv=setInterval(function(){
+    tries++;
+    if(fbOK()){
+      clearInterval(iv);
+      bcFetchAndNotify();   // check au démarrage
+      setTimeout(bcStartListener,500); // puis écoute en temps réel
+    }
+    if(tries>40) clearInterval(iv);
+  },100);
+});
+
+// Mettre à jour le rendu des notifs broadcast (type 'broadcast')
+// On surcharge renderNotifList pour afficher un style spécial
+var _origRenderNotifList=window.renderNotifList;
+window.renderNotifList=function(){
+  if(_origRenderNotifList) _origRenderNotifList.apply(this,arguments);
+  // Ajouter la classe broadcast aux items concernés
+  try{
+    var list=document.getElementById('notif-list');
+    if(!list) return;
+    var items=list.querySelectorAll('.notif-item');
+    loadNotifs();
+    _notifs.forEach(function(n,i){
+      if(n.type==='broadcast'&&items[i]){
+        items[i].classList.add('broadcast');
+      }
+    });
+  }catch(e){}
+};
+
+
 
 
 
