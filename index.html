@@ -326,7 +326,7 @@
 .mcard.online-only.offline-disabled .offline-lock-icon{display:block;}
 .mcard.online-only.offline-disabled .online-badge{display:none;}
 </style>
-<title>Quiz Otaku 5.6.4 🎌</title>
+<title>Quiz Otaku 5.6.5 🎌</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <!-- Bootstrap 5.3 — CDN (online) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous" media="print" onload="this.media='all'">
@@ -462,6 +462,65 @@ body::before{content:'';position:fixed;inset:0;
 .backup-cloud-badge.synced{background:rgba(48,209,88,.12);color:var(--green);border:1px solid rgba(48,209,88,.25);}
 .backup-cloud-badge.pending{background:rgba(255,159,10,.12);color:#ff9f0a;border:1px solid rgba(255,159,10,.25);}
 .backup-cloud-badge.offline{background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1);}
+
+
+/* ══ SÉLECTION PAYS ════════════════════════════════════════ */
+.country-picker-wrap{position:relative;margin-top:10px;}
+.country-search-inp{width:100%;padding:10px 14px 10px 38px;background:rgba(255,255,255,.06);
+  border:1.5px solid rgba(255,255,255,.12);border-radius:12px;color:#fff;
+  font-family:'Outfit',sans-serif;font-size:.85rem;outline:none;
+  transition:border-color .2s;box-sizing:border-box;}
+.country-search-inp:focus{border-color:rgba(245,168,0,.5);}
+.country-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  font-size:.9rem;pointer-events:none;}
+.country-dropdown{background:linear-gradient(145deg,#1a1a2e,#0f0f20);
+  border:1.5px solid rgba(255,255,255,.1);border-radius:12px;
+  max-height:200px;overflow-y:auto;margin-top:4px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,.1) transparent;}
+.country-option{display:flex;align-items:center;gap:10px;
+  padding:10px 14px;cursor:pointer;transition:background .15s;
+  font-size:.83rem;border-bottom:1px solid rgba(255,255,255,.04);}
+.country-option:hover,.country-option:active{background:rgba(245,168,0,.1);}
+.country-option.selected{background:rgba(245,168,0,.12);color:var(--gold);}
+.country-flag-emoji{font-size:1.2rem;flex-shrink:0;}
+.country-selected-display{display:flex;align-items:center;gap:10px;
+  padding:10px 14px;background:rgba(48,209,88,.08);
+  border:1.5px solid rgba(48,209,88,.25);border-radius:12px;
+  font-size:.85rem;font-weight:700;margin-top:8px;cursor:pointer;}
+
+/* ══ COINS ANIMATION ══════════════════════════════════════ */
+@keyframes coinFloat{
+  0%{transform:translateY(0) scale(1);opacity:1;}
+  60%{transform:translateY(-45px) scale(1.3);opacity:1;}
+  100%{transform:translateY(-80px) scale(.8);opacity:0;}
+}
+.coin-popup{
+  position:fixed;z-index:9999;
+  font-family:'Bangers',cursive;font-size:1.1rem;
+  color:var(--gold);text-shadow:0 2px 8px rgba(255,214,10,.5);
+  pointer-events:none;animation:coinFloat .9s ease forwards;
+  white-space:nowrap;
+}
+
+/* ══ COUNTRY BADGE ═════════════════════════════════════════ */
+.player-country-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:.68rem;color:rgba(255,255,255,.45);
+  margin-left:4px;vertical-align:middle;
+}
+
+/* ══ ADMIN COUNTRY STATS ═══════════════════════════════════ */
+.country-stat-bar{height:8px;border-radius:4px;
+  background:linear-gradient(90deg,var(--blue),var(--purple));
+  transition:width .6s ease;min-width:4px;}
+.top-country-card{background:linear-gradient(135deg,rgba(255,214,10,.1),rgba(255,159,10,.06));
+  border:1.5px solid rgba(255,214,10,.2);border-radius:14px;padding:14px;
+  margin-bottom:10px;display:flex;align-items:center;gap:12px;}
+.top-country-flag{font-size:2rem;flex-shrink:0;}
+.top-country-info{flex:1;}
+.top-country-name{font-weight:800;font-size:.95rem;}
+.top-country-stats{font-size:.7rem;color:rgba(255,255,255,.45);margin-top:2px;}
 
 .version-box{margin:16px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px;}
 .version-box .v-num{font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px;color:var(--gold);}
@@ -1243,7 +1302,9 @@ if('serviceWorker' in navigator){
       </div>
       <div style="flex:1;min-width:0">
         <div id="sb-pseudo-display" style="font-weight:800;font-size:.92rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Joueur</div>
+        <div id="sb-country-display" style="font-size:.68rem;color:rgba(255,255,255,.4);margin-top:2px"></div>
         <button onclick="openAvatarChangeModal()" style="margin-top:4px;background:rgba(245,168,0,.1);border:1px solid rgba(245,168,0,.25);border-radius:7px;padding:3px 10px;color:var(--gold);font-size:.65rem;font-weight:700;cursor:pointer;letter-spacing:1px">✏️ CHANGER AVATAR</button>
+        <button onclick="openCountryChangeModal()" style="margin-top:4px;background:rgba(10,132,255,.1);border:1px solid rgba(10,132,255,.25);border-radius:7px;padding:3px 10px;color:var(--blue);font-size:.65rem;font-weight:700;cursor:pointer;letter-spacing:1px">🌍 CHANGER PAYS</button>
       </div>
     </div>
   </div>
@@ -1900,6 +1961,25 @@ if('serviceWorker' in navigator){
         </div>
       </div>
     </div>
+    <!-- Sélection du pays -->
+    <div style="margin-top:14px">
+      <h3 style="font-family:'Bangers',cursive;font-size:.95rem;letter-spacing:2px;color:rgba(255,255,255,.42);margin-bottom:8px">🌍 TON PAYS</h3>
+      <div class="country-picker-wrap" id="country-picker-wrap">
+        <span class="country-search-icon">🔍</span>
+        <input class="country-search-inp" id="country-search-inp"
+          placeholder="Recherche ou écris ton pays..."
+          oninput="onCountrySearch(this.value)"
+          onfocus="showCountryDropdown()"
+          autocomplete="off">
+        <div class="country-dropdown" id="country-dropdown" style="display:none"></div>
+        <div class="country-selected-display" id="country-selected-display" style="display:none">
+          <span id="country-sel-flag">🌍</span>
+          <span id="country-sel-name">Pays sélectionné</span>
+          <span style="margin-left:auto;font-size:.65rem;color:rgba(255,255,255,.4);cursor:pointer" onclick="clearCountrySelection()">✕ changer</span>
+        </div>
+      </div>
+    </div>
+
     <div id="err-profile" class="errbox hidden"></div>
     <button class="btn btn-gold btn-full" style="margin-top:14px;font-size:1.3rem" onclick="saveProfile()">🚀 COMMENCER</button>
   </div>
@@ -2705,6 +2785,30 @@ if('serviceWorker' in navigator){
   </div>
 </div>
 
+
+<!-- ════ MODAL CHANGER PAYS ════ -->
+<div id="country-change-modal" style="position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:700;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px)">
+  <div style="background:linear-gradient(145deg,#1a1a2e,#0f0f1e);border:1.5px solid rgba(10,132,255,.3);border-radius:22px;padding:24px 20px;max-width:340px;width:100%;animation:popIn .3s ease">
+    <div style="font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:3px;color:var(--blue);margin-bottom:14px;text-align:center">🌍 CHANGER DE PAYS</div>
+    <div class="country-picker-wrap">
+      <span class="country-search-icon">🔍</span>
+      <input class="country-search-inp" id="country-modal-search"
+        placeholder="Recherche ton pays..."
+        oninput="onCountryModalSearch(this.value)"
+        autocomplete="off">
+      <div class="country-dropdown" id="country-modal-dropdown" style="display:none;position:relative;max-height:220px"></div>
+      <div id="country-modal-selected" style="display:none" class="country-selected-display">
+        <span id="country-modal-flag">🌍</span>
+        <span id="country-modal-name">Pays</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button onclick="saveCountryChange()" style="flex:1;padding:12px;background:linear-gradient(135deg,var(--blue),var(--purple));border:none;border-radius:11px;color:#fff;font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;cursor:pointer">✅ SAUVEGARDER</button>
+      <button onclick="document.getElementById('country-change-modal').style.display='none'" style="flex:1;padding:12px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:11px;color:rgba(255,255,255,.5);font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;cursor:pointer">ANNULER</button>
+    </div>
+  </div>
+</div>
+
 </div><!-- end app -->
 
 <!-- FIREBASE -->
@@ -3283,8 +3387,11 @@ async function loadLeaderboard(){
       const row=document.createElement('div');
       row.className='lb-row'+(isMe?' me':'');
       const rank=i<3?`<span class="lb-rank ${rankColors[i]}">${rankEmojis[i]}</span>`:`<span class="lb-rank" style="color:rgba(255,255,255,.4)">#${i+1}</span>`;
-      row.innerHTML=`${rank}<div class="lb-avatar">${AVATARS[i%AVATARS.length]}</div>
-        <div class="lb-info"><div class="lb-name">${p.name||'Joueur'}${isMe?'<span class="lb-you">MOI</span>':''}</div>
+      var _lbAv=p.avatar||AVATARS[i%AVATARS.length];
+      var _lbAvHtml=(_lbAv&&_lbAv.startsWith('data:'))?`<img src="${_lbAv}" style="width:28px;height:28px;border-radius:50%;object-fit:cover">`:_lbAv;
+      var _countryBadge=p.countryFlag?`<span class="player-country-badge">${p.countryFlag} ${p.country||''}</span>`:'';
+      row.innerHTML=`${rank}<div class="lb-avatar">${_lbAvHtml}</div>
+        <div class="lb-info"><div class="lb-name">${p.name||'Joueur'}${isMe?'<span class="lb-you">MOI</span>':''}${_countryBadge}</div>
         <div class="lb-detail">${p.played||0} parties · ${p.correct||0} correctes</div></div>
         <div class="lb-score">${p.best||0}<span style="font-size:.6rem;color:rgba(255,255,255,.3)"> pts</span></div>`;
       lb.appendChild(row);
@@ -3320,7 +3427,10 @@ async function saveLeaderboardEntry(){
   if(!fbOK()||!navigator.onLine)return;
   var s=loadStats();
   try{
-    await dbU('leaderboard/'+myId,{name:nm,best:s.best,played:s.played,correct:s.correct,updated:Date.now()});
+    var _p2=loadProfile()||{};
+    await dbU('leaderboard/'+myId,{name:nm,best:s.best,played:s.played,correct:s.correct,
+      avatar:_p2.avatar||'⚡',country:_p2.country||'',
+      countryFlag:_p2.countryFlag||'',updated:Date.now()});
     localStorage.removeItem('oq_pending_sync');
   }catch(e){}
 }
@@ -4691,7 +4801,10 @@ function saveProfile(){
     setTimeout(function(){e.classList.add('hidden');},3000);return;
   }
   var avatar=_uploadedAvatar||_selectedAvatar;
-  var profile={id:'u_'+Math.random().toString(36).slice(2,10),pseudo:pseudo,avatar:avatar,coins:0,badges:{},xp:0,createdAt:Date.now()};
+  var country = window._selectedCountry||{name:'',flag:'🌍',code:''};
+  var profile={id:'u_'+Math.random().toString(36).slice(2,10),pseudo:pseudo,avatar:avatar,
+    country:country.name||'',countryFlag:country.flag||'🌍',countryCode:country.code||'',
+    coins:0,badges:{},xp:0,createdAt:Date.now()};
   localStorage.setItem('oq_profile',JSON.stringify(profile));
   // Sync pseudo to existing myName
   myName=pseudo;localStorage.setItem('oq_name',pseudo);
@@ -4711,6 +4824,7 @@ function updateProfileUI(){
   if(p.pseudo&&!myName)myName=p.pseudo;
   updateHeaderProfile();
   updateSidebarAvatarDisplay();
+  updateSidebarCountryDisplay();
 }
 
 function updateHeaderProfile(){
@@ -4801,6 +4915,7 @@ function addCoins(amount,reason){
   var p=loadProfile();if(!p){p={coins:0,badges:{}};}
   p.coins=(p.coins||0)+amount;
   localStorage.setItem('oq_profile',JSON.stringify(p));
+  if(amount>0) try{showCoinAnimation(amount);}catch(e){}
   updateProfileUI();
   updateHeaderProfile();
   // popup
@@ -5477,6 +5592,12 @@ function saveAvatarChange(){
   try{if(navigator.vibrate)navigator.vibrate([30,20,30]);}catch(e){}
 }
 
+function updateSidebarCountryDisplay(){
+  var p=loadProfile(); if(!p) return;
+  var el=document.getElementById('sb-country-display');
+  if(el&&p.countryFlag) el.textContent=p.countryFlag+' '+(p.country||'');
+  else if(el) el.textContent='';
+}
 function updateSidebarAvatarDisplay(){
   var p = loadProfile(); if(!p) return;
   var av = p.avatar||'⚡';
@@ -8960,6 +9081,367 @@ document.addEventListener('DOMContentLoaded',function(){
   if(!p&&fbOK()&&navigator.onLine){
     // Rien à faire automatiquement sans ID connu
     // L'utilisateur devra utiliser le bouton Restaurer
+  }
+},false);
+
+// ══════════════════════════════════════════════════════════════
+//  SYSTÈME DE PAYS — v5.6.5
+// ══════════════════════════════════════════════════════════════
+
+// ─── Liste complète des pays avec drapeaux ────────────────────
+var COUNTRIES = [
+  {name:"Afghanistan",flag:"🇦🇫",code:"AF"},{name:"Afrique du Sud",flag:"🇿🇦",code:"ZA"},
+  {name:"Albanie",flag:"🇦🇱",code:"AL"},{name:"Algérie",flag:"🇩🇿",code:"DZ"},
+  {name:"Allemagne",flag:"🇩🇪",code:"DE"},{name:"Angola",flag:"🇦🇴",code:"AO"},
+  {name:"Arabie Saoudite",flag:"🇸🇦",code:"SA"},{name:"Argentine",flag:"🇦🇷",code:"AR"},
+  {name:"Australie",flag:"🇦🇺",code:"AU"},{name:"Autriche",flag:"🇦🇹",code:"AT"},
+  {name:"Azerbaïdjan",flag:"🇦🇿",code:"AZ"},{name:"Bangladesh",flag:"🇧🇩",code:"BD"},
+  {name:"Belgique",flag:"🇧🇪",code:"BE"},{name:"Bénin",flag:"🇧🇯",code:"BJ"},
+  {name:"Bolivie",flag:"🇧🇴",code:"BO"},{name:"Bosnie-Herzégovine",flag:"🇧🇦",code:"BA"},
+  {name:"Brésil",flag:"🇧🇷",code:"BR"},{name:"Bulgarie",flag:"🇧🇬",code:"BG"},
+  {name:"Burkina Faso",flag:"🇧🇫",code:"BF"},{name:"Burundi",flag:"🇧🇮",code:"BI"},
+  {name:"Cameroun",flag:"🇨🇲",code:"CM"},{name:"Canada",flag:"🇨🇦",code:"CA"},
+  {name:"Cap-Vert",flag:"🇨🇻",code:"CV"},{name:"Chili",flag:"🇨🇱",code:"CL"},
+  {name:"Chine",flag:"🇨🇳",code:"CN"},{name:"Colombie",flag:"🇨🇴",code:"CO"},
+  {name:"Congo (RDC)",flag:"🇨🇩",code:"CD"},{name:"Congo (Rép.)",flag:"🇨🇬",code:"CG"},
+  {name:"Corée du Nord",flag:"🇰🇵",code:"KP"},{name:"Corée du Sud",flag:"🇰🇷",code:"KR"},
+  {name:"Costa Rica",flag:"🇨🇷",code:"CR"},{name:"Côte d'Ivoire",flag:"🇨🇮",code:"CI"},
+  {name:"Croatie",flag:"🇭🇷",code:"HR"},{name:"Cuba",flag:"🇨🇺",code:"CU"},
+  {name:"Danemark",flag:"🇩🇰",code:"DK"},{name:"Djibouti",flag:"🇩🇯",code:"DJ"},
+  {name:"Égypte",flag:"🇪🇬",code:"EG"},{name:"Émirats arabes unis",flag:"🇦🇪",code:"AE"},
+  {name:"Équateur",flag:"🇪🇨",code:"EC"},{name:"Espagne",flag:"🇪🇸",code:"ES"},
+  {name:"Éthiopie",flag:"🇪🇹",code:"ET"},{name:"États-Unis",flag:"🇺🇸",code:"US"},
+  {name:"Finlande",flag:"🇫🇮",code:"FI"},{name:"France",flag:"🇫🇷",code:"FR"},
+  {name:"Gabon",flag:"🇬🇦",code:"GA"},{name:"Gambie",flag:"🇬🇲",code:"GM"},
+  {name:"Ghana",flag:"🇬🇭",code:"GH"},{name:"Grèce",flag:"🇬🇷",code:"GR"},
+  {name:"Guatemala",flag:"🇬🇹",code:"GT"},{name:"Guinée",flag:"🇬🇳",code:"GN"},
+  {name:"Guinée-Bissau",flag:"🇬🇼",code:"GW"},{name:"Guinée équatoriale",flag:"🇬🇶",code:"GQ"},
+  {name:"Haïti",flag:"🇭🇹",code:"HT"},{name:"Honduras",flag:"🇭🇳",code:"HN"},
+  {name:"Hongrie",flag:"🇭🇺",code:"HU"},{name:"Inde",flag:"🇮🇳",code:"IN"},
+  {name:"Indonésie",flag:"🇮🇩",code:"ID"},{name:"Irak",flag:"🇮🇶",code:"IQ"},
+  {name:"Iran",flag:"🇮🇷",code:"IR"},{name:"Irlande",flag:"🇮🇪",code:"IE"},
+  {name:"Israël",flag:"🇮🇱",code:"IL"},{name:"Italie",flag:"🇮🇹",code:"IT"},
+  {name:"Jamaïque",flag:"🇯🇲",code:"JM"},{name:"Japon",flag:"🇯🇵",code:"JP"},
+  {name:"Jordanie",flag:"🇯🇴",code:"JO"},{name:"Kenya",flag:"🇰🇪",code:"KE"},
+  {name:"Liban",flag:"🇱🇧",code:"LB"},{name:"Libye",flag:"🇱🇾",code:"LY"},
+  {name:"Madagascar",flag:"🇲🇬",code:"MG"},{name:"Malawi",flag:"🇲🇼",code:"MW"},
+  {name:"Mali",flag:"🇲🇱",code:"ML"},{name:"Maroc",flag:"🇲🇦",code:"MA"},
+  {name:"Mauritanie",flag:"🇲🇷",code:"MR"},{name:"Maurice",flag:"🇲🇺",code:"MU"},
+  {name:"Mexique",flag:"🇲🇽",code:"MX"},{name:"Mozambique",flag:"🇲🇿",code:"MZ"},
+  {name:"Namibie",flag:"🇳🇦",code:"NA"},{name:"Niger",flag:"🇳🇪",code:"NE"},
+  {name:"Nigéria",flag:"🇳🇬",code:"NG"},{name:"Norvège",flag:"🇳🇴",code:"NO"},
+  {name:"Nouvelle-Zélande",flag:"🇳🇿",code:"NZ"},{name:"Ouganda",flag:"🇺🇬",code:"UG"},
+  {name:"Pakistan",flag:"🇵🇰",code:"PK"},{name:"Paraguay",flag:"🇵🇾",code:"PY"},
+  {name:"Pays-Bas",flag:"🇳🇱",code:"NL"},{name:"Pérou",flag:"🇵🇪",code:"PE"},
+  {name:"Philippines",flag:"🇵🇭",code:"PH"},{name:"Pologne",flag:"🇵🇱",code:"PL"},
+  {name:"Portugal",flag:"🇵🇹",code:"PT"},{name:"Qatar",flag:"🇶🇦",code:"QA"},
+  {name:"République centrafricaine",flag:"🇨🇫",code:"CF"},{name:"Roumanie",flag:"🇷🇴",code:"RO"},
+  {name:"Royaume-Uni",flag:"🇬🇧",code:"GB"},{name:"Russie",flag:"🇷🇺",code:"RU"},
+  {name:"Rwanda",flag:"🇷🇼",code:"RW"},{name:"Sénégal",flag:"🇸🇳",code:"SN"},
+  {name:"Sierra Leone",flag:"🇸🇱",code:"SL"},{name:"Somalie",flag:"🇸🇴",code:"SO"},
+  {name:"Soudan",flag:"🇸🇩",code:"SD"},{name:"Suède",flag:"🇸🇪",code:"SE"},
+  {name:"Suisse",flag:"🇨🇭",code:"CH"},{name:"Tanzanie",flag:"🇹🇿",code:"TZ"},
+  {name:"Tchad",flag:"🇹🇩",code:"TD"},{name:"Togo",flag:"🇹🇬",code:"TG"},
+  {name:"Tunisie",flag:"🇹🇳",code:"TN"},{name:"Turquie",flag:"🇹🇷",code:"TR"},
+  {name:"Ukraine",flag:"🇺🇦",code:"UA"},{name:"Uruguay",flag:"🇺🇾",code:"UY"},
+  {name:"Venezuela",flag:"🇻🇪",code:"VE"},{name:"Viet Nam",flag:"🇻🇳",code:"VN"},
+  {name:"Yémen",flag:"🇾🇪",code:"YE"},{name:"Zambie",flag:"🇿🇲",code:"ZM"},
+  {name:"Zimbabwe",flag:"🇿🇼",code:"ZW"}
+];
+// Trier alphabétiquement
+COUNTRIES.sort(function(a,b){return a.name.localeCompare(b.name,'fr');});
+
+var window_selectedCountry = null; // alias
+window._selectedCountry = null;
+window._modalSelectedCountry = null;
+
+// ─── Afficher le dropdown ─────────────────────────────────────
+function showCountryDropdown(){
+  renderCountryDropdown('country-dropdown', COUNTRIES, 'country-search-inp', false);
+  document.getElementById('country-dropdown').style.display='block';
+}
+
+function renderCountryDropdown(dropdownId, list, inputId, isModal){
+  var dd = document.getElementById(dropdownId);
+  if(!dd) return;
+  dd.innerHTML='';
+  var selected = isModal ? window._modalSelectedCountry : window._selectedCountry;
+  list.slice(0,50).forEach(function(c){
+    var opt = document.createElement('div');
+    opt.className='country-option'+(selected&&selected.code===c.code?' selected':'');
+    opt.innerHTML='<span class="country-flag-emoji">'+c.flag+'</span>'
+      +'<span>'+c.name+'</span>';
+    opt.onclick=function(){
+      if(isModal){
+        window._modalSelectedCountry=c;
+        document.getElementById('country-modal-flag').textContent=c.flag;
+        document.getElementById('country-modal-name').textContent=c.name;
+        document.getElementById('country-modal-selected').style.display='flex';
+        document.getElementById('country-modal-search').value='';
+        document.getElementById(dropdownId).style.display='none';
+      }else{
+        window._selectedCountry=c;
+        document.getElementById('country-sel-flag').textContent=c.flag;
+        document.getElementById('country-sel-name').textContent=c.name;
+        document.getElementById('country-selected-display').style.display='flex';
+        document.getElementById('country-dropdown').style.display='none';
+        document.getElementById('country-search-inp').value='';
+      }
+    };
+    dd.appendChild(opt);
+  });
+  // Option saisie manuelle si liste courte
+  if(list.length===0){
+    var inp = document.getElementById(inputId);
+    var val = inp?inp.value.trim():'';
+    if(val.length>=2){
+      var opt2=document.createElement('div');
+      opt2.className='country-option';
+      opt2.innerHTML='<span class="country-flag-emoji">🌍</span><span>'+val+' (manuel)</span>';
+      opt2.onclick=function(){
+        var custom={name:val,flag:'🌍',code:'XX'};
+        if(isModal){
+          window._modalSelectedCountry=custom;
+          document.getElementById('country-modal-flag').textContent='🌍';
+          document.getElementById('country-modal-name').textContent=val;
+          document.getElementById('country-modal-selected').style.display='flex';
+          document.getElementById(dropdownId).style.display='none';
+        }else{
+          window._selectedCountry=custom;
+          document.getElementById('country-sel-flag').textContent='🌍';
+          document.getElementById('country-sel-name').textContent=val;
+          document.getElementById('country-selected-display').style.display='flex';
+          document.getElementById('country-dropdown').style.display='none';
+        }
+      };
+      dd.appendChild(opt2);
+    }
+  }
+}
+
+function onCountrySearch(q){
+  var filtered = q.trim().length<1 ? COUNTRIES :
+    COUNTRIES.filter(function(c){return c.name.toLowerCase().includes(q.toLowerCase());});
+  document.getElementById('country-dropdown').style.display='block';
+  renderCountryDropdown('country-dropdown',filtered,'country-search-inp',false);
+}
+
+function onCountryModalSearch(q){
+  var filtered = q.trim().length<1 ? COUNTRIES :
+    COUNTRIES.filter(function(c){return c.name.toLowerCase().includes(q.toLowerCase());});
+  document.getElementById('country-modal-dropdown').style.display='block';
+  renderCountryDropdown('country-modal-dropdown',filtered,'country-modal-search',true);
+}
+
+function clearCountrySelection(){
+  window._selectedCountry=null;
+  document.getElementById('country-selected-display').style.display='none';
+  document.getElementById('country-search-inp').value='';
+  document.getElementById('country-dropdown').style.display='none';
+}
+
+// Fermer dropdown si clic ailleurs
+document.addEventListener('click',function(e){
+  var wrap=document.getElementById('country-picker-wrap');
+  var mWrap=document.getElementById('country-change-modal');
+  if(wrap&&!wrap.contains(e.target)){
+    var dd=document.getElementById('country-dropdown');
+    if(dd) dd.style.display='none';
+  }
+});
+
+// ─── Modal changer pays ───────────────────────────────────────
+function openCountryChangeModal(){
+  var modal=document.getElementById('country-change-modal');
+  var p=loadProfile();
+  if(p&&p.countryCode){
+    // Pré-sélectionner le pays actuel
+    var current=COUNTRIES.find(function(c){return c.code===p.countryCode;});
+    if(current){
+      window._modalSelectedCountry=current;
+      document.getElementById('country-modal-flag').textContent=current.flag;
+      document.getElementById('country-modal-name').textContent=current.name;
+      document.getElementById('country-modal-selected').style.display='flex';
+    }
+  }
+  if(modal) modal.style.display='flex';
+  renderCountryDropdown('country-modal-dropdown',COUNTRIES,'country-modal-search',true);
+  document.getElementById('country-modal-dropdown').style.display='block';
+}
+
+function saveCountryChange(){
+  var c=window._modalSelectedCountry;
+  if(!c){showSF('⚠️ Sélectionne un pays','var(--red)');return;}
+  var p=loadProfile();if(!p) return;
+  p.country=c.name;p.countryFlag=c.flag;p.countryCode=c.code;
+  localStorage.setItem('oq_profile',JSON.stringify(p));
+  // Sync Firebase
+  if(fbOK()&&navigator.onLine){
+    dbU('leaderboard/'+myId,{country:c.name,countryFlag:c.flag,countryCode:c.code}).catch(function(){});
+  }
+  updateSidebarCountryDisplay();
+  document.getElementById('country-change-modal').style.display='none';
+  showSF(c.flag+' Pays mis à jour !','var(--green)');
+}
+
+// ─── Afficher pays dans les salle multijoueur ─────────────────
+function getPlayerCountryBadge(playerId){
+  // Pour l'hôte local
+  if(playerId===myId){
+    var p=loadProfile();
+    return p&&p.countryFlag?(' '+p.countryFlag):'';
+  }
+  return '';
+}
+
+// ══════════════════════════════════════════════════════════════
+//  ANIMATION PIÈCES
+// ══════════════════════════════════════════════════════════════
+function showCoinAnimation(amount){
+  var el=document.createElement('div');
+  el.className='coin-popup';
+  el.textContent='+'+amount+' 🪙';
+  el.style.left=Math.round(30+Math.random()*40)+'%';
+  el.style.top=Math.round(40+Math.random()*20)+'%';
+  document.body.appendChild(el);
+  setTimeout(function(){if(el.parentNode)el.remove();},950);
+  // Son visuel : flash sur le compteur de pièces
+  var coinEl=document.getElementById('sb-coins');
+  if(coinEl){
+    coinEl.style.transition='transform .2s,color .2s';
+    coinEl.style.transform='scale(1.4)';
+    coinEl.style.color='#ffd60a';
+    setTimeout(function(){
+      coinEl.style.transform='scale(1)';
+      coinEl.style.color='';
+    },300);
+  }
+  var hdrCoins=document.getElementById('hdr-coins');
+  if(hdrCoins){
+    hdrCoins.style.transition='transform .2s';
+    hdrCoins.style.transform='scale(1.4)';
+    setTimeout(function(){hdrCoins.style.transform='scale(1)';},300);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  STATS PAYS — Section admin
+// ══════════════════════════════════════════════════════════════
+async function loadAdminCountryStats(){
+  if(!fbOK()||!navigator.onLine) return;
+  try{
+    var snap=await dbG('leaderboard');
+    if(!snap.exists()) return;
+    var players=snap.val();
+    var countryMap={};
+    Object.values(players).forEach(function(p){
+      if(!p.country) return;
+      var k=p.country;
+      if(!countryMap[k]) countryMap[k]={name:k,flag:p.countryFlag||'🌍',players:0,played:0,scores:[]};
+      countryMap[k].players++;
+      countryMap[k].played+=(p.played||0);
+      if(p.best) countryMap[k].scores.push(p.best);
+    });
+
+    var countries=Object.values(countryMap).map(function(c){
+      c.avgScore=c.scores.length>0?Math.round(c.scores.reduce(function(a,b){return a+b;},0)/c.scores.length):0;
+      return c;
+    }).sort(function(a,b){return b.players-a.players;});
+
+    renderCountryStats(countries);
+  }catch(e){console.warn('Country stats error:',e);}
+}
+
+function renderCountryStats(countries){
+  var container=document.getElementById('adm-country-stats');
+  if(!container) return;
+  container.innerHTML='';
+  if(countries.length===0){
+    container.innerHTML='<div style="text-align:center;padding:20px;color:rgba(255,255,255,.3)">Aucun joueur avec pays renseigné</div>';
+    return;
+  }
+  var maxPlayers=countries[0].players||1;
+  // Top pays
+  var topCard=document.createElement('div');
+  topCard.className='top-country-card';
+  topCard.innerHTML='<div class="top-country-flag">'+countries[0].flag+'</div>'
+    +'<div class="top-country-info">'
+    +'<div class="top-country-name">🏆 '+countries[0].name+'</div>'
+    +'<div class="top-country-stats">'+countries[0].players+' joueurs · '+countries[0].played+' parties · Moy: '+countries[0].avgScore+' pts</div>'
+    +'</div>';
+  container.appendChild(topCard);
+  // Top 10 avec barres
+  countries.slice(0,10).forEach(function(c,i){
+    var row=document.createElement('div');
+    row.style.cssText='margin-bottom:10px';
+    var pct=Math.round(c.players/maxPlayers*100);
+    row.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">'
+      +'<span style="font-size:1rem">'+c.flag+'</span>'
+      +'<span style="font-weight:700;font-size:.82rem;flex:1">'+c.name+'</span>'
+      +'<span style="font-size:.7rem;color:rgba(255,255,255,.4)">'+c.players+' joueur'+(c.players>1?'s':'')+'</span>'
+      +'</div>'
+      +'<div style="height:8px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden">'
+      +'<div class="country-stat-bar" style="width:'+pct+'%"></div>'
+      +'</div>';
+    container.appendChild(row);
+  });
+}
+
+// Ajouter onglet pays dans admin si pas déjà présent
+function addCountryTabToAdmin(){
+  var tabRow=document.querySelector('.admin-tab-row');
+  if(!tabRow||document.getElementById('admin-tab-countries')) return;
+  var tab=document.createElement('div');
+  tab.className='admin-tab';
+  tab.id='admin-tab-btn-countries';
+  tab.textContent='🌍 Pays';
+  tab.onclick=function(){
+    document.querySelectorAll('.admin-tab').forEach(function(t){t.classList.remove('active');});
+    tab.classList.add('active');
+    // Créer le panel si nécessaire
+    var existingTabs=['admin-tab-stats','admin-tab-questions','admin-tab-players','admin-tab-notif','admin-tab-tournament'];
+    existingTabs.forEach(function(id){
+      var el=document.getElementById(id);if(el)el.style.display='none';
+    });
+    showCountriesAdminPanel();
+  };
+  tabRow.appendChild(tab);
+}
+
+function showCountriesAdminPanel(){
+  var existing=document.getElementById('admin-tab-countries-panel');
+  if(existing){existing.style.display='block';loadAdminCountryStats();return;}
+  // Créer le panel
+  var panel=document.createElement('div');
+  panel.id='admin-tab-countries-panel';
+  panel.innerHTML='<div style="font-family:Bangers,cursive;font-size:.95rem;letter-spacing:2px;color:rgba(255,255,255,.4);margin-bottom:12px">JOUEURS PAR PAYS</div>'
+    +'<div id="adm-country-stats"><div style="text-align:center;padding:20px;color:rgba(255,255,255,.3)">Chargement...</div></div>'
+    +'<button onclick="loadAdminCountryStats()" class="btn btn-blue btn-full" style="margin-top:10px">🔄 Actualiser</button>';
+  // Insérer après le dernier tab panel
+  var adminScreen=document.getElementById('s-admin');
+  if(adminScreen) adminScreen.appendChild(panel);
+  loadAdminCountryStats();
+}
+
+// Init au DOMContentLoaded
+document.addEventListener('DOMContentLoaded',function(){
+  // Afficher le pays actuel dans le sidebar
+  updateSidebarCountryDisplay();
+  // Ajouter onglet pays dans admin
+  setTimeout(addCountryTabToAdmin, 500);
+  // Pré-remplir le pays si profil existe
+  var p=loadProfile();
+  if(p&&p.countryCode){
+    var c=COUNTRIES.find(function(x){return x.code===p.countryCode;});
+    if(c){
+      window._selectedCountry=c;
+      var sel=document.getElementById('country-selected-display');
+      var sf=document.getElementById('country-sel-flag');
+      var sn=document.getElementById('country-sel-name');
+      if(sel) sel.style.display='flex';
+      if(sf) sf.textContent=c.flag;
+      if(sn) sn.textContent=c.name;
+    }
   }
 },false);
 
